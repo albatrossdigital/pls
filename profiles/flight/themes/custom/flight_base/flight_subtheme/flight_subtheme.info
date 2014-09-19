@@ -43,28 +43,28 @@ stylesheets[all][] = css/custom.css
 scripts[] = js/vendor/custom.modernizr.js
 
 ; Foundation framework scripts (minified).
-; If you prefer to have more control over which components are included you
-; can comment this line and uncomment the ones below you want.
-; scripts[] = js/foundation.min.js
+; Use the Gruntfile to exclude scripts from this minified file
+; in the "Uglify" grunt task
+scripts[] = js/custom-foundation.min.js
 
 ; Foundation framework scripts (uncompressed).
-scripts[] = js/foundation/foundation.js
-scripts[] = js/foundation/foundation.abide.js
-scripts[] = js/foundation/foundation.accordion.js
-scripts[] = js/foundation/foundation.alert.js
-scripts[] = js/foundation/foundation.clearing.js
-scripts[] = js/foundation/foundation.dropdown.js
-scripts[] = js/foundation/foundation.equalizer.js
-scripts[] = js/foundation/foundation.interchange.js
-scripts[] = js/foundation/foundation.joyride.js
-scripts[] = js/foundation/foundation.magellan.js
-scripts[] = js/foundation/foundation.offcanvas.js
-scripts[] = js/foundation/foundation.orbit.js
-scripts[] = js/foundation/foundation.slider.js
-scripts[] = js/foundation/foundation.reveal.js
-scripts[] = js/foundation/foundation.tab.js
-scripts[] = js/foundation/foundation.tooltip.js
-scripts[] = js/foundation/foundation.topbar.js
+; scripts[] = js/foundation/foundation.js
+; scripts[] = js/foundation/foundation.abide.js
+; scripts[] = js/foundation/foundation.accordion.js
+; scripts[] = js/foundation/foundation.alert.js
+; scripts[] = js/foundation/foundation.clearing.js
+; scripts[] = js/foundation/foundation.dropdown.js
+; scripts[] = js/foundation/foundation.equalizer.js
+; scripts[] = js/foundation/foundation.interchange.js
+; scripts[] = js/foundation/foundation.joyride.js
+; scripts[] = js/foundation/foundation.magellan.js
+; scripts[] = js/foundation/foundation.offcanvas.js
+; scripts[] = js/foundation/foundation.orbit.js
+; scripts[] = js/foundation/foundation.slider.js
+; scripts[] = js/foundation/foundation.reveal.js
+; scripts[] = js/foundation/foundation.tab.js
+; scripts[] = js/foundation/foundation.tooltip.js
+; scripts[] = js/foundation/foundation.topbar.js
 
 ; Theme scripts.
 ; This file is empty, just uncomment this line and start editing!

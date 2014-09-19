@@ -1,65 +1,50 @@
-(function ($, Drupal) {
-
-  Drupal.behaviors.flight_subtheme = {
-    attach: function(context, settings) {
-      // Get your Yeti started.
-
-      // Open external links in a new window
-      var reg = RegExp('/' + window.location.host + '/');
-      $('a').each(function() {
-         if(!reg.test(this.href)) {
-             $(this).click(function(event) {
-                 event.preventDefault();
-                 event.stopPropagation();
-                 window.open(this.href, '_blank');
-             });
-         }
-      });
-
-      // waits for image(s) to load then calls callback
-      function triggerImageSize($image, callback) {
-        if(!$image.hasClass('size-processing')) {
-          $image.addClass('size-processing');
-          $image.waitForImages({
+(function() {
+  (function($, Drupal, Foundation) {
+    Drupal.behaviors.flight_subtheme = {
+      attach: function(context, settings) {
+        var reg, triggerImageSize;
+        triggerImageSize = function($image, callback) {
+          if (!$image.hasClass("size-processing")) {
+            $image.addClass("size-processing");
+            $image.waitForImages({
               finished: function() {
                 callback();
-                $image.removeClass('size-processing');
+                $image.removeClass("size-processing");
               },
               each: $.noop,
               waitForAll: true
+            });
+          }
+        };
+        reg = new RegExp("/" + window.location.host + "/");
+        $("a").each(function() {
+          if (!reg.test(this.href)) {
+            $(this).click(function(event) {
+              event.preventDefault();
+              event.stopPropagation();
+              window.open(this.href, "_blank");
+            });
+          }
+        });
+        $("ul[data-orbit]", context).once("orbit-helper", function() {
+          var $orbit, $orbitImage;
+          $orbit = $(this);
+          $orbitImage = $orbit.children("li:last-child");
+          $orbit.on("before-slide-change.fndtn.orbit", function() {
+            $orbit.addClass("orbit-transitioning");
           });
-        }
-      }
-
-      // attach orbit image loading
-      if(Drupal.settings.charityOrbit) {
-        // add orbit transitioning class 
-        $.each(Drupal.settings.charityOrbit, function(key, id) {
-
-          var $orbit = $('#'+id),
-            $orbitImage = $orbit.children('li:last-child');
-
-          $orbit.on("before-slide-change.fndtn.orbit", function(event) {
-            $orbit.addClass('orbit-transitioning');
+          $orbit.on("after-slide-change.fndtn.orbit", function() {
+            $orbit.removeClass("orbit-transitioning");
           });
-          $orbit.on("after-slide-change.fndtn.orbit", function(event) {
-            $orbit.removeClass('orbit-transitioning');
-          });
-
-          // init
-          triggerImageSize($orbitImage, function() {
-            $(window).trigger('resize');
-          });
-
-          // on interchage changes, watch images again
-          $(document).on('replace', 'img', function (e, new_path, original_path) {
+          $(document).on("replace", "img", function() {
             triggerImageSize($orbitImage, function() {
-              $(window).trigger('resize');
+              $(window).trigger("resize");
             });
           });
+          $(window).trigger('resize');
         });
       }
-    }
-  };
+    };
+  })(jQuery, Drupal, Foundation);
 
-})(jQuery, Drupal);
+}).call(this);

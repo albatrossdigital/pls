@@ -526,6 +526,10 @@ projects[media][patch][2272567] = "http://drupal.org/files/issues/media-dialog-z
 ; Last checked Aug 25, 2014
 projects[media][patch][1995030] = "http://drupal.org/files/issues/media-7.x-2.x-wysiwyg-summary-support-1995030-6.patch"
 
+; Fix to add media edit button
+; Last check Aug 28 2014
+projects[media][patch][2192981] = http://drupal.org/files/issues/media-restore-edit-button-2192981-13.patch
+
 ; Allow us to specify file types on media admin page
 ; Updated Aug 25, 2014
 projects[ckeditor][patch][1649464] = "http://drupal.org/files/issues/ckeditor-hook_into_media_admin-1649464-9.patch"

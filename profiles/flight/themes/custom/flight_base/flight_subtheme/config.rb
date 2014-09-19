@@ -1,5 +1,7 @@
 # Requre a specific version in this file:
 
+# require "compass"
+
 # Require any additional compass plugins here.
 
 # Set this to the root of your project when deployed:

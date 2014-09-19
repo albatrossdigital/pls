@@ -44,7 +44,9 @@
 // hit all bootstrap inputs
 @mixin all-form-inputs($select: true)
   @if $select 
-    #{'select,'}
+    select
+      @content
+
   textarea,
   input[type="text"],
   input[type="password"],
@@ -251,7 +253,7 @@
 
 // simple sprite
 @mixin image-sprite($x, $y, $img: "sprite.png", $repeat: no-repeat)
-  background-image: url(../images/#{$img})
+  background-image: image-url($img)
   background-position: $x $y
   background-repeat: $repeat
 
