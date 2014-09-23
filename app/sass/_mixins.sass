@@ -1,0 +1,18 @@
+
+
+//********************************
+
+//*  Mixins
+
+//*******************************/
+
+// Font Weight mixin for the typekit font weights
+@mixin font-weight($weight)
+  @if $weight == normal
+    font-weight: $font-weight
+
+  @if $weight == semi
+    font-weight: $font-weight-semi
+
+  @if $weight == bold
+    font-weight: $font-weight-bold

@@ -1,0 +1,100 @@
+
+
+//********************************
+
+//*  Styleguide
+
+//*******************************/
+
+section
+  margin-bottom: 50px
+
+.header
+  padding-bottom: 20px
+  padding-top: 20px
+
+.banner
+  background: $secondary-color
+  padding: 20px 0
+  display: block
+
+.content
+  padding-top: rem-calc(50)
+
+.type
+  h4, .h4,
+  h5, .h5,
+  h6, .h6,
+  p
+    margin-top: $paragraph-line-height
+    margin-bottom: $paragraph-line-height / 2
+
+.content.container
+  padding-top: 30px
+
+// Headers
+
+p + hr
+  margin-top: rem-calc(-10)
+
+.color-swatch
+  margin-bottom: 44px
+  width: 60px
+  height: 60px
+  &:after
+    display: block
+    padding-top: 65px
+
+.half .color-swatch
+  width: 100% !important
+
+@media #{$medium-up}
+  .color-swatch
+    width: 100px
+    height: 100px
+    &:after
+      padding-top: 105px
+
+// Dropdowns
+
+.dropdowns
+  .dropdown-menu
+    width: 100%
+
+
+// Colors
+
+.brand-primary
+  background-color: $primary-color
+  &:after
+    content: "#{$primary-color}"
+
+.brand-primary-alt
+  background-color: $primary-color-alt
+  &:after
+    content: "#{$primary-color-alt}"
+
+.brand-success
+  background-color: $success-color
+  &:after
+    content: "#{$success-color}"
+
+.brand-success-alt
+  background-color: $success-color-alt
+  &:after
+    content: "#{$success-color-alt}"
+
+.brand-alert
+  background-color: $alert-color
+  &:after
+    content: "#{$alert-color}"
+
+.brand-alert-alt
+  background-color: $alert-color-alt
+  &:after
+    content: "#{$alert-color-alt}"
+
+.brand-secondary
+  background-color: $secondary-color
+  &:after
+    content: "#{$secondary-color}"

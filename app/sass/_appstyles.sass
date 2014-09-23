@@ -1,0 +1,224 @@
+//********************************
+
+//*  Typography
+
+//*******************************/
+
+h4, .h4
+  color: $aluminum
+  letter-spacing: 0.04em
+  text-transform: uppercase
+
+// Modify margins
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
+  &.no-margin
+    margin-bottom: 0
+    margin-top: 0
+
+  &.no-margin-top
+    margin-top: 0
+
+  &.no-margin-bottom
+    margin-bottom: 0
+
+  &.large-margin-bottom
+    margin-bottom: $header-bottom-margin * 1.5
+
+  &.larger-margin-bottom
+    margin-bottom: $header-bottom-margin * 2
+
+// Don't want margins on first / last children
+section, .content
+  & > h1,
+  & > h2,
+  & > h3,
+  & > h4,
+  & > h5,
+  & > p
+    &:first-child
+      margin-top: 0
+    &:last-child
+      margin-bottom: 0
+
+p.heading
+  color: $aluminum
+
+
+//********************************
+
+//*  Links
+
+//*******************************/
+
+a.action-link
+  &:hover
+    text-decoration: none
+
+//********************************
+
+//*  Media / images
+
+//*******************************/
+
+img
+  display: inline-block
+  max-width: 100%
+  height: auto
+
+//********************************
+
+//*  Buttons
+
+//*******************************/
+
+// buttons with icons
+
+.btn-icon
+  width: 100%
+  i
+    line-height: 1.3em
+
+//********************************
+
+//*  Dropdowns
+
+//*******************************/
+
+// Force dropdown open
+.stay-open + .f-dropdown
+  position: relative
+  float: none
+  display: block
+  margin-bottom: 5px
+  clear: left
+  z-index: 900
+
+
+//********************************
+
+//*  Icons
+
+//*******************************/
+
+a
+  i.fa
+    &:hover
+      text-decoration: none
+
+i.fa
+  margin-right: 0.4em
+
+.icon-right
+  text-align: left
+  i.fa
+    float: right
+    margin-right: 0
+
+
+//********************************
+
+//*  Social
+
+//*******************************/
+
+.social-icons
+  i
+    margin-right: 0
+
+  ul > li
+    padding: 0
+
+  a
+    color: $aluminum
+    display: block
+
+    &, i
+      font-size: 1.05em
+      height: 18px
+      overflow: hidden
+      text-align: center
+      width: 25px
+
+    &:hover
+      text-decoration: none
+
+    &.facebook:hover
+      color: $blue-facebook
+
+    &.twitter:hover
+      color: $blue-twitter
+
+    &.pinterest:hover
+      color: $red-pinterest
+
+    &.youtube:hover
+      color: $red-youtube
+
+    &.flickr:hover
+      color: $pink-flickr
+
+//********************************
+
+//*  Ratings
+
+//*******************************/
+
+.rating-box
+  margin-bottom: $paragraph-margin-bottom
+
+.rating a.star
+  font-family: FontAwesome
+  font-weight: normal
+  font-style: normal
+  display: inline-block
+
+  &:hover, &:active, &.active
+    &:before
+      content: "\f005"
+
+  &:hover
+    color: $anchor-font-color
+    cursor: pointer
+    text-decoration: none
+
+  &:before
+    content: "\f006"
+    padding-right: 5px
+
+//********************************
+
+//*  Blocks
+
+//*******************************/
+
+.block
+  .block-title
+    font-size: $h3-font-size
+    margin-top: 0
+
+//********************************
+
+//*  Nodes
+
+//*******************************/
+
+.node-teaser
+  border-bottom: 1px solid $secondary-color
+  padding-bottom: 35px
+  margin-bottom: 35px
+
+  .field-name-body > p:last-child
+    margin-bottom: 0
+
+.views-teaser-list .node-teaser:last-child
+  border-bottom: 0
+
+//********************************
+
+//*  Catalog
+
+//*******************************/
+
+.catalog
+  .availability
+    color: $success-color
