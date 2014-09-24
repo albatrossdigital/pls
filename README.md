@@ -16,6 +16,12 @@ git commit -m "msg" filenames
 git push
 ```
 
+#### Typekit urls
+```
+albatrossdigital.github.io,127.0.0.1:9000,*.albatrossdemos.com
+```
+
+
 #### Advanced (setting up repo)
 Create repo in github
 ```
