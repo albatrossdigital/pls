@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				options: {
-					outputStyle: 'extended'
+					outputStyle: 'nested'
 				},
 				files: {
 					'<%= app %>/css/app.css': '<%= app %>/sass/app.sass'
