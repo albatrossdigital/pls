@@ -1,0 +1,8 @@
+name = OWWL Catalog Block
+description = Adds the catalog search block, other integration
+core = 7.x
+group = PLS
+
+dependencies[] = block
+
+files[] = owwl_catalog.module
