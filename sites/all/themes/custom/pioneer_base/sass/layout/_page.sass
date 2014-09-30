@@ -1,0 +1,44 @@
+
+
+// Define new media query
+
+
+// Modify margins
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
+  &.no-margin
+    margin-bottom: 0
+    margin-top: 0
+
+  &.no-margin-top
+    margin-top: 0
+
+  &.no-margin-bottom
+    margin-bottom: 0
+
+  &.large-margin-bottom
+    margin-bottom: $header-bottom-margin * 1.5
+
+  &.larger-margin-bottom
+    margin-bottom: $header-bottom-margin * 2
+
+//.row .row
+//  margin-left: 0
+//  margin-right: 0
+
+
+// *
+// * Media Queries
+// *
+// ******************************************************
+
++respond($medium-up)
+
+  // sticky footer
+  //+sticky-footer(rem-calc(310), ".page", "#footer-push", ".l-footer")
+
+
++respond($past-menu)
+  .move-left > .inner-wrap
+    +translate3d(0, 0, 0)
+
+  //+sticky-footer(rem-calc(245), ".page", "#footer-push", ".l-footer")

@@ -1,0 +1,43 @@
+
+@import base/init
+
+// SET VISIBLE
+
+$include-html-classes: true
+$include-print-styles: false
+
+// Global Zurb Foundation variables.
+@import "vendor/foundation/settings"
+// Comment out this import if you don't want to use normalize.
+@import "vendor/normalize"
+// Comment out this import below if you are customizing you imports below.
+@import "vendor/_foundation.scss"
+
+@import base/mixins
+
+// Fix for some Drupal CSS quirks (Drupalisms).
+@import base/drupal
+
+// Styling for elements.
+// Optional.
+@import "base/elements"
+
+// Modules
+@import "modules/button"
+
+// custom ckeditor styles
+body
+  margin: 20px
+  background: $white
+
+// wysiwyg template options
+//blockquote
+
+.wysiwyg-dotted
+  border: 1px dashed #efefef
+  display: block
+  padding: .5em
+
+// rows should just be 100%
+.row
+  max-width: 100%!important

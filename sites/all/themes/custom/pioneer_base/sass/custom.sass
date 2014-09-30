@@ -1,0 +1,47 @@
+
+@import base/init
+
+// Global Zurb Foundation variables.
+@import "vendor/foundation/settings"
+// Comment out this import below if you are customizing you imports below.
+@import "vendor/_foundation.scss"
+
+// Import our mixins early so they can be used by other partials.
+// Optional.
+@import "base/mixins"
+
+// Common file is where you place common utility classes to extend or
+// parametrics.
+// Optional.
+// @import "base/common";
+
+// Fix for some Drupal CSS quirks (Drupalisms).
+@import base/drupal
+
+// Styling for elements.
+// Optional.
+// @import "base/elements";
+@import components/type
+
+// Layout
+// Each section of the document has it's own partial seperated out to improve
+// developer experience. Additionally, grids can be declared in layouts as well.
+@import layout/page
+@import layout/header
+@import layout/main
+@import layout/aside
+@import layout/footer
+
+
+// Modules
+// @import "modules/block";
+// @import "modules/button";
+
+// States
+// @import "states/collapse";
+
+// Themes
+// @import "theme/button-light";
+
+// Older IE support
+// @import "vendor/ie";

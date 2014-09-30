@@ -1,0 +1,20 @@
+// Non-modular or client styles for the .l-content region.
+
+
+// Content bottom
+// ----------------------------------------------------------------------------
+.l-content-bottom-region
+  .block
+    +grid-row
+
+    h2.block-title
+      +grid-column(3)
+      @extend %header-3-dash
+
+    .content,
+    form
+      +grid-column(9)
+
+  .block-owwl-catalog
+    select
+      display: none !important

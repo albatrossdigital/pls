@@ -1,0 +1,71 @@
+// Non-modular or client styles for .l-header region.
+
+.l-header
+
+  // Header links
+  // ----------------------------------------------------------------------------
+  section.block-bean
+    float: right
+
+    .header-links
+      background-color: $secondary-color
+      padding-right: 0
+
+      .button
+        margin: 0
+        width: 100%
+
+      .columns.small-4
+        padding-right: 0
+
+
+  // Main menu
+  // ----------------------------------------------------------------------------
+  section.block-domain-menu-block
+    clear: both
+    padding-top: 1rem
+
+    ul
+      +list-float()
+
+      li a
+        padding: 0 .75rem
+
+
+// Search in highlighted, or in content_bottom
+// ----------------------------------------------------------------------------
+.block-owwl-catalog
+  margin: 2rem 0
+
+  form
+    +panel
+
+  label
+    display: none
+
+  input,
+  select
+    margin: 0
+
+  form
+    +grid-row()
+    
+    .form-radios
+      +grid-column(2.5)
+
+    .form-type-select
+      +grid-column(2.5)
+
+    .form-item
+      margin-top: 0
+      margin-bottom: 0
+
+    .search-submit
+      +grid-column(4.5)
+
+      .search-submit-inner
+        position: relative
+        +infield-search-button(false, '.search-submit-inner')
+
+    // radios as buttons
+    +radios-as-buttons()
