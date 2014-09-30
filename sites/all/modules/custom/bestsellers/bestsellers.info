@@ -1,0 +1,5 @@
+name = Best Sellers
+description = "NY Time Best Sellers"
+package = PLS
+core = 6.x
+

@@ -1,0 +1,159 @@
+<?php
+
+function bestsellers_install() {
+  // Create the tables
+  drupal_install_schema('bestsellers');
+       
+}
+
+function bestsellers_uninstall() {
+  variable_del('bestsellers_copyright');
+  // delete the tables
+  drupal_uninstall_schema('bestsellers');
+}
+
+function bestsellers_schema() {
+$schema['bestsellers_lists'] = array(
+  'description' => t('TODO: please describe this table!'),
+  'fields' => array(
+    'rank' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'int',
+      'not null' => TRUE,
+    ),
+    'list_name' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '50',
+      'not null' => TRUE,
+    ),
+    'bestsellers_date' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '50',
+      'not null' => TRUE,
+    ),
+    'published_date' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '50',
+      'not null' => TRUE,
+    ),
+    'weeks_on_list' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'int',
+      'not null' => TRUE,
+    ),
+    'rank_last_week' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'int',
+      'not null' => TRUE,
+    ),
+    'title' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '255',
+      'not null' => TRUE,
+    ),
+    'description' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '1024',
+      'not null' => TRUE,
+    ),
+    'contributor' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '255',
+      'not null' => TRUE,
+    ),
+    'author' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '255',
+      'not null' => TRUE,
+    ),
+    'contributor_note' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '255',
+      'not null' => TRUE,
+    ),
+    'publisher' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '255',
+      'not null' => TRUE,
+    ),
+    'isbn13_1' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '13',
+      'not null' => TRUE,
+    ),
+    'isbn10_1' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '10',
+      'not null' => TRUE,
+    ),
+    'isbn13_2' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '13',
+      'not null' => TRUE,
+    ),
+    'isbn10_2' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '10',
+      'not null' => TRUE,
+    ),
+    'book_review_link' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '1024',
+      'not null' => TRUE,
+    ),
+    'first_chapter_link' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '1024',
+      'not null' => TRUE,
+    ),
+    'sunday_review_link' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '1024',
+      'not null' => TRUE,
+    ),
+    'article_chapter_link' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '1024',
+      'not null' => TRUE,
+    ),
+  ),
+  'primary key' => array('rank', 'list_name'),
+);
+$schema['bestsellers_list'] = array(
+  'description' => t('TODO: please describe this table!'),
+  'fields' => array(
+    'num' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'int',
+      'not null' => TRUE,
+    ),
+    'list_name' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '50',
+      'not null' => TRUE,
+    ),
+  ),
+  'primary key' => array('num'),
+);
+
+return $schema;
+}
+

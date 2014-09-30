@@ -1,0 +1,49 @@
+Bestsellers revisions
+
+1.4.4 12.18.2011
+
+- Added links back to enabled book cover sources.
+- Prefixed remaining functions in the module
+- Fixed a bug where unavailable covers were not handled properly
+- Stupid mistake on Librarything book covers.  They should now display.
+
+1.4.3 11.19.2011
+
+- Fixed CSS.  Covers were only located properly when img_assist module was installed.
+
+1.4.2 11.18.2011
+
+- Changed how I get row_count.  Hopefully this will fix issues on some servers.
+
+1.4.1 11.18.2011
+
+- Found the problem with inserting blank rows.
+- Added Primary Keys to both tables.  Will need to "Uninstall" and reinstall to correct.
+
+1.4   11.15.2011
+
+- Added Syndetics as book cover source
+- Added page titles for all the list pages
+- Missing images are now checked every fetch.
+- Empty ISBN no longer creates dead link
+- Added New York Times Book Review link if available
+- Now clean up odd empty records in the database.
+
+1.3.2 11.07.2011
+
+- Changes to work with new Amazon API requirement
+
+1.3.1 11.07.2011
+1.2.1 03.28.2011
+1.2   03.26.2011
+1.1   03.04.2011
+
+- All minor bug fixes or don't remember
+
+1.0.1 11.28.2010
+
+- Minor Bugfix
+
+1.0   11.10.2010
+
+- Initial Release

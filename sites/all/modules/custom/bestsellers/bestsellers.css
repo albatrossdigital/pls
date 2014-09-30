@@ -1,0 +1,29 @@
+
+.bestseller {
+  clear: both;
+}
+
+.bestseller-small {
+  clear: both;
+  font-size: 0.9em;
+}
+
+.bestseller-small-inside {
+  clear: both;
+}
+        
+.bestseller-small p {
+  margin: 0px;
+  padding: 0px 0px 0.2em;
+}
+
+.bestseller-inline-right {
+  display: block;
+  float: right;
+  margin: 5px 0px 5px 5px;
+}
+.bestseller-inline-left {
+  display: block;
+  float: left;
+  margin: 5px 5px 5px 0px;
+}

@@ -1,0 +1,664 @@
+<?php
+
+function bestsellers_init() {
+  // Disable caching for the bestsellers module
+  if (drupal_match_path($_GET['q'],'bestsellers*')) {
+    $GLOBALS['conf']['cache'] = FALSE;
+  }
+
+}
+
+function bestsellers_menu() {
+  $items['admin/settings/bestsellers'] = array(
+    'title' => 'Bestsellers',
+    'description' => 'Configure Bestsellers Module.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bestsellers_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['bestsellers'] = array(
+    'title' => t('The New York Times Best Sellers Lists'),
+    'page callback' => 'bestsellers_display_lists',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['bestsellers/fetch'] = array(
+    'page callback' => 'bestsellers_fetch',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['bestsellers/list'] = array(
+    'page callback' => 'bestsellers_render_list',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Settings form as implemented by hook_menu
+ */
+function bestsellers_admin_settings() {
+  $form['bestsellers_nyt_api_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NYT API Key'),
+    '#description' => t('Your New York Times API Key'),
+    '#default_value' => variable_get('bestsellers_nyt_api_key', 'Required'),
+    '#size' => 60,
+  );
+  $form['bestsellers_isbn_search_string'] = array(
+    '#type' => 'textfield',
+    '#title' => t('ISBN Search String'),
+    '#description' => t('Enter the URL used to search for an ISBN in your OPAC.  The ISBN will be appended to this string.'),
+    '#default_value' => variable_get('bestsellers_isbn_search_string', 'Required'),
+    '#size' => 100,
+  );
+  $form['bestsellers_use_amazon'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Fetch dust jackets from Amazon'),
+    '#default_value' => variable_get('bestsellers_use_amazon', 0),
+  );
+  $form['bestsellers_amazon_api_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Amazon API Key'),
+    '#description' => t('Your Amazon API Key used to fetch dust jackets'),
+    '#default_value' => variable_get('bestsellers_amazon_api_key', ''),
+    '#size' => 50,
+  );
+  $form['bestsellers_amazon_secret'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Amazon Secret'),
+    '#description' => t('Amazon secret used to encrypt requests to AWS'),
+    '#default_value' => variable_get('bestsellers_amazon_secret', ''),
+    '#size' => 50,
+  );
+  $form['bestsellers_amazon_associate_tag'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Amazon Associate Tag'),
+    '#description' => t('Amazon AssociateTag that uniquely identifies an Associate. This token is the means by which Amazon identifies the Associate to credit for a sale.'),
+    '#default_value' => variable_get('bestsellers_amazon_associate_tag', ''),
+    '#size' => 50,
+  );
+  $form['bestsellers_use_syndetics'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Fetch dust jackets from Syndetics'),
+    '#default_value' => variable_get('bestsellers_use_syndetics', 0),
+  );
+  $form['bestsellers_syndetics_client_code'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Syndetics Client Code'),
+    '#description' => t('Your Syndetics client code used to fetch dust jackets'),
+    '#default_value' => variable_get('bestsellers_syndetics_client_code', ''),
+    '#size' => 50,
+  );
+  $form['bestsellers_use_librarything'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Fetch dust jackets from Library Thing'),
+    '#default_value' => variable_get('bestsellers_use_librarything', 0),
+  );
+  $form['bestsellers_librarything_api_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Library Thing API Key'),
+    '#description' => t('Your Library Thing API Key used to fetch dust jackets'),
+    '#default_value' => variable_get('bestsellers_librarything_api_key', ''),
+    '#size' => 50,
+  );
+  $form['bestsellers_use_openlibrary'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Fetch dust jackets from Open Library'),
+    '#default_value' => variable_get('bestsellers_use_openlibrary', 0),
+  );
+
+  
+  return system_settings_form($form);
+}
+
+function bestsellers_block($op = 'list', $delta = 0, $edit = array()) {
+  if ($op == 'list') {
+    $blocks[0] = array(
+      'info' => t('Bestsellers Block'),
+      'cache' => BLOCK_CACHE_GLOBAL,  
+    );
+    $blocks[1] = array(
+      'info' => t('Bestsellers Lists'), 
+      'cache' => BLOCK_CACHE_GLOBAL,
+    );
+
+    return $blocks;
+  }
+  else if ($op == 'view') {
+    switch ($delta) {
+      case 0:
+        $block = array(
+          'subject' => t('New York Times Bestsellers'), 
+          'content' => bestsellers_display_block_1(),
+        );
+        break;
+      case 1:
+        $block = array(
+          'subject' => t('New York Times Lists'), 
+          'content' => bestsellers_display_block_2(),
+        );
+        break;
+    }
+    return $block;
+  }
+}
+
+function bestsellers_display_block_1() {
+  $result = drupal_add_css(drupal_get_path('module','bestsellers') .'/bestsellers.css');
+  
+  $catalog_isbn = variable_get('bestsellers_isbn_search_string', 'update-your-configuration');
+
+  // This should be a configuration option for the block
+  $list_name = "Hardcover+Fiction";
+
+  $output .= "<div class='bestseller-small'>";
+  $result = db_query("SELECT * FROM {bestsellers_lists} WHERE list_name='%s' ORDER BY rank LIMIT 0, 5", urldecode($list_name));
+  if (db_affected_rows($result) > 0) {
+    $output .= "<h3><a href='/bestsellers/list/".$list_name."'>".urldecode($list_name)."</a></h3>";
+  
+    $first = TRUE;
+    while ($data = db_fetch_object($result)) {
+      if ($first) {
+        $output .= "<div class='bestseller-small-inside'>";
+        $output .= "<span class='bestseller-inline-left'><img alt='Book Cover' src='/sites/default/files/covers/medium/".$data->isbn10_1.".jpg' width='50' /></span>";
+        $output .= "<p><a href='/bestsellers/list/".$list_name."'>#".$data->rank." ".$data->title."</a></p>";
+        $output .= "<p>".$data->author."</p>";
+        $output .= "<p><i>On list for ".$data->weeks_on_list." week(s)</i></p>";
+        $output .= "</div>";
+        $first = FALSE;
+      } else {
+        $output .= "<div class='bestseller-small-inside'>";
+        $output .= "<p><a href='/bestsellers/list/".$list_name."'>#".$data->rank." ".$data->title."</a></p>";
+        $output .= "</div>";
+      }
+    }
+  } else {
+    $output  = "<h3>".urldecode($list_name)."</h3>";
+    $output .= "<p>There are no books currently in this list.  Please try again later.</p>";
+  }
+  
+  $output .= "<br /><p id='other-lists'><a href='/bestsellers/'>(Other Lists)</a></p>";
+  $output .= "</div>";
+
+  return $output;
+}
+
+function bestsellers_display_block_2() {
+  return bestsellers_display_lists();
+}
+
+function bestsellers_display_lists() {
+  $result = db_query('SELECT * FROM {bestsellers_list} order by list_name');
+  if (db_affected_rows($result) > 0) {
+    $output = "<ul id='bestsellers_lists'>";
+    while ($data = db_fetch_object($result)) {
+      $output .= "<li><a href='/bestsellers/list/".urlencode($data->list_name)."'>";
+      $output .= $data->list_name;
+      $output .= "</a></li>";
+    }
+    $output .= "</ul>";
+  } else {
+    $output  = "<h1>List is Empty</h1>";
+    $output .= "<p>The bestseller lists are currently unavailable.  Please try again later.</p>";
+  }
+
+  return $output;
+}
+
+function bestsellers_render_list($list_name = NULL) {
+  $result = drupal_add_css(drupal_get_path('module','bestsellers') .'/bestsellers.css');
+  
+  $catalog_isbn = htmlspecialchars(variable_get('bestsellers_isbn_search_string', 'update-your-configuration'));
+
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = l('The New York Times Best Sellers Lists', 'bestsellers');
+  $breadcrumb[] = t(urldecode($list_name));
+  drupal_set_breadcrumb($breadcrumb);
+
+  drupal_set_title(t($list_name));
+
+  $result = db_query("SELECT * FROM {bestsellers_lists} WHERE list_name='%s' order by rank", urldecode($list_name));
+  if (db_affected_rows($result) > 0) {
+//    $output .= "<h1>".urldecode($list_name)."</h1>";
+    $output .= "<i class='smaller'>".variable_get('bestsellers_copyright', 'Copyright The New York Times')."</i><br /><br />"; 
+  
+    while ($data = db_fetch_object($result)) {
+      $output .= "<div class='bestseller'>\n";
+      $output .= "<span class='bestseller-inline-right'><img alt='Book Cover' src='/sites/default/files/covers/medium/".$data->isbn10_1.".jpg' width='100' /></span>\n";
+      if ($data->isbn13_1) {
+        $output .= "<h3><a href='".$catalog_isbn.$data->isbn13_1."'>#".$data->rank." ".htmlspecialchars($data->title)."</a></h3>\n";
+      } else {
+        $output .= "<h3>#".$data->rank." ".htmlspecialchars($data->title)."</h3>\n";
+      }
+      $output .= "<p>".htmlspecialchars($data->author)."</p>\n";
+      $output .= "<p><i>".htmlspecialchars($data->description)."</i></p>\n";
+      $output .= "<p>On the bestsellers list for ".$data->weeks_on_list;
+      if ($data->weeks_on_list == 1) {
+        $output .= " week";
+      } else {
+        $output .= " weeks";
+      }
+      $output .= "</p>\n";
+      if ($data->book_review_link) {
+        $output .= "<a href='".$data->book_review_link."'  target='_blank'>New York Times Review</a>\n";
+      }
+      $output .= "<br />\n";
+      $output .= "</div>\n";
+    }
+    $output .= "<div class='bestseller'>\n"; 
+    $output .= "Book covers provided by the following sources depending on availability: ";
+        if (variable_get('bestsellers_use_amazon', 0)) {
+          $output .= "<a href='http://amazon.com'>Amazon.com</a> ";
+        }
+        if (variable_get('bestsellers_use_syndetics', 0)) {
+          $output .= "<a href='http://www.syndetics.com'>Syndetics</a> ";
+        } 
+        if (variable_get('bestsellers_use_librarything', 0)) {
+          $output .= "<a href='http://librarything.com'>LibraryThing</a> ";
+        } 
+        if (variable_get('bestsellers_use_openlibrary', 0)) {
+          $output .= "<a href='http://openlibrary.org'>OpenLibrary</a> ";
+        }
+    $output .= "</div>\n";
+  } else {
+    $output  = "<h1>".urldecode($list_name)."</h1>\n";
+    $output .= "<p>There are no books currently in this list.  Please try again later.</p>\n";
+  }
+
+  return $output;
+}
+
+function bestsellers_fetch() {
+  $output  = "<h1>This page will fetch the lists using the NYT API.</h1>";
+
+  $request = 'http://api.nytimes.com/svc/books/v2/lists/names.sphp?api-key='.variable_get('bestsellers_nyt_api_key', 'empty');
+
+  $response = bestsellers_SendMyRequest($request);  
+
+  $list = unserialize($response);
+
+  $status = $list['status'];
+
+  if ($status == "OK") {
+    $result = db_query( "DELETE FROM {bestsellers_list}" );
+    variable_set('bestsellers_copyright', $list['copyright']);
+    
+    $num_results = $list['num_results'];
+
+    for ( $x = 0; $x < $num_results; $x++) {
+      $result = db_query("INSERT INTO {bestsellers_list} (num,list_name) VALUES ('%d', '%s')", $x, $list['results'][$x]['list_name'] );
+
+      $request = 'http://api.nytimes.com/svc/books/v2/lists/'
+                 . str_replace(" ","%20",$list['results'][$x]['list_name'])
+                 .'.sphp?api-key='.variable_get('bestsellers_nyt_api_key', 'empty');
+
+      $response = bestsellers_SendMyRequest($request); 
+
+      $list_contents = unserialize($response);
+      $status = $list_contents['status'];
+
+//echo "<pre>";
+//print_r($list_contents);
+//echo "</pre>";
+//die();
+
+      if ($status == "OK") {
+        $result = db_query( "DELETE FROM {bestsellers_lists} WHERE list_name='%s' or rank=0", $list_contents['results'][0]['list_name'] );
+   
+        // This doesn't work.  Num_results = 35 while there were only 20.  Caused 0's in the database
+        // $num_ranks = $list_contents['num_results'];
+
+        // Using this instead of the line above
+        $num_ranks = count($list_contents['results']);
+
+        for ( $y = 0; $y < $num_ranks; $y++) {
+          $result = db_query("INSERT INTO {bestsellers_lists} 
+                                 (rank,
+                                  list_name,
+                                  bestsellers_date,
+                                  published_date,
+                                  weeks_on_list,
+                                  rank_last_week,
+                                  title,
+                                  description,
+                                  contributor,
+                                  author,
+                                  contributor_note,
+                                  publisher,
+                                  isbn13_1,
+                                  isbn10_1,
+                                  isbn13_2,
+                                  isbn10_2,
+                                  book_review_link,
+                                  first_chapter_link,
+                                  sunday_review_link,
+                                  article_chapter_link
+                                 ) 
+                             VALUES ('%d','%s','%s','%s','%d','%d','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')", 
+                               $list_contents['results'][$y]['rank'], 
+                               $list_contents['results'][$y]['list_name'],
+                               $list_contents['results'][$y]['bestsellers_date'], 
+                               $list_contents['results'][$y]['published_date'],
+                               $list_contents['results'][$y]['weeks_on_list'],
+                               $list_contents['results'][$y]['rank_last_week'],
+                               $list_contents['results'][$y]['book_details'][0]['title'],
+                               $list_contents['results'][$y]['book_details'][0]['description'],
+                               $list_contents['results'][$y]['book_details'][0]['contributor'],
+                               $list_contents['results'][$y]['book_details'][0]['author'],
+                               $list_contents['results'][$y]['book_details'][0]['contributor_note'],
+                               $list_contents['results'][$y]['book_details'][0]['publisher'],
+                               $list_contents['results'][$y]['isbns'][0]['isbn13'],
+                               $list_contents['results'][$y]['isbns'][0]['isbn10'],
+                               $list_contents['results'][$y]['isbns'][1]['isbn13'],
+                               $list_contents['results'][$y]['isbns'][1]['isbn10'],
+                               $list_contents['results'][$y]['reviews'][0]['book_review_link'],
+                               $list_contents['results'][$y]['reviews'][0]['first_chapter_link'],
+                               $list_contents['results'][$y]['reviews'][0]['sunday_review_link'],
+                               $list_contents['results'][$y]['reviews'][0]['article_chapter_link']
+                            );
+          // See if we can find a book cover
+          // isbn10 seems to be more reliable for Amazon
+
+          bestsellers_getCover($list_contents['results'][$y]['isbns'][0]['isbn10'], 'medium');
+        }
+      } else {
+        $output .= "Problem fetching contents of list: ".$list['results'][$x]['list_name']." <br />";
+      }  
+    }
+    cache_clear_all(NULL, 'cache_block');
+    cache_clear_all(NULL, 'cache_page');
+
+    $output .= "Status: ".$list['status']." <br />";
+    $output .= "Number of Lists: ".$num_results." <br />";
+  } else {
+    $output .= "Unable to fetch Bestsellers List from NYT.  Try again later. <br />";
+  }
+
+  return $output;
+}
+
+function bestsellers_SendMyRequest($url)
+{
+  $session = curl_init($url); 
+
+  curl_setopt($session, CURLOPT_HEADER, false); 
+  curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+  $response = curl_exec($session); 
+  curl_close($session);
+
+  return $response;
+}
+
+function bestsellers_getCover($isbn, $size)
+{
+  $success = FALSE;
+  $localFile = file_directory_path()."/covers/".$size."/".$isbn.".jpg";
+  
+  if (!is_dir(file_directory_path()."/covers")) {
+    if (mkdir(file_directory_path()."/covers/small", 0755, true)) {
+      mkdir(file_directory_path()."/covers/medium", 0755, true);
+      mkdir(file_directory_path()."/covers/large", 0755, true);
+    }
+  }
+
+  switch ($size) {
+      case 'small':
+          $blank_image = 'no-image-s.jpg';
+          break;
+      case 'medium':
+          $blank_image = 'no-image-m.jpg';
+          break;
+      case 'large':
+          $blank_image = 'no-image-l.jpg';
+          break;
+      default:
+          $blank_image = 'no-image-s.jpg';
+          break;
+  }
+
+  // Delete any temp images so we can check again.  Sometimes images are not available the first week.
+  if ($file_exists = file_exists($localFile)) {
+    if (filesize($localFile) == filesize(drupal_get_path('module','bestsellers')."/images/".$blank_image)) {
+      unlink($localFile);
+      $file_exists = FALSE;
+    }
+  }
+    
+  if (!$file_exists) {
+    if (strlen($isbn) >= 9) { // This should probably be a valid isbn check
+      if (variable_get('bestsellers_use_amazon', 0)) {
+        $success = bestsellers_amazonImage( $isbn, $size );
+      }
+      if (!$success && variable_get('bestsellers_use_syndetics', 0)) {
+        $success = bestsellers_syndetics( $isbn, $size );
+      } 
+      if (!$success && variable_get('bestsellers_use_librarything', 0)) {
+        $success = bestsellers_librarything( $isbn, $size );
+      } 
+      if (!$success  && variable_get('bestsellers_use_openlibrary', 0)) {
+        $success = bestsellers_openlibrary( $isbn, $size );
+      }
+    }
+    if (!$success) {
+      copy(drupal_get_path('module','bestsellers')."/images/".$blank_image, $localFile); 
+    }
+  } 
+}
+
+/**********************************************************************************************
+ *
+ *  Everything below this line is borrowed from vuFind and modified
+ *
+ **********************************************************************************************/    
+
+function bestsellers_AmazonRequest($accessKeyId, $operation, $extraParams = array(), 
+                       $service = 'AWSECommerceService')
+{
+  $endpoint = 'webservices.amazon.com';
+  $requestURI = '/onca/xml';
+  $amazonsecret = variable_get('bestsellers_amazon_secret', 'empty');
+  $associatetag = variable_get('bestsellers_amazon_associate_tag', 'empty');
+  
+  // Collect all the user-specified parameters:
+  $params = $extraParams;
+  $params['AssociateTag'] = $associatetag;
+  $params['AWSAccessKeyId'] = $accessKeyId;
+  $params['Service'] = $service;
+  $params['Operation'] = $operation;
+        
+  // Add a timestamp:
+  $params['Timestamp'] = gmdate('Y-m-d\TH:i:s\Z');
+        
+  // Alphabetize the parameters:
+  ksort($params);
+        
+  // URL encode and assemble the parameters:
+  $encodedParams = array();
+  foreach ($params as $key => $value) {
+      $encodedParams[] = bestsellers_encode($key) . '=' . bestsellers_encode($value);
+  }
+  $encodedParams = implode('&', $encodedParams);
+        
+  // Build the HMAC signature:
+  $sigData = "GET" . 
+      "\n" . $endpoint . "\n" . $requestURI . "\n" . 
+      $encodedParams;
+  $key = $amazonsecret;
+  $hmacHash = hash_hmac('sha256', $sigData, $key, 1);
+        
+  // Save the final request URL:
+  $url = 'http://' . $endpoint . $requestURI . '?' . 
+            $encodedParams . 
+            '&Signature=' . bestsellers_encode(base64_encode($hmacHash));
+
+  return $url;
+}
+
+/**
+ * urlencode a string according to RFC 3986.  Needed for compatibility with PHP
+ * versions prior to 5.3.
+ *
+ * @param   string  $str        The string to urlencode.
+ * @return  string              The urlencoded string.
+ */
+function bestsellers_encode($str)
+{
+  $str = rawurlencode($str); 
+        
+  // Needed for compatibility with PHP versions prior to 5.3. 
+  $str = str_replace('%7E', '~', $str);
+        
+  return $str;
+}
+
+function bestsellers_amazonImage( $isbn, $size )
+{
+  $amazon_key = variable_get('bestsellers_amazon_api_key', 'empty');
+
+  $params = array('ResponseGroup' => 'Images', 'ItemId' => $isbn);
+  $url = bestsellers_AmazonRequest($amazon_key, 'ItemLookup', $params);
+  $result = bestsellers_SendMyRequest($url);
+
+  $data = @simplexml_load_string($result);
+  if (!$data) {
+      return false;
+  }
+
+  if (isset($data->Items->Item[0])) {
+      // Where in the XML can we find the URL we need?
+      switch ($size) {
+          case 'small':
+              $imageIndex = 'SmallImage';
+              break;
+          case 'medium':
+              $imageIndex = 'MediumImage';
+              break;
+          case 'large':
+              $imageIndex = 'LargeImage';
+              break;
+          default:
+              $imageIndex = false;
+              break;
+      }
+            
+      // Does a URL exist?
+      if ($imageIndex && isset($data->Items->Item[0]->$imageIndex->URL)) {
+          $imageUrl = (string)$data->Items->Item[0]->$imageIndex->URL;
+          return bestsellers_processImageURL($imageUrl, $isbn, $size);
+      }
+  }
+
+  return false;
+}
+
+function bestsellers_syndetics( $isbn, $size_in )
+{
+  $client_code = variable_get('bestsellers_syndetics_client_code', 'empty');
+
+  // Convert internal size value to Syndetics equivalent:
+  switch($size_in) {
+      case 'large':
+          $size = 'LC.JPG';
+          break;
+      case 'medium': 
+          $size = 'MC.JPG';
+          break;
+      case 'small':
+      default:
+          $size = 'SC.JPG';
+          break;
+  }
+
+  $url = 'http://www.syndetics.com/index.aspx?isbn=' . $isbn . '/' . $size . '&client=' . $client_code;
+  return bestsellers_processImageURL($url, $isbn, $size_in);
+}
+
+function bestsellers_librarything( $isbn, $size )
+{
+  $key = variable_get('bestsellers_librarything_api_key', 'empty');
+
+  $url = 'http://covers.librarything.com/devkey/' . $key . '/' . $size . '/isbn/' . $isbn;
+  return bestsellers_processImageURL($url, $isbn, $size);
+}
+
+function bestsellers_openlibrary( $isbn, $size_in )
+{
+    // Convert internal size value to openlibrary equivalent:
+    switch($size_in) {
+        case 'large':
+            $size = 'L';
+            break;
+        case 'medium': 
+            $size = 'M';
+            break;
+        case 'small':
+        default:
+            $size = 'S';
+            break;
+    }
+    
+    // Retrieve the image; the default=false parameter indicates that we want a 404
+    // if the ISBN is not supported.
+    $url = "http://covers.openlibrary.org/b/isbn/{$isbn}-{$size}.jpg?default=false";
+    return bestsellers_processImageURL($url, $isbn, $size_in);
+}
+
+function bestsellers_processImageURL($url, $isbn, $size)
+{
+    $localFile = file_directory_path()."/covers/".$size."/".$isbn.".jpg";
+
+    //if ($image = @file_get_contents($url)) {
+    if ($image = bestsellers_SendMyRequest($url)) {
+        // Figure out file paths -- $tempFile will be used to store the downloaded
+        // image for analysis.  $finalFile will be used for long-term storage if
+        // $cache is true or for temporary display purposes if $cache is false.
+        $tempFile = str_replace('.jpg', uniqid(), $localFile);
+        $finalFile = $localFile;
+ 
+        // If some services can't provide an image, they will serve a 1x1 blank
+        // or give us invalid image data.  Let's analyze what came back before
+        // proceeding.
+        if (!@file_put_contents($tempFile, $image)) {
+            die("Unable to write to image directory: ".$tempFile);
+        }
+        list($width, $height, $type) = @getimagesize($tempFile);
+
+        // File too small -- delete it and report failure.
+        if ($width < 2 && $height < 2) {
+            @unlink($tempFile);
+            return false;
+        }
+
+        // Conversion needed -- do some normalization for non-JPEG images:
+        if ($type != IMAGETYPE_JPEG) {
+            // We no longer need the temp file:
+            @unlink($tempFile);
+
+            // We can't proceed if we don't have image conversion functions:
+            if (!is_callable('imagecreatefromstring')) {
+                return false;
+            }
+
+            // Try to create a GD image and rewrite as JPEG, fail if we can't:
+            if (!($imageGD = @imagecreatefromstring($image))) {
+                return false;
+            }
+            if (!@imagejpeg($imageGD, $finalFile)) {
+                return false;
+            }
+        } else {
+            // If $tempFile is already a JPEG, let's store it in the cache.
+            @rename($tempFile, $finalFile);
+        }
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
