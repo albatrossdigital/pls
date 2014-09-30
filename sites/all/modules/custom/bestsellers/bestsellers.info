@@ -1,5 +1,5 @@
 name = Best Sellers
-description = "NY Time Best Sellers"
+description = NY Time Best Sellers
 package = PLS
-core = 6.x
-
+core = 7.x
+configure = admin/settings/bestsellers

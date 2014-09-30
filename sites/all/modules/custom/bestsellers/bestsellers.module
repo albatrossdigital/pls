@@ -115,56 +115,60 @@ function bestsellers_admin_settings() {
   return system_settings_form($form);
 }
 
-function bestsellers_block($op = 'list', $delta = 0, $edit = array()) {
-  if ($op == 'list') {
-    $blocks[0] = array(
-      'info' => t('Bestsellers Block'),
-      'cache' => BLOCK_CACHE_GLOBAL,  
-    );
-    $blocks[1] = array(
-      'info' => t('Bestsellers Lists'), 
-      'cache' => BLOCK_CACHE_GLOBAL,
-    );
+function bestsellers_block_info() {
+  $blocks['bestsellers_block'] = array(
+    'info' => t('Bestsellers Block'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  $blocks['bestsellers_lists'] = array(
+    'info' => t('Bestsellers Lists'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
 
-    return $blocks;
+  return $blocks;
+}
+
+function bestsellers_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'bestsellers_block':
+      $block['subject'] = t('New York Times Bestsellers');
+      $block['content'] = array(
+        '#markup' => bestsellers_display_block_1(),
+        '#attached' => array(
+                             'css' => array(
+                                             drupal_get_path('module','bestsellers') .'/bestsellers.css',
+                                           ),
+                            ),
+      );
+      break;
+    case 'bestsellers_lists':
+      $block['subject'] = t('New York Times Lists');
+      $block['content'] = bestsellers_display_block_2();
+      break;
   }
-  else if ($op == 'view') {
-    switch ($delta) {
-      case 0:
-        $block = array(
-          'subject' => t('New York Times Bestsellers'), 
-          'content' => bestsellers_display_block_1(),
-        );
-        break;
-      case 1:
-        $block = array(
-          'subject' => t('New York Times Lists'), 
-          'content' => bestsellers_display_block_2(),
-        );
-        break;
-    }
-    return $block;
-  }
+  return $block;
 }
 
 function bestsellers_display_block_1() {
-  $result = drupal_add_css(drupal_get_path('module','bestsellers') .'/bestsellers.css');
-  
   $catalog_isbn = variable_get('bestsellers_isbn_search_string', 'update-your-configuration');
 
   // This should be a configuration option for the block
   $list_name = "Hardcover+Fiction";
 
-  $output .= "<div class='bestseller-small'>";
-  $result = db_query("SELECT * FROM {bestsellers_lists} WHERE list_name='%s' ORDER BY rank LIMIT 0, 5", urldecode($list_name));
-  if (db_affected_rows($result) > 0) {
+  $output = "<div class='bestseller-small'>";
+  $result = db_query("SELECT * FROM {bestsellers_lists} WHERE list_name = :list_name ORDER BY rank LIMIT 0, 5", array(':list_name' => urldecode($list_name)));
+
+  if ($result->rowCount() > 0) {
     $output .= "<h3><a href='/bestsellers/list/".$list_name."'>".urldecode($list_name)."</a></h3>";
   
     $first = TRUE;
-    while ($data = db_fetch_object($result)) {
+    foreach ($result as $data) {
       if ($first) {
+        empty($data->isbn10_1) ?  $cover_isbn = 'None' : $cover_isbn = $data->isbn10_1;
         $output .= "<div class='bestseller-small-inside'>";
-        $output .= "<span class='bestseller-inline-left'><img alt='Book Cover' src='/sites/default/files/covers/medium/".$data->isbn10_1.".jpg' width='50' /></span>";
+        $output .= "<span class='bestseller-inline-left'><img alt='Book Cover' src='/sites/default/files/covers/medium/".$cover_isbn.".jpg' width='50' /></span>";
         $output .= "<p><a href='/bestsellers/list/".$list_name."'>#".$data->rank." ".$data->title."</a></p>";
         $output .= "<p>".$data->author."</p>";
         $output .= "<p><i>On list for ".$data->weeks_on_list." week(s)</i></p>";
@@ -193,9 +197,9 @@ function bestsellers_display_block_2() {
 
 function bestsellers_display_lists() {
   $result = db_query('SELECT * FROM {bestsellers_list} order by list_name');
-  if (db_affected_rows($result) > 0) {
+  if ($result->rowCount() > 0) {
     $output = "<ul id='bestsellers_lists'>";
-    while ($data = db_fetch_object($result)) {
+    foreach ($result as $data) {
       $output .= "<li><a href='/bestsellers/list/".urlencode($data->list_name)."'>";
       $output .= $data->list_name;
       $output .= "</a></li>";
@@ -221,14 +225,15 @@ function bestsellers_render_list($list_name = NULL) {
 
   drupal_set_title(t($list_name));
 
-  $result = db_query("SELECT * FROM {bestsellers_lists} WHERE list_name='%s' order by rank", urldecode($list_name));
-  if (db_affected_rows($result) > 0) {
-//    $output .= "<h1>".urldecode($list_name)."</h1>";
+  $output = '';
+  $result = db_query("SELECT * FROM {bestsellers_lists} WHERE list_name = :list_name order by rank", array(':list_name' => urldecode($list_name)));
+  if ($result->rowCount() > 0) {
     $output .= "<i class='smaller'>".variable_get('bestsellers_copyright', 'Copyright The New York Times')."</i><br /><br />"; 
   
-    while ($data = db_fetch_object($result)) {
+    foreach ($result as $data) {
+      empty($data->isbn10_1) ?  $cover_isbn = 'None' : $cover_isbn = $data->isbn10_1;
       $output .= "<div class='bestseller'>\n";
-      $output .= "<span class='bestseller-inline-right'><img alt='Book Cover' src='/sites/default/files/covers/medium/".$data->isbn10_1.".jpg' width='100' /></span>\n";
+      $output .= "<span class='bestseller-inline-right'><img alt='Book Cover' src='/sites/default/files/covers/medium/".$cover_isbn.".jpg' width='100' /></span>\n";
       if ($data->isbn13_1) {
         $output .= "<h3><a href='".$catalog_isbn.$data->isbn13_1."'>#".$data->rank." ".htmlspecialchars($data->title)."</a></h3>\n";
       } else {
@@ -284,13 +289,19 @@ function bestsellers_fetch() {
   $status = $list['status'];
 
   if ($status == "OK") {
-    $result = db_query( "DELETE FROM {bestsellers_list}" );
+    db_delete('bestsellers_list')->execute();
     variable_set('bestsellers_copyright', $list['copyright']);
     
     $num_results = $list['num_results'];
 
     for ( $x = 0; $x < $num_results; $x++) {
-      $result = db_query("INSERT INTO {bestsellers_list} (num,list_name) VALUES ('%d', '%s')", $x, $list['results'][$x]['list_name'] );
+
+      $id = db_insert('bestsellers_list')
+        ->fields(array(
+          'num' => $x,
+          'list_name' => $list['results'][$x]['list_name'],
+        ))
+        ->execute();
 
       $request = 'http://api.nytimes.com/svc/books/v2/lists/'
                  . str_replace(" ","%20",$list['results'][$x]['list_name'])
@@ -301,13 +312,13 @@ function bestsellers_fetch() {
       $list_contents = unserialize($response);
       $status = $list_contents['status'];
 
-//echo "<pre>";
-//print_r($list_contents);
-//echo "</pre>";
-//die();
-
       if ($status == "OK") {
-        $result = db_query( "DELETE FROM {bestsellers_lists} WHERE list_name='%s' or rank=0", $list_contents['results'][0]['list_name'] );
+        db_delete('bestsellers_lists')
+          ->condition(
+            db_or()
+            ->condition('list_name', $list_contents['results'][0]['list_name'])
+            ->condition('rank', 0))
+          ->execute();
    
         // This doesn't work.  Num_results = 35 while there were only 20.  Caused 0's in the database
         // $num_ranks = $list_contents['num_results'];
@@ -316,54 +327,36 @@ function bestsellers_fetch() {
         $num_ranks = count($list_contents['results']);
 
         for ( $y = 0; $y < $num_ranks; $y++) {
-          $result = db_query("INSERT INTO {bestsellers_lists} 
-                                 (rank,
-                                  list_name,
-                                  bestsellers_date,
-                                  published_date,
-                                  weeks_on_list,
-                                  rank_last_week,
-                                  title,
-                                  description,
-                                  contributor,
-                                  author,
-                                  contributor_note,
-                                  publisher,
-                                  isbn13_1,
-                                  isbn10_1,
-                                  isbn13_2,
-                                  isbn10_2,
-                                  book_review_link,
-                                  first_chapter_link,
-                                  sunday_review_link,
-                                  article_chapter_link
-                                 ) 
-                             VALUES ('%d','%s','%s','%s','%d','%d','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')", 
-                               $list_contents['results'][$y]['rank'], 
-                               $list_contents['results'][$y]['list_name'],
-                               $list_contents['results'][$y]['bestsellers_date'], 
-                               $list_contents['results'][$y]['published_date'],
-                               $list_contents['results'][$y]['weeks_on_list'],
-                               $list_contents['results'][$y]['rank_last_week'],
-                               $list_contents['results'][$y]['book_details'][0]['title'],
-                               $list_contents['results'][$y]['book_details'][0]['description'],
-                               $list_contents['results'][$y]['book_details'][0]['contributor'],
-                               $list_contents['results'][$y]['book_details'][0]['author'],
-                               $list_contents['results'][$y]['book_details'][0]['contributor_note'],
-                               $list_contents['results'][$y]['book_details'][0]['publisher'],
-                               $list_contents['results'][$y]['isbns'][0]['isbn13'],
-                               $list_contents['results'][$y]['isbns'][0]['isbn10'],
-                               $list_contents['results'][$y]['isbns'][1]['isbn13'],
-                               $list_contents['results'][$y]['isbns'][1]['isbn10'],
-                               $list_contents['results'][$y]['reviews'][0]['book_review_link'],
-                               $list_contents['results'][$y]['reviews'][0]['first_chapter_link'],
-                               $list_contents['results'][$y]['reviews'][0]['sunday_review_link'],
-                               $list_contents['results'][$y]['reviews'][0]['article_chapter_link']
-                            );
+          $entry = bestsellers_validate_list_entry($list_contents['results'][$y]);
+          $id = db_insert('bestsellers_lists')
+            ->fields(array(
+              'rank' => $entry['rank'],
+              'list_name' => $entry['list_name'],
+              'bestsellers_date' => $entry['bestsellers_date'],
+              'published_date' => $entry['published_date'],
+              'weeks_on_list' => $entry['weeks_on_list'],
+              'rank_last_week' => $entry['rank_last_week'],
+              'title' => $entry['title'],
+              'description' => $entry['description'],
+              'contributor' => $entry['contributor'],
+              'author' => $entry['author'],
+              'contributor_note' => $entry['contributor_note'],
+              'publisher' => $entry['publisher'],
+              'isbn13_1' => $entry['isbn13_1'],
+              'isbn10_1' => $entry['isbn10_1'],
+              'isbn13_2' => $entry['isbn13_2'],
+              'isbn10_2' => $entry['isbn10_2'],
+              'book_review_link' => $entry['book_review_link'],
+              'first_chapter_link' => $entry['first_chapter_link'],
+              'sunday_review_link' => $entry['sunday_review_link'],
+              'article_chapter_link' => $entry['article_chapter_link'],
+            ))
+            ->execute();
+
           // See if we can find a book cover
           // isbn10 seems to be more reliable for Amazon
 
-          bestsellers_getCover($list_contents['results'][$y]['isbns'][0]['isbn10'], 'medium');
+          bestsellers_getCover($entry['isbn10_1'], 'medium');
         }
       } else {
         $output .= "Problem fetching contents of list: ".$list['results'][$x]['list_name']." <br />";
@@ -397,12 +390,13 @@ function bestsellers_SendMyRequest($url)
 function bestsellers_getCover($isbn, $size)
 {
   $success = FALSE;
-  $localFile = file_directory_path()."/covers/".$size."/".$isbn.".jpg";
+  $file_directory_path = drupal_realpath('public://');
+  $localFile = $file_directory_path."/covers/".$size."/".$isbn.".jpg";
   
-  if (!is_dir(file_directory_path()."/covers")) {
-    if (mkdir(file_directory_path()."/covers/small", 0755, true)) {
-      mkdir(file_directory_path()."/covers/medium", 0755, true);
-      mkdir(file_directory_path()."/covers/large", 0755, true);
+  if (!is_dir($file_directory_path."/covers")) {
+    if (mkdir($file_directory_path."/covers/small", 0755, true)) {
+      mkdir($file_directory_path."/covers/medium", 0755, true);
+      mkdir($file_directory_path."/covers/large", 0755, true);
     }
   }
 
@@ -448,6 +442,34 @@ function bestsellers_getCover($isbn, $size)
       copy(drupal_get_path('module','bestsellers')."/images/".$blank_image, $localFile); 
     }
   } 
+}
+
+function bestsellers_validate_list_entry($entry)
+{
+  $result = array(
+              'rank' => $entry['rank'],
+              'list_name' => $entry['list_name'],
+              'bestsellers_date' => $entry['bestsellers_date'],
+              'published_date' => $entry['published_date'],
+              'weeks_on_list' => $entry['weeks_on_list'],
+              'rank_last_week' => $entry['rank_last_week'],
+              'title' => isset($entry['book_details'][0]['title']) ? $entry['book_details'][0]['title'] : '',
+              'description' => isset($entry['book_details'][0]['description']) ? $entry['book_details'][0]['description'] : '',
+              'contributor' => isset($entry['book_details'][0]['contributor']) ? $entry['book_details'][0]['contributor'] : '',
+              'author' => isset($entry['book_details'][0]['author']) ? $entry['book_details'][0]['author'] : '',
+              'contributor_note' => isset($entry['book_details'][0]['contributor_note']) ? $entry['book_details'][0]['contributor_note'] : '',
+              'publisher' => isset($entry['book_details'][0]['publisher']) ? $entry['book_details'][0]['publisher'] : '',
+              'isbn13_1' => isset($entry['isbns'][0]['isbn13']) ? $entry['isbns'][0]['isbn13'] : '',
+              'isbn10_1' => isset($entry['isbns'][0]['isbn10']) ? $entry['isbns'][0]['isbn10'] : '',
+              'isbn13_2' => isset($entry['isbns'][1]['isbn13']) ? $entry['isbns'][1]['isbn13'] : '',
+              'isbn10_2' => isset($entry['isbns'][1]['isbn10']) ? $entry['isbns'][1]['isbn10'] : '',
+              'book_review_link' => isset($entry['reviews'][0]['book_review_link']) ? $entry['reviews'][0]['book_review_link'] : '',
+              'first_chapter_link' => isset($entry['reviews'][0]['first_chapter_link']) ? $entry['reviews'][0]['first_chapter_link'] : '',
+              'sunday_review_link' => isset($entry['reviews'][0]['sunday_review_link']) ? $entry['reviews'][0]['sunday_review_link'] : '',
+              'article_chapter_link' => isset($entry['reviews'][0]['article_chapter_link']) ? $entry['reviews'][0]['article_chapter_link'] : '',
+            );
+
+  return $result;
 }
 
 /**********************************************************************************************
@@ -610,7 +632,7 @@ function bestsellers_openlibrary( $isbn, $size_in )
 
 function bestsellers_processImageURL($url, $isbn, $size)
 {
-    $localFile = file_directory_path()."/covers/".$size."/".$isbn.".jpg";
+    $localFile = drupal_realpath('public://')."/covers/".$size."/".$isbn.".jpg";
 
     //if ($image = @file_get_contents($url)) {
     if ($image = bestsellers_SendMyRequest($url)) {

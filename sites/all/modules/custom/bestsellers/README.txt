@@ -1,4 +1,4 @@
-New York Time Bestsellers Module for Drupal 6
+New York Time Bestsellers Module for Drupal 7
 Created by Bob Wicksall (bwicksall@pls-net.org)
 Contains book cover code from the vufind project (vufind.org)
 
@@ -25,7 +25,7 @@ for fetching book covers was borrowed and modified for this module.
 Requirements
 =======================
 
-  * Drupal 6.X
+  * Drupal 7.X
   * New York Times API Key (http://developer.nytimes.com/apps/register) 
     * The registration site only works with Internet Explorer
   * At least one API Key for book covers.  Amazon is the most reliable.

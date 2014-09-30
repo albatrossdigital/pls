@@ -1,5 +1,16 @@
 Bestsellers revisions
 
+7.x-1.0 01.27.2014
+
+- Converted to Drupal 7
+- Install file updated to new format
+- New database API 
+- Changes to blocks API
+
+1.4.5 01.24.2014
+
+- Captured some final unknown bug fixes in the Drupal 6 version
+
 1.4.4 12.18.2011
 
 - Added links back to enabled book cover sources.
