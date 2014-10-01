@@ -33,6 +33,18 @@ function bestsellers_menu() {
     'access arguments' => array('access content'), 
     'type' => MENU_CALLBACK,
   );
+  $items['bestsellers/json'] = array(
+    'page callback' => 'bestsellers_display_lists',
+    'access arguments' => array('access content'), 
+    'page arguments' => array('json'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['bestsellers/list/%/json'] = array(
+    'page callback' => 'bestsellers_render_list',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 'json'),
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }
@@ -110,7 +122,6 @@ function bestsellers_admin_settings() {
     '#title' => t('Fetch dust jackets from Open Library'),
     '#default_value' => variable_get('bestsellers_use_openlibrary', 0),
   );
-
   
   return system_settings_form($form);
 }
@@ -124,7 +135,10 @@ function bestsellers_block_info() {
     'info' => t('Bestsellers Lists'),
     'cache' => DRUPAL_CACHE_GLOBAL,
   );
-
+  $blocks['bestsellers_ajax_lists'] = array(
+    'info' => t('Bestsellers AJAX Lists'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
   return $blocks;
 }
 
@@ -147,6 +161,9 @@ function bestsellers_block_view($delta = '') {
       $block['subject'] = t('New York Times Lists');
       $block['content'] = bestsellers_display_block_2();
       break;
+    case 'bestsellers_ajax_lists':
+      $block = bestsellers_display_ajax_lists_block();
+      break;      
   }
   return $block;
 }
@@ -195,14 +212,47 @@ function bestsellers_display_block_2() {
   return bestsellers_display_lists();
 }
 
-function bestsellers_display_lists() {
+function bestsellers_display_ajax_lists_block() {
+  $block = array();
+  $path = drupal_get_path('module', 'bestsellers');
+  $block['subject'] = t('Best Sellers');
+  $block['content'] = array(
+    '#feed_url' => url('bestsellers/json'),
+    '#theme' => 'library_carousels',
+    '#attached' => array(
+      'css' => array(
+        $path . '/css/angular-carousel.min.css'
+      ),
+      'js' => array(
+        $path . '/js/requestAnimationFrame.js',
+        $path . '/js/angular.min.js',
+        $path . '/js/angular-touch.min.js',
+        $path . '/js/lazy.js',
+        $path . '/js/angular-carousel.min.js',
+        $path . '/js/library_book.js',
+      ),
+    ),
+  );
+  dpm($block);
+  return $block;
+}
+
+
+function bestsellers_display_lists($format = 'html') {
+  dpm($format);
   $result = db_query('SELECT * FROM {bestsellers_list} order by list_name');
+  $json = array();
   if ($result->rowCount() > 0) {
     $output = "<ul id='bestsellers_lists'>";
     foreach ($result as $data) {
       $output .= "<li><a href='/bestsellers/list/".urlencode($data->list_name)."'>";
       $output .= $data->list_name;
       $output .= "</a></li>";
+      $json[] = array(
+        'id' => $data->num,
+        'endpoint' => "/bestsellers/list/".urlencode($data->list_name)."/json",
+        'title' => $data->list_name,
+      );
     }
     $output .= "</ul>";
   } else {
@@ -210,10 +260,15 @@ function bestsellers_display_lists() {
     $output .= "<p>The bestseller lists are currently unavailable.  Please try again later.</p>";
   }
 
-  return $output;
+  if ($format == 'json') {
+    drupal_json_output($json);
+  }
+  else {
+    return $output;
+  }
 }
 
-function bestsellers_render_list($list_name = NULL) {
+function bestsellers_render_list($list_name = NULL, $format = 'html') {
   $result = drupal_add_css(drupal_get_path('module','bestsellers') .'/bestsellers.css');
   
   $catalog_isbn = htmlspecialchars(variable_get('bestsellers_isbn_search_string', 'update-your-configuration'));
@@ -226,12 +281,20 @@ function bestsellers_render_list($list_name = NULL) {
   drupal_set_title(t($list_name));
 
   $output = '';
+  $json = array();
   $result = db_query("SELECT * FROM {bestsellers_lists} WHERE list_name = :list_name order by rank", array(':list_name' => urldecode($list_name)));
   if ($result->rowCount() > 0) {
     $output .= "<i class='smaller'>".variable_get('bestsellers_copyright', 'Copyright The New York Times')."</i><br /><br />"; 
   
     foreach ($result as $data) {
       empty($data->isbn10_1) ?  $cover_isbn = 'None' : $cover_isbn = $data->isbn10_1;
+      $json_row = array(
+        'title' => htmlspecialchars($data->title) ,
+        'rank' => $data->rank,
+        'cover' => "/sites/default/files/covers/medium/".$cover_isbn.".jpg",
+        'author' => $data->author,
+        'tooltip' => "<p><i>".htmlspecialchars($data->description)."</i></p>\n",
+      );
       $output .= "<div class='bestseller'>\n";
       $output .= "<span class='bestseller-inline-right'><img alt='Book Cover' src='/sites/default/files/covers/medium/".$cover_isbn.".jpg' width='100' /></span>\n";
       if ($data->isbn13_1) {
@@ -242,17 +305,23 @@ function bestsellers_render_list($list_name = NULL) {
       $output .= "<p>".htmlspecialchars($data->author)."</p>\n";
       $output .= "<p><i>".htmlspecialchars($data->description)."</i></p>\n";
       $output .= "<p>On the bestsellers list for ".$data->weeks_on_list;
+      $json_row['tooltip'] .= "<p>On the bestsellers list for ".$data->weeks_on_list;
       if ($data->weeks_on_list == 1) {
         $output .= " week";
+        $json_row['tooltip'] .= " week";
       } else {
         $output .= " weeks";
+        $json_row['tooltip'] .= " weeks";
       }
       $output .= "</p>\n";
+      $json_row['tooltip'] .= "</p>\n";
       if ($data->book_review_link) {
         $output .= "<a href='".$data->book_review_link."'  target='_blank'>New York Times Review</a>\n";
+        $json_row['tooltip'] .= "<a href='".$data->book_review_link."'  target='_blank'>New York Times Review</a>\n";
       }
       $output .= "<br />\n";
       $output .= "</div>\n";
+      array_push($json, $json_row);
     }
     $output .= "<div class='bestseller'>\n"; 
     $output .= "Book covers provided by the following sources depending on availability: ";
@@ -274,7 +343,12 @@ function bestsellers_render_list($list_name = NULL) {
     $output .= "<p>There are no books currently in this list.  Please try again later.</p>\n";
   }
 
-  return $output;
+  if ($format == 'json') {
+    drupal_json_output($json);
+  }
+  else {
+    return $output;
+  }
 }
 
 function bestsellers_fetch() {
@@ -682,5 +756,19 @@ function bestsellers_processImageURL($url, $isbn, $size)
     } else {
         return false;
     }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function bestsellers_theme() {
+  return array(
+    'library_carousels' => array(
+      'template' => 'templates/library-carousels',
+      'variables' => array(
+        'feed_url' => url('/api/carousels/list.json'),
+      ),
+    ),
+  );
 }
 
