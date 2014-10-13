@@ -62,6 +62,8 @@ function flight_input_formats_flight_wysiwyg_filter_defaults() {
  */
 function flight_input_formats_form_alter(&$form, &$form_state, $form_id) {
 
+  // add media filter functions 
+  drupal_add_js(drupal_get_path('module', 'media_wysiwyg') . '/js/media_wysiwyg.filter.js');
   // add ckeditor wysiwyg functions
   drupal_add_js(drupal_get_path('module', 'flight_input_formats') . '/js/flightInputFormat.js');
 
