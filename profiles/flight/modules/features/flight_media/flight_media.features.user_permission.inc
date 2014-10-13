@@ -10,25 +10,43 @@
 function flight_media_user_default_permissions() {
   $permissions = array();
 
-  // Exported permission: 'add media from media_filepickerio'.
-  $permissions['add media from media_filepickerio'] = array(
-    'name' => 'add media from media_filepickerio',
-    'roles' => array(),
-    'module' => 'media_filepickerio',
-  );
-
   // Exported permission: 'add media from remote sources'.
   $permissions['add media from remote sources'] = array(
     'name' => 'add media from remote sources',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'media_internet',
+  );
+
+  // Exported permission: 'administer file types'.
+  $permissions['administer file types'] = array(
+    'name' => 'administer file types',
+    'roles' => array(),
+    'module' => 'file_entity',
   );
 
   // Exported permission: 'administer files'.
   $permissions['administer files'] = array(
     'name' => 'administer files',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'file_entity',
+  );
+
+  // Exported permission: 'administer media browser'.
+  $permissions['administer media browser'] = array(
+    'name' => 'administer media browser',
+    'roles' => array(),
+    'module' => 'media',
+  );
+
+  // Exported permission: 'administer media wysiwyg view mode'.
+  $permissions['administer media wysiwyg view mode'] = array(
+    'name' => 'administer media wysiwyg view mode',
+    'roles' => array(),
+    'module' => 'media_wysiwyg_view_mode',
   );
 
   // Exported permission: 'bypass file access'.
@@ -41,7 +59,9 @@ function flight_media_user_default_permissions() {
   // Exported permission: 'create files'.
   $permissions['create files'] = array(
     'name' => 'create files',
-    'roles' => array(),
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
     'module' => 'file_entity',
   );
 
@@ -213,6 +233,15 @@ function flight_media_user_default_permissions() {
     'module' => 'file_entity',
   );
 
+  // Exported permission: 'import media'.
+  $permissions['import media'] = array(
+    'name' => 'import media',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media_bulk_upload',
+  );
+
   // Exported permission: 'view files'.
   $permissions['view files'] = array(
     'name' => 'view files',
@@ -226,21 +255,27 @@ function flight_media_user_default_permissions() {
   // Exported permission: 'view own files'.
   $permissions['view own files'] = array(
     'name' => 'view own files',
-    'roles' => array(),
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
     'module' => 'file_entity',
   );
 
   // Exported permission: 'view own private files'.
   $permissions['view own private files'] = array(
     'name' => 'view own private files',
-    'roles' => array(),
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
     'module' => 'file_entity',
   );
 
   // Exported permission: 'view private files'.
   $permissions['view private files'] = array(
     'name' => 'view private files',
-    'roles' => array(),
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
     'module' => 'file_entity',
   );
 

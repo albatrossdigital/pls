@@ -3,6 +3,40 @@
 define('FLIGHT_CONFIG_VIEW_FIELD', 'flight_config_views_field');
 
 /**
+ * Implements hook_libraries_info().
+ */
+function flight_config_libraries_info() {
+  // add underscore
+  $libraries['underscore'] = array(
+    'name' => 'Underscore.js',
+    'vendor url' => 'http://underscorejs.org',
+    'download url' => 'http://documentcloud.github.io/underscore/underscore-min.js',
+    'version arguments' => array(
+      'file' => 'underscore-min.js',
+      // 1.x: Underscore.js 1.4.4
+      'pattern' => '/Underscore.js\s?([0-9\.]+)/',
+      'lines' => 2,
+      'cols' => 200,
+    ),
+    'files' => array(
+      'js' => array(
+        'underscore-min.js',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Implements hook_init()
+ **/
+function flight_config_init() {
+  libraries_load('underscore');
+  drupal_add_library('underscore', 'underscore');
+}
+
+/**
  * Implements hook_menu()
  **/
 function flight_config_menu() {
@@ -13,7 +47,41 @@ function flight_config_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  // Legacy
+  $items['me'] = array(
+    'title' => 'Welcome',
+    'page callback' => 'flight_config_me',
+    'access callback' => 'user_is_logged_in',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['user/me'] = array(
+    'title' => 'Welcome',
+    'page callback' => 'flight_config_me',
+    'access callback' => 'user_is_logged_in',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['user/me/edit'] = array(
+    'title' => 'Welcome',
+    'page callback' => 'flight_config_me_edit',
+    'access callback' => 'user_is_logged_in',
+    'type' => MENU_CALLBACK,
+  );
   return $items;
+}
+
+/**
+ * Implements hook_menu_alter()
+ * Make the Node clone link a normal tab.
+ **/
+function flight_config_menu_alter(&$items) {
+  if (!empty($items['node/%node/clone'])) {
+    $items['node/%node/clone']['type'] = MENU_LOCAL_TASK;
+  }
+  if (!empty($items['node/%node/clone/%clone_token'])) {
+    $items['node/%node/clone/%clone_token']['type'] = MENU_LOCAL_TASK;
+  }
 }
 
 /**
@@ -21,6 +89,22 @@ function flight_config_menu() {
  **/
 function flight_config_front() {
   return ' ';
+}
+
+/**
+ * Callback for the me page for logged in users.
+ **/
+function flight_config_me() {
+  global $user;
+  drupal_goto('user/' . $user->uid);
+}
+
+/**
+ * Callback for the me page for logged in users.
+ **/
+function flight_config_me_edit() {
+  global $user;
+  drupal_goto('user/' . $user->uid . '/edit');
 }
 
 /**
@@ -33,23 +117,64 @@ function flight_config_user_presave(&$edit, $account, $category) {
   }
 }
 
+/**
+ * Implements hook_user_presave()
+ * Specify some additonal pages that should use the admin theme.
+ **/
+function flight_config_admin_paths_alter(&$paths) {
+  $paths['import'] = TRUE;
+  $paths['import/*'] = TRUE;
+  $paths['media/*/format-form'] = TRUE;
+  return $paths;
+}
 
 /**
  * Implements hook_page_alter()
  * Add the quick edit link and custom stylesheet
  * Add the admin_menu skin (to match the toolbar in Stanley)
  **/
-//function flight_config_page_alter(&$page) {
-//  if (module_exists('edit') && user_access('access in-place editing')) {
-//    $page['page_bottom']['edit_trigger_link'] = edit_trigger_link();
-//    $page['page_bottom']['edit_trigger_link']['#attributes']['class'][] = 'flight-config-edit-trigger-link';
-//    $page['page_bottom']['edit_trigger_link']['#attached']['css'][] = drupal_get_path('module', 'flight_config') . '/css/flight-config-edit-launcher.css';
-//  }
+function flight_config_page_alter(&$page) {
+  if (module_exists('edit') && user_access('access in-place editing')) {
+    /*$page['page_bottom']['edit_trigger_link'] = edit_trigger_link();
+    $page['page_bottom']['edit_trigger_link']['#attributes']['class'][] = 'flight-config-edit-trigger-link';
+    $page['page_bottom']['edit_trigger_link']['#attached']['css'][] = drupal_get_path('module', 'flight_config') . '/css/flight-config-edit-launcher.css';
+    $page['page_bottom']['edit_trigger_link']['#href'] = '';
+    $page['page_bottom']['edit_trigger_link']['#attributes']['onclick'] = 'return false;';
+	*/
+	
+    // Fix errors with missing depends for CKEditor/media
+    // From: https://drupal.org/node/2125199
+    /*
+    module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
+    $input_formats = ckeditor_profiles_compile();
+    drupal_add_js(array('ckeditor' => array('input_formats' => $input_formats, 'plugins' => array())), 'setting');
+    */
+  }
 //
 //  if (module_exists('admin_menu')) {
 //    $page['page_bottom']['#attached']['css'][] = drupal_get_path('module', 'flight_config') . '/css/flight-config-admin-menu-skin.css';
 //  }
-//}
+}
+
+
+/**
+ * Implements hook_file_view().
+ * Provide a direct download to certain types of files (images, documents).
+ * This is really necessary because ckeditor_link_file only links to the file.
+ * @todo: move this to flight_media (need to have a config page first).
+ */
+function flight_config_file_view($file, $view_mode, $langcode) {
+  if (arg(0) === 'file') {
+    switch ($file->type) {
+      case 'document':
+      case 'image':
+        $url = file_create_url($file->uri);
+        drupal_goto($url);
+        break;
+    }
+  }
+}
+
 
 /**
  * Function returns entity specific ID for any entity

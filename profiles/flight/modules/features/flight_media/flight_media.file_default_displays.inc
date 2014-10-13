@@ -253,14 +253,6 @@ function flight_media_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
-  $file_display->name = 'video__preview__file_field_media_large_icon';
-  $file_display->weight = 0;
-  $file_display->status = TRUE;
-  $file_display->settings = '';
-  $export['video__preview__file_field_media_large_icon'] = $file_display;
-
-  $file_display = new stdClass();
-  $file_display->api_version = 1;
   $file_display->name = 'video__preview__file_image';
   $file_display->weight = 0;
   $file_display->status = FALSE;
@@ -294,17 +286,6 @@ function flight_media_file_default_displays() {
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__preview__oembed_image'] = $file_display;
-
-  $file_display = new stdClass();
-  $file_display->api_version = 1;
-  $file_display->name = 'video__preview__oembed_thumbnail';
-  $file_display->weight = 0;
-  $file_display->status = FALSE;
-  $file_display->settings = array(
-    'width' => '180',
-    'height' => '',
-  );
-  $export['video__preview__oembed_thumbnail'] = $file_display;
 
   return $export;
 }

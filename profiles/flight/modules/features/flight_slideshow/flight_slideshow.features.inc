@@ -55,6 +55,7 @@ function flight_slideshow_image_default_styles() {
         'weight' => 1,
       ),
     ),
+    'label' => 'flight_slideshow',
   );
 
   return $styles;

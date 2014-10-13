@@ -20,7 +20,11 @@ function flight_events_field_default_field_instances() {
       'default' => array(
         'label' => 'hidden',
         'module' => 'text',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'plain_text',
+          ),
+        ),
         'type' => 'text_default',
         'weight' => 4,
       ),
@@ -28,10 +32,13 @@ function flight_events_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'text',
         'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
           'trim_length' => 600,
         ),
         'type' => 'text_summary_or_trimmed',
-        'weight' => 2,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -51,28 +58,97 @@ function flight_events_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 3,
+      'weight' => 2,
     ),
   );
 
-  // Exported field_instance: 'node-event-field_attachment'
-  $field_instances['node-event-field_attachment'] = array(
+  // Exported field_instance: 'node-event-field_address'
+  $field_instances['node-event-field_address'] = array(
     'bundle' => 'event',
+    'default_value' => array(
+      0 => array(
+        'element_key' => 'node|event|field_address|und|0',
+        'thoroughfare' => '',
+        'premise' => '',
+        'locality' => '',
+        'administrative_area' => '',
+        'postal_code' => '',
+        'country' => 'US',
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'module' => 'file',
-        'settings' => array(),
-        'type' => 'file_table',
-        'weight' => 6,
+        'label' => 'above',
+        'module' => 'addressfield',
+        'settings' => array(
+          'format_handlers' => array(
+            0 => 'address',
+          ),
+          'use_widget_handlers' => 1,
+        ),
+        'type' => 'addressfield_default',
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+    ),
+    'ds_extras_field_template' => '',
+    'entity_type' => 'node',
+    'field_name' => 'field_address',
+    'label' => 'Address',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'addressfield',
+      'settings' => array(
+        'available_countries' => array(
+          'US' => 'US',
+        ),
+        'format_handlers' => array(
+          'address' => 'address',
+          'address-hide-country' => 'address-hide-country',
+          'organisation' => 0,
+          'name-full' => 0,
+          'name-oneline' => 0,
+        ),
+      ),
+      'type' => 'addressfield_standard',
+      'weight' => 11,
+    ),
+  );
+
+  // Exported field_instance: 'node-event-field_attachment'
+  $field_instances['node-event-field_attachment'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
+        ),
+        'type' => 'file_default',
+        'weight' => 6,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 12,
       ),
     ),
     'ds_extras_field_template' => '',
@@ -89,7 +165,7 @@ function flight_events_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'media_multiselect',
+      'module' => 'file',
       'settings' => array(
         'allowed_schemes' => array(
           'oembed' => 0,
@@ -104,14 +180,14 @@ function flight_events_field_default_field_instances() {
         'browser_plugins' => array(
           'media_default--media_browser_1' => 0,
           'media_default--media_browser_my_files' => 0,
-          'media_filepickerio' => 0,
+          'media_inkfilepicker' => 0,
           'media_internet' => 0,
           'upload' => 0,
         ),
         'progress_indicator' => 'throbber',
       ),
-      'type' => 'media_multiselect',
-      'weight' => 8,
+      'type' => 'file_generic',
+      'weight' => 6,
     ),
   );
 
@@ -122,19 +198,6 @@ function flight_events_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-        ),
-        'type' => 'date_default',
-        'weight' => 1,
-      ),
-      'teaser' => array(
         'label' => 'above',
         'module' => 'date',
         'settings' => array(
@@ -146,17 +209,23 @@ function flight_events_field_default_field_instances() {
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
-        'weight' => 1,
+        'weight' => 7,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
+    'ds_extras_field_template' => '',
     'entity_type' => 'node',
     'field_name' => 'field_date',
     'label' => 'Date',
     'required' => 0,
     'settings' => array(
-      'default_format' => 'medium',
       'default_value' => 'now',
-      'default_value2' => 'blank',
+      'default_value2' => 'same',
       'default_value_code' => '',
       'default_value_code2' => '',
       'user_register_form' => FALSE,
@@ -165,69 +234,42 @@ function flight_events_field_default_field_instances() {
       'active' => 1,
       'module' => 'date',
       'settings' => array(
-        'increment' => 1,
-        'input_format' => 'm/d/Y - H:i:s',
+        'increment' => 15,
+        'input_format' => 'm/d/Y - g:i:sa',
         'input_format_custom' => '',
         'label_position' => 'above',
-        'repeat_collapsed' => 0,
+        'repeat_collapsed' => 1,
         'text_parts' => array(),
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 1,
+      'weight' => 10,
     ),
   );
 
   // Exported field_instance: 'node-event-field_location'
   $field_instances['node-event-field_location'] = array(
     'bundle' => 'event',
-    'default_value' => array(
-      0 => array(
-        'administrative_area' => '',
-        'country' => 'AF',
-        'dependent_locality' => '',
-        'element_key' => 'node|event|field_location|und|0',
-        'locality' => '',
-        'name_line' => '',
-        'postal_code' => '',
-        'premise' => '',
-        'sub_administrative_area' => '',
-        'sub_premise' => '',
-        'thoroughfare' => '',
-        'xal' => '',
-        'xnl' => '<NameDetails/>
-',
-      ),
-    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'module' => 'addressfield',
+        'label' => 'above',
+        'module' => 'geofield',
         'settings' => array(
-          'format_handlers' => array(
-            0 => 'address',
-          ),
-          'use_widget_handlers' => 1,
+          'data' => 'full',
         ),
-        'type' => 'addressfield_default',
-        'weight' => 5,
+        'type' => 'geofield_wkt',
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
-        'module' => 'addressfield',
-        'settings' => array(
-          'format_handlers' => array(
-            0 => 'address',
-          ),
-          'organisation' => FALSE,
-          'use_widget_handlers' => 1,
-        ),
-        'type' => 'addressfield_default',
-        'weight' => 3,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
+    'ds_extras_field_template' => '',
     'entity_type' => 'node',
     'field_name' => 'field_location',
     'label' => 'Location',
@@ -237,18 +279,26 @@ function flight_events_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'addressfield',
+      'module' => 'geocoder',
       'settings' => array(
-        'available_countries' => array(
-          'US' => 'US',
+        'delta_handling' => 'default',
+        'geocoder_field' => 'field_address',
+        'geocoder_handler' => 'google',
+        'handler_settings' => array(
+          'google' => array(
+            'all_results' => 0,
+            'geometry_type' => 'point',
+            'reject_results' => array(
+              'APPROXIMATE' => 0,
+              'GEOMETRIC_CENTER' => 0,
+              'RANGE_INTERPOLATED' => 0,
+              'ROOFTOP' => 0,
+            ),
+          ),
         ),
-        'format_handlers' => array(
-          0 => 'address',
-        ),
-        'name_format' => 'name_line',
       ),
-      'type' => 'addressfield_standard',
-      'weight' => 4,
+      'type' => 'geocoder',
+      'weight' => 12,
     ),
   );
 
@@ -260,18 +310,26 @@ function flight_events_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'file_entity',
+        'module' => 'foundation_formatters',
         'settings' => array(
-          'file_view_mode' => 'default',
+          'autoplay' => 1,
+          'class' => '',
+          'edit' => array(
+            'editor' => 'form',
+          ),
+          'format' => 'inline',
+          'image_field' => 'field_picture',
+          'image_style' => 'large',
+          'play_class' => 'button icon-play',
         ),
-        'type' => 'file_rendered',
+        'type' => 'file_click_to_play',
         'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 15,
       ),
     ),
     'ds_extras_field_template' => '',
@@ -303,7 +361,7 @@ function flight_events_field_default_field_instances() {
         'browser_plugins' => array(
           'media_default--media_browser_1' => 0,
           'media_default--media_browser_my_files' => 0,
-          'media_filepickerio' => 0,
+          'media_inkfilepicker' => 0,
           'media_internet' => 0,
           'upload' => 0,
         ),
@@ -328,24 +386,35 @@ function flight_events_field_default_field_instances() {
   // Exported field_instance: 'node-event-field_picture'
   $field_instances['node-event-field_picture'] = array(
     'bundle' => 'event',
+    'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'image',
+        'module' => 'foundation_formatters',
         'settings' => array(
-          'image_link' => '',
+          'edit' => array(
+            'editor' => 'form',
+          ),
+          'hide_if_field' => 'field_media',
           'image_style' => 'large',
+          'image_style_large' => '',
+          'image_style_medium' => '',
+          'image_style_retina' => '',
+          'image_style_small' => '',
+          'link_field' => '',
+          'placeholder_dimensions' => '',
+          'placeholder_text' => '',
         ),
-        'type' => 'image',
+        'type' => 'image_super',
         'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 14,
       ),
     ),
     'ds_extras_field_template' => '',
@@ -366,7 +435,7 @@ function flight_events_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'media_multiselect',
+      'module' => 'image',
       'settings' => array(
         'allowed_schemes' => array(
           'oembed' => 0,
@@ -381,13 +450,14 @@ function flight_events_field_default_field_instances() {
         'browser_plugins' => array(
           'media_default--media_browser_1' => 'media_default--media_browser_1',
           'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
-          'media_filepickerio' => 'media_filepickerio',
+          'media_inkfilepicker' => 'media_inkfilepicker',
           'media_internet' => 0,
           'upload' => 'upload',
         ),
+        'preview_image_style' => 'thumbnail',
         'progress_indicator' => 'throbber',
       ),
-      'type' => 'media_multiselect',
+      'type' => 'image_image',
       'weight' => 5,
     ),
   );
@@ -402,16 +472,24 @@ function flight_events_field_default_field_instances() {
       'default' => array(
         'label' => 'hidden',
         'module' => 'text',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'plain_text',
+          ),
+        ),
         'type' => 'text_default',
         'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'plain_text',
+          ),
+        ),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'node',
@@ -429,12 +507,13 @@ function flight_events_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 2,
+      'weight' => 1,
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Address');
   t('Attachments');
   t('Date');
   t('Description');

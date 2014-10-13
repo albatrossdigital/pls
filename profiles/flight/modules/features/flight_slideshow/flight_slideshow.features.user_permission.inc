@@ -13,27 +13,21 @@ function flight_slideshow_user_default_permissions() {
   // Exported permission: 'create any slideshow bean'.
   $permissions['create any slideshow bean'] = array(
     'name' => 'create any slideshow bean',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
+    'roles' => array(),
     'module' => 'bean',
   );
 
   // Exported permission: 'delete any slideshow bean'.
   $permissions['delete any slideshow bean'] = array(
     'name' => 'delete any slideshow bean',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
+    'roles' => array(),
     'module' => 'bean',
   );
 
   // Exported permission: 'edit any slideshow bean'.
   $permissions['edit any slideshow bean'] = array(
     'name' => 'edit any slideshow bean',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
+    'roles' => array(),
     'module' => 'bean',
   );
 

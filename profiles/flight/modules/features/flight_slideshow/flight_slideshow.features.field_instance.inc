@@ -50,6 +50,9 @@ function flight_slideshow_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'image',
         'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
           'image_link' => '',
           'image_style' => 'slideshow',
         ),
@@ -60,6 +63,9 @@ function flight_slideshow_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'image',
         'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
           'image_link' => '',
           'image_style' => 'flight_slideshow',
         ),
@@ -70,6 +76,9 @@ function flight_slideshow_field_default_field_instances() {
         'label' => 'above',
         'module' => 'image',
         'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
           'image_link' => '',
           'image_style' => '',
         ),
@@ -108,7 +117,7 @@ function flight_slideshow_field_default_field_instances() {
         'browser_plugins' => array(
           'media_default--media_browser_1' => 0,
           'media_default--media_browser_my_files' => 0,
-          'media_filepickerio' => 0,
+          'media_inkfilepicker' => 0,
           'upload' => 0,
         ),
         'manualcrop_crop_info' => TRUE,
@@ -139,21 +148,33 @@ function flight_slideshow_field_default_field_instances() {
       'default' => array(
         'label' => 'hidden',
         'module' => 'link',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
+        ),
         'type' => 'link_default',
         'weight' => 1,
       ),
       'flight_slide' => array(
         'label' => 'hidden',
         'module' => 'link',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
+        ),
         'type' => 'link_default',
         'weight' => 2,
       ),
       'full' => array(
         'label' => 'above',
         'module' => 'link',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
+        ),
         'type' => 'link_default',
         'weight' => 1,
       ),

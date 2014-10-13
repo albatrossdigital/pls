@@ -20,7 +20,11 @@ function flight_page_field_default_field_instances() {
       'default' => array(
         'label' => 'hidden',
         'module' => 'text',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'plain_text',
+          ),
+        ),
         'type' => 'text_default',
         'weight' => 3,
       ),
@@ -28,10 +32,13 @@ function flight_page_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'text',
         'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
           'trim_length' => 600,
         ),
         'type' => 'text_summary_or_trimmed',
-        'weight' => 1,
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'node',
@@ -64,7 +71,11 @@ function flight_page_field_default_field_instances() {
       'default' => array(
         'label' => 'hidden',
         'module' => 'file',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'form',
+          ),
+        ),
         'type' => 'file_table',
         'weight' => 4,
       ),
@@ -72,7 +83,7 @@ function flight_page_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'node',
@@ -103,7 +114,7 @@ function flight_page_field_default_field_instances() {
         'browser_plugins' => array(
           'media_default--media_browser_1' => 0,
           'media_default--media_browser_my_files' => 0,
-          'media_filepickerio' => 0,
+          'media_inkfilepicker' => 0,
           'media_internet' => 0,
           'upload' => 0,
         ),
@@ -133,18 +144,26 @@ function flight_page_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'file_entity',
+        'module' => 'foundation_formatters',
         'settings' => array(
-          'file_view_mode' => 'default',
+          'autoplay' => 1,
+          'class' => '',
+          'edit' => array(
+            'editor' => 'form',
+          ),
+          'format' => 'inline',
+          'image_field' => 'field_picture',
+          'image_style' => 'large',
+          'play_class' => 'button icon-play',
         ),
-        'type' => 'file_rendered',
-        'weight' => 1,
+        'type' => 'file_click_to_play',
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 10,
       ),
     ),
     'entity_type' => 'node',
@@ -175,7 +194,7 @@ function flight_page_field_default_field_instances() {
         'browser_plugins' => array(
           'media_default--media_browser_1' => 0,
           'media_default--media_browser_my_files' => 0,
-          'media_filepickerio' => 0,
+          'media_inkfilepicker' => 0,
           'media_internet' => 0,
           'upload' => 0,
         ),
@@ -205,19 +224,28 @@ function flight_page_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'image',
+        'module' => 'foundation_formatters',
         'settings' => array(
-          'image_link' => '',
+          'edit' => array(
+            'editor' => 'form',
+          ),
+          'hide_if_field' => 'field_media',
           'image_style' => 'large',
+          'image_style_large' => '',
+          'image_style_medium' => '',
+          'image_style_small' => '',
+          'link_field' => '',
+          'placeholder_dimensions' => '',
+          'placeholder_text' => '',
         ),
-        'type' => 'image',
-        'weight' => 2,
+        'type' => 'image_super',
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'node',
@@ -252,7 +280,7 @@ function flight_page_field_default_field_instances() {
         'browser_plugins' => array(
           'media_default--media_browser_1' => 'media_default--media_browser_1',
           'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
-          'media_filepickerio' => 'media_filepickerio',
+          'media_inkfilepicker' => 'media_inkfilepicker',
           'media_internet' => 0,
           'upload' => 'upload',
         ),
@@ -273,7 +301,11 @@ function flight_page_field_default_field_instances() {
       'default' => array(
         'label' => 'hidden',
         'module' => 'text',
-        'settings' => array(),
+        'settings' => array(
+          'edit' => array(
+            'editor' => 'plain_text',
+          ),
+        ),
         'type' => 'text_default',
         'weight' => 0,
       ),
@@ -282,11 +314,11 @@ function flight_page_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(
           'edit' => array(
-            'editor' => 'direct',
+            'editor' => 'plain_text',
           ),
         ),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'node',
