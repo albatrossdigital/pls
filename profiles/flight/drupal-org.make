@@ -96,9 +96,6 @@ projects[google_analytics][subdir] = "contrib"
 projects[simplehtmldom][version] = "1.12"
 projects[simplehtmldom][subdir] = "contrib"
 
-projects[wysiwyg_template][version] = "2.11"
-projects[wysiwyg_template][subdir] = "contrib"
-
 projects[variable][version] = "2.5"
 projects[variable][subdir] = "contrib"
 
@@ -143,6 +140,9 @@ projects[ckeditor_link][subdir] = "contrib"
 
 projects[ckeditor_link_file][version] = "1.3"
 projects[ckeditor_link_file][subdir] = "contrib"
+
+projects[image_resize_filter][version] = "1.14"
+projects[image_resize_filter][subdir] = "contrib"
 
 projects[advanced_link][version] = "1.3"
 projects[advanced_link][subdir] = "contrib"
@@ -515,23 +515,10 @@ libraries[ckeditor][directory_name] = ckeditor
 ; Fix CKEditor call to jQuery.browser
 projects[ckeditor][patch][2199995] = "http://drupal.org/files/issues/ckeditor-219995-jQuery_browser_test_deprecated-2.patch"
 
-; Fix Issue with media and CKEditor ACF
-; Updated Aug 25, 2014
-; @t6odo: still needed? Oct 8 - switching to using ckeditor_media for media-ckeditor integration
-;projects[media][patch][2177893] = http://drupal.org/files/issues/media-ckeditor4-media-plugin-2177893-13.patch
-
-; Fix media z-index issue with Jquery.ui 1.10
-; Fixed Oct 4 2014
-;projects[media][patch][2272567] = "http://drupal.org/files/issues/media-dialog-zindex-2272567-1.patch"
-
 ; Fix adding media to summaries
 ; Found as a link on https://drupal.org/comment/8312617#comment-8312617
 ; Last checked Aug 25, 2014
 projects[media][patch][1995030] = "http://drupal.org/files/issues/media-7.x-2.x-wysiwyg-summary-support-1995030-6.patch"
-
-; Fix to add media edit button
-; Fixed Oct 4 2014
-;projects[media][patch][2192981] = http://drupal.org/files/issues/media-restore-edit-button-2192981-13.patch
 
 ; Allow us to specify file types on media admin page
 ; Updated Aug 25, 2014
@@ -547,7 +534,28 @@ projects[redirect][patch][1796596s] = "http://drupal.org/files/issues/redirect.c
 ; Make medium the default display suite and layout instead of large
 projects[zurb-foundation][patch][2237041] = "https://www.drupal.org/files/issues/zurb_foundation-2237041-default-layout-classes-3.patch"
 
+; Fix to add remove upload tab from ckeditor_media
+projects[ckeditor][patch][2355895] = "http://drupal.org/files/issues/ckeditor_media-image2-remove-upload-tab.patch"
+
+; ckeditor_media: Title and Alt tags don't come through when adding new images
+projects[ckeditor][patch][2345305] = "http://drupal.org/files/issues/Add-support-for-population-of-alt-title-attributes-2345305-1.patch"
+
+
+
 ; +++++ Patches No longer used +++++
+
+; Fix Issue with media and CKEditor ACF
+; Updated Aug 25, 2014
+; @t6odo: still needed? Oct 8 - switching to using ckeditor_media for media-ckeditor integration
+;projects[media][patch][2177893] = http://drupal.org/files/issues/media-ckeditor4-media-plugin-2177893-13.patch
+
+; Fix media z-index issue with Jquery.ui 1.10
+; Fixed Oct 4 2014
+;projects[media][patch][2272567] = "http://drupal.org/files/issues/media-dialog-zindex-2272567-1.patch"
+
+; Fix to add media edit button
+; Fixed Oct 4 2014
+;projects[media][patch][2192981] = http://drupal.org/files/issues/media-restore-edit-button-2192981-13.patch
 
 ; Fix oembed module integration with Edit
 ; @todo: removed because it was causing oembed warning messages.  Do we want this?
@@ -609,9 +617,6 @@ projects[zurb-foundation][patch][2237041] = "https://www.drupal.org/files/issues
 	;projects[media][patch][1504696] = "http://drupal.org/files/issues/media-add-ckeditor-support-1504696-120.patch"
 
 
-; Add support for ckeditor module to wysiwyg_template
-; This has been added to wysiwyg_template-7.x-2.10
-;projects[wysiwyg_template][patch][1952614] = "http://drupal.org/files/wysiwyg_template-add-support-for-ckeditor-module-1952614-3.patch"
 
 ; Flexslider colorbox support
 ; @todo: do we want this?

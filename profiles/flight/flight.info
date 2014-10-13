@@ -122,10 +122,13 @@ dependencies[] = focal_point
 dependencies[] = plupload
 dependencies[] = multiform
 dependencies[] = media_bulk_upload
-dependencies[] = media_wysiwyg
-dependencies[] = media_wysiwyg_view_mode
+dependencies[] = ckeditor
+dependencies[] = ckeditor_media
+dependencies[] = ckeditor_widgets
+dependencies[] = image_resize_filter
 #dependencies[] = media_inkfilepicker
-
+#dependencies[] = media_wysiwyg
+#dependencies[] = media_wysiwyg_view_mode
 
 ; Flight - Contrib - Workflow
 #dependencies[] = workbench
