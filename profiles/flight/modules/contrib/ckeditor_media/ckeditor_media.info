@@ -5,10 +5,9 @@ package     = User interface
 dependencies[] = media
 dependencies[] = ckeditor
 
-
-; Information added by drush on 2014-10-13
+; Information added by Drupal.org packaging script on 2013-12-16
 version = "7.x-1.x-dev"
 core = "7.x"
 project = "ckeditor_media"
-datestamp = "1413228473"
+datestamp = "1387226306"
 

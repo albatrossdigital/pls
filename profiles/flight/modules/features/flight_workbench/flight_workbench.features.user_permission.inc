@@ -15,7 +15,6 @@ function flight_workbench_user_default_permissions() {
     'name' => 'access workbench',
     'roles' => array(
       'administrator' => 'administrator',
-      'authenticated user' => 'authenticated user',
     ),
     'module' => 'workbench',
   );

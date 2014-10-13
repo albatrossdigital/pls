@@ -1,0 +1,13 @@
+diff --git a/includes/ckeditor.utils.js b/includes/ckeditor.utils.js
+index 90ee058..d5faf47 100644
+--- a/includes/ckeditor.utils.js
++++ b/includes/ckeditor.utils.js
+@@ -221,6 +221,8 @@ if (typeof window.CKEDITOR_BASEPATH === 'undefined') {
+         }
+       }
+     }
++    // @todo: not need
++    textarea_settings.extraPlugins+=',widgetfoundation';
+     return textarea_settings;
+   }
+ 

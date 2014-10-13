@@ -9,67 +9,53 @@
  */
 function flight_input_formats_wysiwyg_template_default_templates() {
   $templates = array();
-  $templates['faq_list'] = array(
-    'title' => 'FAQ List',
-    'description' => 'Sets up a list of links with anchors',
-    'weight' => 0,
+  $templates['accordion'] = array(
+    'title' => 'Accordion',
+    'description' => 'Creates a collapsible accordion',
     'fid' => 0,
-    'body' => '<ol><li><a href="#link1">Link one</a></li>
-	<li><a href="#link2">Link two</a></li>
-	<li><a href="#link3">Link three</a></li>
-</ol>
+    'body' => '<div class="section-container accordion" data-section="accordion"><section class="active"><p class="title" data-section-title=""><a href="#">Section 1</a></p>
 
-<h3><a id="link1" name="link1"></a>Link one</h3>
+		<div class="content" data-section-content=""><p>Content of section 1.</p>
+		</div>
+	</section>
 
-<p>Note: Create an anchor for each title, and link to it in the links above.</p>
+	<section><p class="title" data-section-title=""><a href="#">Section 2</a></p>
 
-<h3><a id="link2" name="link2"></a>Link two</h3>
+		<div class="content" data-section-content=""><p>Content of section 2.</p>
+		</div>
+	</section>
 
-<p>Note: Create an anchor for each title, and link to it in the links above.</p>
+	<section><p class="title" data-section-title=""><a href="#">Section 3</a></p>
 
-<h3><a id="link3" name="link3"></a>Link three</h3>
+		<div class="content" data-section-content=""><p>Content of section 3.</p>
+		</div>
+	</section>
 
-<p>Note: Create an anchor for each title, and link to it in the links above.</p>
-',
-    'name' => 'faq_list',
-    'content_types' => array(),
-  );
-  $templates['foundation_two_columns_equal'] = array(
-    'title' => 'Two Columns Equal',
-    'description' => 'Two columns equal size',
-    'weight' => 0,
-    'fid' => 5,
-    'body' => '<div class="row"><div class="columns large-6 wysiwyg-dotted">Part 1</div>
+	<section><p class="title" data-section-title=""><a href="#">Section 4</a></p>
 
-	<div class="columns large-6 wysiwyg-dotted">Part 2</div>
+		<div class="content" data-section-content=""><p>Content of section 4.</p>
+		</div>
+	</section>
+
+	<section><p class="title" data-section-title=""><a href="#">Section 5</a></p>
+
+		<div class="content" data-section-content=""><p>Content of section 5.</p>
+		</div>
+	</section>
 </div>
 ',
-    'name' => 'foundation_two_columns_equal',
-    'content_types' => array(),
+    'name' => 'accordion',
   );
-  $templates['foundation_two_columns_left_side'] = array(
-    'title' => 'Two Columns Left Sidebar',
-    'description' => 'Foundation fluid 2 column 3 x 9',
-    'weight' => 0,
-    'fid' => 12,
-    'body' => '<div class="row"><div class="columns large-3 wysiwyg-dotted">Part 1</div>
+  $templates['pull_out_quote'] = array(
+    'title' => 'Pull-out Quote',
+    'description' => 'Pull-out quotes display quotes or excerpts in large text.',
+    'fid' => 0,
+    'body' => '<div class="quote"><p>Quote text</p>
 
-	<div class="columns large-9 wysiwyg-dotted">Part 2</div>
+	<div class="quote-byline">— Jane Doe</div>
 </div>
 ',
-    'name' => 'foundation_two_columns_left_side',
-    'content_types' => array(),
-  );
-  $templates['image_with_caption'] = array(
-    'title' => 'Image With Caption',
-    'description' => 'Simple placeholder for image with caption',
-    'weight' => 0,
-    'fid' => 9,
-    'body' => '<div class="image-caption-wrap"><div class="image-wrap wysiwyg-dotted"><img src="http://placehold.it/300x300" /></div>
-	<cite class="wysiwyg-dotted">Caption goes here</cite></div>
-',
-    'name' => 'image_with_caption',
-    'content_types' => array(),
+    'name' => 'pull_out_quote',
   );
   return $templates;
 }

@@ -1,0 +1,15 @@
+diff --git a/plugins/mediaBrowser/plugin.js b/plugins/mediaBrowser/plugin.js
+index aed6414..ce651b2 100644
+--- a/plugins/mediaBrowser/plugin.js
++++ b/plugins/mediaBrowser/plugin.js
+@@ -87,6 +87,10 @@
+         if (element.hidden && element.filebrowser && element.type != 'fileButton') {
+           element.hidden = false;
+         }
++        // Hide the Image2 Upload tab
++        if (element.id == 'Upload' && element.filebrowser != undefined && element.filebrowser == 'uploadButton') {
++          element.hidden = true;
++        }
+       }
+     }
+   });

@@ -66,7 +66,9 @@ function flight_permissions_user_default_permissions() {
   // Exported permission: 'access draggableviews'.
   $permissions['access draggableviews'] = array(
     'name' => 'access draggableviews',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'draggableviews',
   );
 
@@ -82,7 +84,9 @@ function flight_permissions_user_default_permissions() {
   // Exported permission: 'access site in maintenance mode'.
   $permissions['access site in maintenance mode'] = array(
     'name' => 'access site in maintenance mode',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'system',
   );
 
@@ -109,6 +113,15 @@ function flight_permissions_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'administer blocks'.
+  $permissions['administer blocks'] = array(
+    'name' => 'administer blocks',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'block',
+  );
+
   // Exported permission: 'administer content types'.
   $permissions['administer content types'] = array(
     'name' => 'administer content types',
@@ -119,26 +132,10 @@ function flight_permissions_user_default_permissions() {
   // Exported permission: 'administer filters'.
   $permissions['administer filters'] = array(
     'name' => 'administer filters',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'filter',
-  );
-
-  // Exported permission: 'administer menu'.
-  $permissions['administer menu'] = array(
-    'name' => 'administer menu',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'menu',
-  );
-
-  // Exported permission: 'administer meta tags'.
-  $permissions['administer meta tags'] = array(
-    'name' => 'administer meta tags',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'metatag',
   );
 
   // Exported permission: 'administer modules'.
@@ -166,13 +163,13 @@ function flight_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
-  // Exported permission: 'administer redirects'.
-  $permissions['administer redirects'] = array(
-    'name' => 'administer redirects',
+  // Exported permission: 'administer shortcuts'.
+  $permissions['administer shortcuts'] = array(
+    'name' => 'administer shortcuts',
     'roles' => array(
       'administrator' => 'administrator',
     ),
-    'module' => 'redirect',
+    'module' => 'shortcut',
   );
 
   // Exported permission: 'administer site configuration'.
@@ -192,7 +189,9 @@ function flight_permissions_user_default_permissions() {
   // Exported permission: 'administer taxonomy'.
   $permissions['administer taxonomy'] = array(
     'name' => 'administer taxonomy',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
@@ -206,7 +205,9 @@ function flight_permissions_user_default_permissions() {
   // Exported permission: 'administer url aliases'.
   $permissions['administer url aliases'] = array(
     'name' => 'administer url aliases',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'path',
   );
 
@@ -243,14 +244,18 @@ function flight_permissions_user_default_permissions() {
   // Exported permission: 'cancel account'.
   $permissions['cancel account'] = array(
     'name' => 'cancel account',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'user',
   );
 
   // Exported permission: 'change own username'.
   $permissions['change own username'] = array(
     'name' => 'change own username',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'user',
   );
 
@@ -266,31 +271,46 @@ function flight_permissions_user_default_permissions() {
   // Exported permission: 'customize shortcut links'.
   $permissions['customize shortcut links'] = array(
     'name' => 'customize shortcut links',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'shortcut',
+  );
+
+  // Exported permission: 'delete revisions'.
+  $permissions['delete revisions'] = array(
+    'name' => 'delete revisions',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: 'display drupal links'.
   $permissions['display drupal links'] = array(
     'name' => 'display drupal links',
-    'roles' => array(),
-    'module' => 'admin_menu',
-  );
-
-  // Exported permission: 'edit meta tags'.
-  $permissions['edit meta tags'] = array(
-    'name' => 'edit meta tags',
     'roles' => array(
       'administrator' => 'administrator',
     ),
-    'module' => 'metatag',
+    'module' => 'admin_menu',
   );
 
   // Exported permission: 'flush caches'.
   $permissions['flush caches'] = array(
     'name' => 'flush caches',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'admin_menu',
+  );
+
+  // Exported permission: 'import media'.
+  $permissions['import media'] = array(
+    'name' => 'import media',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media',
   );
 
   // Exported permission: 'revert revisions'.
@@ -305,14 +325,18 @@ function flight_permissions_user_default_permissions() {
   // Exported permission: 'select account cancellation method'.
   $permissions['select account cancellation method'] = array(
     'name' => 'select account cancellation method',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'user',
   );
 
   // Exported permission: 'switch shortcut sets'.
   $permissions['switch shortcut sets'] = array(
     'name' => 'switch shortcut sets',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'shortcut',
   );
 
@@ -320,7 +344,7 @@ function flight_permissions_user_default_permissions() {
   $permissions['view own unpublished content'] = array(
     'name' => 'view own unpublished content',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'administrator' => 'administrator',
     ),
     'module' => 'node',
   );
@@ -329,7 +353,7 @@ function flight_permissions_user_default_permissions() {
   $permissions['view revisions'] = array(
     'name' => 'view revisions',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'administrator' => 'administrator',
     ),
     'module' => 'node',
   );

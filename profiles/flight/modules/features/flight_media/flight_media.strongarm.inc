@@ -90,12 +90,5 @@ function flight_media_strongarm() {
   );
   $export['field_bundle_settings_file__video'] = $strongarm;
 
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'media_icon_base_directory';
-  $strongarm->value = 'public://media-icons';
-  $export['media_icon_base_directory'] = $strongarm;
-
   return $export;
 }

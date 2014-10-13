@@ -62,8 +62,28 @@
         // use that. For now, just remove the server name from the absolute
         // url to get the relative. FIX THIS!!!
         var fileUrl = mediaFiles[0].url.replace(location.origin, '');
+        var fileAlt = (mediaFiles[0].alt) ? mediaFiles[0].alt : "" ;
+        var fileTitle = (mediaFiles[0].title) ? mediaFiles[0].title : "";
+
         var parts = evt.sender.filebrowser.target.split(':');
         dialog.setValueOf(parts[0], parts[1], fileUrl);
+
+        // Add title/alt attr using default CKEditor image values.
+        var altEl = dialog.getContentElement("info", "txtAlt");
+        if (altEl) {
+          altEl.setValue(fileAlt);
+        }
+        // Try CKEditor defined title value first.
+        var titleEl = dialog.getContentElement("info", "txtGenTitle");
+        if (titleEl) {
+          titleEl.setValue(fileTitle);
+        } else {
+          // If it doesn't work, try a more generic ID.
+          titleEl = dialog.getContentElement("info", "txtTitle");
+          if (titleEl) {
+            titleEl.setValue(fileTitle);
+          }
+        }
       }
     });
     $(mediaIframe).parent().css({'z-index':'10002'});
@@ -86,6 +106,10 @@
         attachMediaBrowser(evt.editor, evt.data.name, definition, element.elements);
         if (element.hidden && element.filebrowser && element.type != 'fileButton') {
           element.hidden = false;
+        }
+        // Hide the Image2 Upload tab
+        if (element.id == 'Upload' && element.filebrowser != undefined && element.filebrowser == 'uploadButton') {
+          element.hidden = true;
         }
       }
     }

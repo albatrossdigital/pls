@@ -14,12 +14,6 @@ function form_beautifier_settings() {
     '#description' => l('example', 'http://bit.ly/EtQfr', array('attributes' => array('target' => '_blank'))),
     '#default_value' => variable_get('form_beautifier_chk_rdio_enable', 0),
   );
-  $form['form_beautifier_enable']['form_beautifier_fnd_multi_enable'] = array(
-    '#type' => 'checkbox',
-    '#title' => 'Enable Foundation Multiselect',
-    '#description' => l('example', 'http://andreamariani.net/lab/zurbfoundation5-multiselect/', array('attributes' => array('target' => '_blank'))).  t("Note: this plugin requires Foundation 5"),
-    '#default_value' => variable_get('form_beautifier_fnd_multi_enable', 0),
-  );
   $form['form_beautifier_enable']['form_beautifier_drpdwn_enable'] = array(
     '#type' => 'checkbox',
     '#title' => 'Enable Dropdown quickfiltering',
@@ -31,12 +25,6 @@ function form_beautifier_settings() {
     '#title' => 'Enable Dropdown Check-list',
     '#description' => l('example', 'http://bit.ly/9ycFhU', array('attributes' => array('target' => '_blank'))),
     '#default_value' => variable_get('form_beautifier_ddcl_enable', 0),
-  );
-  $form['form_beautifier_enable']['form_beautifier_select2_enable'] = array(
-    '#type' => 'checkbox',
-    '#title' => 'Enable Select 2',
-    '#description' => l('example', 'http://ivaynberg.github.com/select2', array('attributes' => array('target' => '_blank'))),
-    '#default_value' => variable_get('form_beautifier_select2_enable', 0),
   );
   $form['form_beautifier_enable']['form_beautifier_focus_enable'] = array(
     '#type' => 'checkbox',
@@ -124,28 +112,6 @@ function form_beautifier_settings() {
 	    '#description' => 'Use individual Form IDs separated by a comma to limit which forms this module DOES NOT affects. This value will override Enabled Form settings above.',
 	    '#default_value' => variable_get('form_beautifier_checkboxes_radios_exclude', ''),
 	  );  
-  }
-
-  // Settings for Foundation Multiselect
-  if (variable_get('form_beautifier_fnd_multi_enable', 0)) {
-    $form['form_beautifier_fnd_multi'] = array(
-      '#type' => 'fieldset',
-      '#title' => 'Dropdown Select',
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-    );
-    $form['form_beautifier_fnd_multi']['form_beautifier_fnd_multi_include'] = array(
-      '#type' => 'textarea',
-      '#title' => 'Enabled Forms',
-      '#description' => 'Use individual Form IDs separated by a comma to limit which forms this module affects. <br >\'*\' specifies ALL FORMS.',
-      '#default_value' => variable_get('form_beautifier_fnd_multi_include', '*'),
-    );
-    $form['form_beautifier_fnd_multi']['form_beautifier_fnd_multi_exclude'] = array(
-      '#type' => 'textarea',
-      '#title' => 'Disabled Forms',
-      '#description' => 'Use individual Form IDs separated by a comma to limit which forms this module DOES NOT affects. This value will override Enabled Form settings above.',
-      '#default_value' => variable_get('form_beautifier_fnd_multi_exclude', ''),
-    );  
   }
   
   
@@ -255,41 +221,6 @@ function form_beautifier_settings() {
 	  );  
   }
 
-  // Settings for select2
-  if (variable_get('form_beautifier_select2_enable', 0)) {
-    $form['form_beautifier_select2'] = array(
-      '#type' => 'fieldset',
-      '#title' => 'Select2',
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-    );
-    $form['form_beautifier_select2']['form_beautifier_select2_selector'] = array(
-      '#type' => 'textfield',
-      '#title' => 'jQuery Selector',
-      '#description' => 'Customize the selector.  The form will have the class select2.',
-      '#default_value' => variable_get('form_beautifier_select2_selector', 'form.select2 select'),
-    );
-    $form['form_beautifier_select2']['form_beautifier_select2_width'] = array(
-      '#type' => 'textfield',
-      '#title' => 'Width',
-      '#description' => 'Width of the dropdown.',
-      '#default_value' => variable_get('form_beautifier_select2_width', '200px'),
-      '#size' => 3,
-    );
-    $form['form_beautifier_select2']['form_beautifier_select2_include'] = array(
-      '#type' => 'textarea',
-      '#title' => 'Enabled Forms',
-      '#description' => 'Use individual Form IDs separated by a comma to limit which forms this module affects. You may also use the $form["#id"
-      ] attribute, which is particularly useful for targeting specifc views exposed filter forms and webforms. <br >\'*\' specifies ALL FORMS.',
-      '#default_value' => variable_get('form_beautifier_select2_include', '*'),
-    );
-    $form['form_beautifier_select2']['form_beautifier_select2_exclude'] = array(
-      '#type' => 'textarea',
-      '#title' => 'Disabled Forms',
-      '#description' => 'Use individual Form IDs separated by a comma to limit which forms this module DOES NOT affects. This value will override Enabled Form settings above.',
-      '#default_value' => variable_get('form_beautifier_select2_exclude', ''),
-    );
-  }
   
   
   // Settings for Field Focus

@@ -16,7 +16,7 @@ function flight_slideshow_bean_admin_ui_types() {
   $bean_type->name = 'slideshow';
   $bean_type->label = 'Slideshow';
   $bean_type->options = '';
-  $bean_type->description = 'Creates a carousel slideshow (with Foundation Orbit)';
+  $bean_type->description = 'Creates a carousel slideshow (with Bootstrap)';
   $export['slideshow'] = $bean_type;
 
   return $export;
