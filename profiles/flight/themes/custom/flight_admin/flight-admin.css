@@ -17,6 +17,8 @@ form.page-node-form {
   border-radius: 3px;
   border: 0;
   padding: 5px;
+  margin-left: 10px;
+  margin-right: -10px;
 }
 
 .filter-wrapper .clearfix {

@@ -50,7 +50,6 @@ dependencies[] = ds_extras
 dependencies[] = foundation_formatters
 dependencies[] = ds_ui
 dependencies[] = stringoverrides
-dependencies[] = googleanalytics
 dependencies[] = features
 dependencies[] = strongarm
 dependencies[] = bean
@@ -60,12 +59,12 @@ dependencies[] = libraries
 dependencies[] = advagg
 dependencies[] = simplehtmldom
 dependencies[] = menu_trail_by_path
-dependencies[] = smtp
+dependencies[] = underscore
+#dependencies[] = smtp
 #dependencies[] = override_node_options
 #dependencies[] = entitycache
 #dependencies[] = purge
 #dependencies[] = magic
-dependencies[] = underscore
 
 
 ; Flight - Contrib - User Interface
@@ -76,13 +75,14 @@ dependencies[] = navbar
 dependencies[] = admin_select
 dependencies[] = admin_views
 dependencies[] = ckeditor
-;dependencies[] = wysiwyg_filter
-dependencies[] = wysiwyg_template
+dependencies[] = ckeditor_media
 dependencies[] = module_filter
 dependencies[] = filter_perms
 dependencies[] = menu_block
 dependencies[] = menu_firstchild
 #dependencies[] = typekit
+#dependencies[] = wysiwyg_filter
+#dependencies[] = wysiwyg_template
 
 
 ; Flight - Contrib - Field UI and Content Types
@@ -106,8 +106,8 @@ dependencies[] = googleanalytics
 dependencies[] = metatag
 dependencies[] = metatag_ui
 dependencies[] = metatag_opengraph
-#dependencies[] = linkchecker
 dependencies[] = share42
+#dependencies[] = linkchecker
 #dependencies[] = page_title
 
 
@@ -124,12 +124,12 @@ dependencies[] = multiform
 dependencies[] = media_bulk_upload
 dependencies[] = media_wysiwyg
 dependencies[] = media_wysiwyg_view_mode
-dependencies[] = media_inkfilepicker
+#dependencies[] = media_inkfilepicker
 
 
 ; Flight - Contrib - Workflow
-dependencies[] = workbench
-dependencies[] = workbench_media
+#dependencies[] = workbench
+#dependencies[] = workbench_media
 #dependencies[] = workbench_moderation
 #dependencies[] = scheduler
 #dependencies[] = scheduler_workbench

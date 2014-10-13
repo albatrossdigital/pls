@@ -6,9 +6,9 @@ hidden = TRUE
 dependencies[] = oembedcore
 dependencies[] = link
 
-; Information added by drush on 2014-09-19
+; Information added by drush on 2014-10-13
 version = "7.x-1.0-rc2+24-dev"
 core = "7.x"
 project = "oembed"
-datestamp = "1411161520"
+datestamp = "1413228470"
 
