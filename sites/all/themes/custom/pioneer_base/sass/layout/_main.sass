@@ -1,6 +1,13 @@
 // Non-modular or client styles for the .l-content region.
 
 
+// Children of Foundation elements
+// ----------------------------------------------------------------------------
+.medium-block-grid-2
+  .body p
+    display: inline
+
+
 // Content bottom
 // ----------------------------------------------------------------------------
 .l-content-bottom-region
@@ -9,12 +16,24 @@
 
     h2.block-title
       +grid-column(3)
-      @extend %header-3-dash
+      @extend %header-2-dash
 
     .content,
     form
       +grid-column(9)
 
-  .block-owwl-catalog
+  .block-owwl-catalog form
     select
       display: none !important
+
+    .search-submit,
+    .form-radios
+      +grid-column(6)
+
+
+  .block
+    padding-top: +rem-calc(100)
+
+    &.block-bean-pls-home-services
+      padding-top: 1em
+      margin-left: 25%

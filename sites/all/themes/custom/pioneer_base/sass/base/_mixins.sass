@@ -371,18 +371,6 @@ $animation-rotation-border-width: rem-calc(2)!default
   a
     color: $teal
 
-%header-3-dash
-  @extend %header-3
-
-  &:before
-    content: "\2014"; //emdash
-    font-size: $h2-font-size
-    font-family: Arial, sans-serif
-    font-weight: bold
-    display: block
-    line-height: 0
-    padding-bottom: 1rem
-
 %header-4
   @extend %header-core
   font-size: $h4-font-size
@@ -396,12 +384,27 @@ $animation-rotation-border-width: rem-calc(2)!default
     color: $success-color
 
 %header-5
-  @extend %header-core
+  font-family: $ff-normal
+  font-weight: bold
   font-size: $h5-font-size
 
 %header-6
   @extend %header-core
   font-size: $h6-font-size
+
+
+%sidebar-dash
+  @extend %header-2
+  font-size: rem-calc(22)
+
+  &:before
+    content: "\2014"; //emdash
+    font-size: $h2-font-size
+    font-family: Arial, sans-serif
+    font-weight: bold
+    display: block
+    line-height: 0
+    padding-bottom: 1rem
 
 // general extend
 // use: +e(hide)
@@ -654,3 +657,6 @@ $animation-rotation-border-width: rem-calc(2)!default
       line-height: $form-spacing*2
       border-left: 1px solid $input-border-color
       display: block
+      right: 0
+      left: auto
+      padding: .12em 0 !important

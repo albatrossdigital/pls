@@ -2,8 +2,25 @@
 
 // Define new media query
 
+// Modify page layout margins
+#page-title,
+.block-bean-pls-home-slogan h1
+  margin-top: rem-calc(50)
+  margin-bottom: rem-calc(50)
 
-// Modify margins
+.sidebar-first
+  padding-left: 0
+  padding-right: 2.5rem
+
+.columns.main,
+.l-content-bottom-region section.block .content,
+.l-content-bottom-region #library-catalog-form
+  padding-right: 0
+  padding-left: 2.5rem
+
+
+
+// Modify element margins
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
   &.no-margin
     margin-bottom: 0
@@ -20,6 +37,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
 
   &.larger-margin-bottom
     margin-bottom: $header-bottom-margin * 2
+
 
 //.row .row
 //  margin-left: 0

@@ -58,9 +58,7 @@
       <?php if (!empty($page['header'])): ?>
         <!--.l-header-region -->
         <div class="columns medium-8"><div class="l-header-region row right">
-          <div class="medium-12 columns">
             <?php print render($page['header']); ?>
-          </div>
         </div></div>
         <!--/.l-header-region -->
       <?php endif; ?>
