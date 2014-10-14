@@ -12,6 +12,7 @@ module.exports = function (grunt) {
             cwd: 'flight_subtheme',
             src: [
               '.gitignore',
+              '.jshintrc',
               '*',
               '{,**/}*',
               '!sass',
@@ -64,6 +65,7 @@ module.exports = function (grunt) {
           '<%= themeName %>/*.php',
           '<%= themeName %>/*.info',
           '<%= themeName %>/js/*.js',
+          '<%= themeName %>/js/*.coffee',
           '<%= themeName %>/*.txt',
           '<%= themeName %>/package.json'
         ],

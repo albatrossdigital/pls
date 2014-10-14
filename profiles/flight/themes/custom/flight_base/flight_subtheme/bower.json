@@ -2,6 +2,7 @@
   "name": "Flight Subtheme",
   "dependencies": {
     "foundation": "~5.4.1",
-    "bourbon": "3.2.2"
+    "bourbon": "3.2.2",
+    "fontawesome": "4.2.0"
   }
 }

@@ -42,6 +42,39 @@ function flight_input_formats_ckeditor_settings_alter(&$settings) {
   $settings['autoGrow_maxHeight'] = 500;
 }
 
+/**
+ * Implements hook_element_info_alter().
+ */
+function flight_input_formats_element_info_alter(&$types) {
+  $types['text_format']['#pre_render'][] = 'flight_input_formats_pre_render_text_format';
+}
+
+/**
+ * Builds a map of media tags in the element.
+ *
+ * Builds a map of the media tags in an element that are being rendered to their
+ * rendered HTML. The map is stored in JS, so we can transform them when the
+ * editor is being displayed.
+ */
+function flight_input_formats_pre_render_text_format($element) {
+
+  $attached = array(
+    drupal_get_path('module', 'media_wysiwyg') . '/js/media_wysiwyg.filter.js',
+    drupal_get_path('module', 'flight_input_formats') . '/js/flightInputFormat.js'
+  );
+  if (empty($element['#attached']['js'])) {
+    $element['#attached']['js'] = $attached;
+  }
+  else {
+    $element['#attached']['js'] = array_merge(
+      $element['#attached']['js'], 
+      $attached
+    );
+  }
+  
+  return $element;
+}
+
 
 /**
  * Implements hook_flight_wysiwyg_filter_defaults()
@@ -62,9 +95,6 @@ function flight_input_formats_flight_wysiwyg_filter_defaults() {
  */
 function flight_input_formats_form_alter(&$form, &$form_state, $form_id) {
 
-  // add ckeditor wysiwyg functions
-  drupal_add_js(drupal_get_path('module', 'flight_input_formats') . '/js/flightInputFormat.js');
-
   if (strpos($form_id, '_node_form') !== FALSE){
     
     // Add spellchecker
@@ -81,3 +111,4 @@ function flight_input_formats_form_alter(&$form, &$form_state, $form_id) {
   }
   //dpm($form_id);
 }
+

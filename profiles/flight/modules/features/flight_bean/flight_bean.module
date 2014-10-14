@@ -15,7 +15,7 @@ function flight_bean_form_bean_form_alter(&$form, &$form_state) {
   $form['revision']['is_new_revision']['#type'] = 'hidden';
   $form['revision']['default_revision']['#type'] = 'hidden';
   $form['revision']['log']['#type'] = 'hidden';
-  if (count($form['view_mode']['#options']) <= 1) {
+  if (!empty($form['view_mode']) && count($form['view_mode']['#options']) <= 1) {
     $form['view_mode']['#type'] = 'hidden';
   } 
   $form['redirect']['#attributes']['style'] = 'display:none;';

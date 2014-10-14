@@ -1,4 +1,4 @@
-(($, Drupal) ->
+(($, Drupal, Foundation) ->
   Drupal.behaviors.flight_subtheme = attach: (context, settings) ->
     
     # waits for image(s) to load then calls callback
@@ -51,10 +51,13 @@
 
         return
 
+      # Call resize to init theme js
+      $(window).trigger('resize')
+
       return
 
     return
 
   return
 
-) jQuery, Drupal
+) jQuery, Drupal, Foundation
