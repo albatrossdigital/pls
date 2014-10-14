@@ -1,5 +1,5 @@
 (function() {
-  (function($, Drupal) {
+  (function($, Drupal, Foundation) {
     Drupal.behaviors.flight_subtheme = {
       attach: function(context, settings) {
         var reg, triggerImageSize;
@@ -41,9 +41,10 @@
               $(window).trigger("resize");
             });
           });
+          $(window).trigger('resize');
         });
       }
     };
-  })(jQuery, Drupal);
+  })(jQuery, Drupal, Foundation);
 
 }).call(this);

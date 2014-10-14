@@ -102,6 +102,12 @@ function flight_install() {
   variable_set('admin_theme', $admin_theme);
   variable_set('node_admin_theme', '1');
 
+  // Set underscore module weight https://www.drupal.org/node/2238067
+  db_update('system')
+    ->fields(array('weight' => -1))
+    ->condition('name', 'underscore')
+    ->execute();
+
   // Set admin_menu as the admin_select toolbar for uid=1
   $account = user_load(1);
   $edit = array();

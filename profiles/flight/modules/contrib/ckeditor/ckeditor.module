@@ -45,25 +45,10 @@ define('CKEDITOR_ENTERMODE_DIV', 3);
 global $_ckeditor_configuration;
 global $_ckeditor_ids;
 
-require_once('includes/ckeditor.user.inc');
+module_load_include('inc', 'ckeditor', 'includes/ckeditor.user');
 
 $_ckeditor_configuration = array();
 $_ckeditor_ids = array();
-
-/**
- * Implements hook_hook_info().
- */
-function ckeditor_hook_info() {
-  $hooks = array(
-    'ckeditor_plugin',
-    'ckeditor_plugin_alter',
-    'ckeditor_security_filter',
-    'ckeditor_security_filter_alter',
-    'ckeditor_settings_alter',
-  );
-
-  return array_fill_keys($hooks, array('group' => 'ckeditor'));
-}
 
 /**
  * Implementation of hook_menu().
@@ -273,7 +258,6 @@ function ckeditor_page_build(&$page) {
  */
 function ckeditor_form_user_profile_form_alter(&$form, &$form_state) {
   if ($form['#user_category'] == 'account') {
-    module_load_include('inc', 'ckeditor', 'includes/ckeditor.user');
     ckeditor_user_customize($form, $form_state, 'user_profile_form');
   }
 }
@@ -779,3 +763,4 @@ function ckeditor_field_extra_fields() {
   );
   return $fields;
 }
+

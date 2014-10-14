@@ -45,26 +45,15 @@ function hook_ckeditor_plugin() {
       // Description of the plugin - it would be displayed in the plugins management section of profile settings.
       'desc' => t('Plugin description'),
       // The full path to the CKEditor plugins directory, with the trailing slash.
-      'path' => '/' . drupal_get_path('module', 'my_module') . '/plugin_dir/',
+      'path' => drupal_get_path('module', 'my_module') . '/plugin_dir/',
       'buttons' => array(
         'button_name' => array(
-          'icon' => 'icon/plugin_name.png',
+          'icon' => 'path to button icon',
           'label' => 'Button Label',
         )
       )
     )
   );
-}
-
-/**
- * Hook to extend/change CKEditor plugins.
- *
- * @param $plugins
- *   An associative array of plugins.
- */
-function hook_ckeditor_plugin_alter(&$plugins) {
-  // Remove a plugin button.
-  unset($plugins['plugin_name']['buttons']['button']);
 }
 
 /**

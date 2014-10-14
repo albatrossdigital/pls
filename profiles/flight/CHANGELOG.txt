@@ -1,6 +1,10 @@
 Changes for beta2
 - Switched to using the adminimal base admin theme
 - Updated flight_events to add geofield, repeating date api dependencies
+- Switched back to using the seven base admin theme
+- Removed wysiwyg_template
+- Improved the CKEditor media and template experience by integrating ckeditor_media, ckeditor_widgets, image_resize_filter
+- Bugfixes to module install error to fix various fatal JS errors on clean install
 
 Changes for beta1
 - Remade all features (content types, reach_blocks, reach_input_formats)

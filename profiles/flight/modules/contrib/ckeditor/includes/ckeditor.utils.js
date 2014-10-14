@@ -221,6 +221,8 @@ if (typeof window.CKEDITOR_BASEPATH === 'undefined') {
         }
       }
     }
+    // @todo: not need
+    textarea_settings.extraPlugins+=',widgetfoundation';
     return textarea_settings;
   }
 

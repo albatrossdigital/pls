@@ -119,13 +119,27 @@ module.exports = function(grunt) {
           preserveComments: 'some',
           mangle: false
         },
-        files: [{
-          expand: true,
-          cwd: 'js/foundation',
-          src: '**/*.js',
-          dest: 'js/foundation',
-          ext: '.min.js'
-        }]
+        files: {
+          'js/custom-foundation.min.js' : [
+            'js/foundation/foundation.js',
+            'js/foundation/foundation.abide.js',
+            'js/foundation/foundation.accordion.js',
+            'js/foundation/foundation.alert.js',
+            'js/foundation/foundation.clearing.js',
+            'js/foundation/foundation.dropdown.js',
+            'js/foundation/foundation.equalizer.js',
+            'js/foundation/foundation.interchange.js',
+            'js/foundation/foundation.joyride.js',
+            'js/foundation/foundation.magellan.js',
+            'js/foundation/foundation.offcanvas.js',
+            'js/foundation/foundation.orbit.js',
+            'js/foundation/foundation.reveal.js',
+            'js/foundation/foundation.slider.js',
+            'js/foundation/foundation.tab.js',
+            'js/foundation/foundation.tooltip.js',
+            'js/foundation/foundation.topbar.js'
+          ]
+        }
       }
     },
     stripmq: {
@@ -144,12 +158,18 @@ module.exports = function(grunt) {
     }
   });
 
+  
+  grunt.registerTask('warn', "Notice", function() {
+    grunt.log.writeln("If you encounter compilation errors make sure you have the flight_base theme include path configured correctly (see: sass/base/_init.sass).");
+  });
+  
+
   // Runs sass, sets vars
-  grunt.registerTask('compile-sass', ['sass:dist','stripmq', 'imagemin']);
+  grunt.registerTask('compile-sass', ['warn', 'sass:dist','stripmq', 'imagemin']);
 
   // Run watch at default settings
-  grunt.registerTask('default', ['sass:dev','stripmq','jshint','watch']);
+  grunt.registerTask('default', ['warn', 'sass:dev','stripmq','jshint','watch']);
 
   // Run watch with options
-  grunt.registerTask('build', ['compile-sass', 'uglify']);
+  grunt.registerTask('build', ['warn', 'compile-sass', 'uglify']);
 }

@@ -31,7 +31,7 @@ function flight_input_formats_filter_default_formats() {
         'weight' => -48,
         'status' => 1,
         'settings' => array(
-          'valid_elements' => 'p,a,div,span,h2,h3,h4,section,article,strong,b,i,em,cite,blockquote,small,sub,sup,code,ul,ol,li,dl,dt,dd,table,thead,tbody,th,tr,td,img,caption,br,hr',
+          'valid_elements' => 'p,a,div,span,h2,h3,h4,section,article,strong,b,i,em,cite,blockquote,small,sub,sup,code,ul,ol,li,dl,dt,dd,table,thead,tbody,th,tr,td,img,caption,br,hr,iframe',
           'valid_attributes' => 'src,href,target,width,height,colspan,span,alt,name,title,class,id,data-reaveal-id,data-clearing,data-abide,data-options,data-section,data-section-content,data-section-title',
           'valid_styles' => 'text-align,float',
         ),
@@ -48,15 +48,23 @@ function flight_input_formats_filter_default_formats() {
           'filter_url_length' => 72,
         ),
       ),
-      'filter_autop' => array(
-        'weight' => -45,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'filter_htmlcorrector' => array(
         'weight' => -44,
         'status' => 1,
         'settings' => array(),
+      ),
+      'image_resize_filter' => array(
+        'weight' => 0,
+        'status' => 1,
+        'settings' => array(
+          'link' => 0,
+          'link_class' => '',
+          'link_rel' => '',
+          'image_locations' => array(
+            'local' => 'local',
+            'remote' => 0,
+          ),
+        ),
       ),
     ),
   );
