@@ -104,7 +104,9 @@ function library_catalog_form($form, &$form_state) {
   $libraries = flight_config_view_data('library_list', 'default');
   $options = array(1 => t('All Locations'));
   foreach ($libraries as $library) {
-    $options[$library->field_field_library_id[0]['raw']['value']] = $library->node_title;
+    if (!empty($library->field_field_library_id)) {
+      $options[$library->field_field_library_id[0]['raw']['value']] = $library->node_title;
+    }
   }
   $form['locg'] = array(
     '#type' => 'select',
