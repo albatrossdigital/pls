@@ -2,29 +2,38 @@
 
 .l-header
 
+  .logo
+    margin-top: rem-calc(27)
+
   // Header links
   // ----------------------------------------------------------------------------
   section.block-bean
     float: right
+    min-width: rem-calc(350)
 
     .header-links
       background-color: $secondary-color
-      padding-right: 0
+      padding: 0
       margin: 0
 
       .button
         margin: 0
         width: 100%
+        padding-left: 0
+        padding-right: 0
+
+        &.secondary
+          color: $blue
 
       .columns.small-4
-        padding-right: 0
+        padding: 0
 
 
   // Main menu
   // ----------------------------------------------------------------------------
   section.block-domain-menu-block
     clear: both
-    padding-top: 1rem
+    padding-top: rem-calc(35)
 
     ul
       +list-float()
@@ -32,14 +41,15 @@
       li a
         padding: 0 0 0 1.5rem
 
+        &.active-trail,
+        &.active
+          color: $navy
+
 
 // Search in highlighted, or in content_bottom
 // ----------------------------------------------------------------------------
 .block-owwl-catalog
   margin: 2rem 0
-
-  form
-    +panel
 
   label
     display: none
@@ -49,7 +59,11 @@
     margin: 0
 
   form
-    +grid-row()
+
+    &>div
+      background-color: $gray-light
+      padding: $column-gutter
+      +grid-row()
     
     .form-radios
       +grid-column(2.5)

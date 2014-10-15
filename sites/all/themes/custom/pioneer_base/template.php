@@ -139,7 +139,7 @@ function pioneer_base_office_hours_field_formatter_default($vars) {
     // Generate HTML for Hours.
     $HTML_hours .= '<div class="row oh-display">'
 //             . '<div class="oh-display-label">'
-               . '<div class="columns small-6">'
+               . '<div class="columns small-6 label-above">'
                . $info['output_label']
                . '</div>'
                . '<div class="columns small-6 oh-display-times oh-display-' . (!$info['times'] ? 'closed' : 'hours')

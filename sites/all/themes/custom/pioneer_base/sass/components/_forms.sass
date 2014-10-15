@@ -1,7 +1,27 @@
 // Docs: http://foundation.zurb.com/docs/components/forms.html
 
-// Drupal specific classes
+// Webform styling
 // ----------------------------------------------------------------------------
+.node-type-webform
+  .columns.main
+    padding-right: rem-calc(115)
+
+    form
+      background: $gray-light
+      padding: $column-gutter*2
+
+      .form-item
+        max-width: rem-calc(310)
+        margin-bottom: 1rem
+
+        input,
+        select
+          margin-bottom: 0
+
+      .form-submit
+        margin-top: 1rem
+        +button()
+
 
 
 // form items
@@ -24,6 +44,12 @@ select
   line-height: 1.5em
   padding-top: 0
   padding-bottom: 0
+
+label
+  color: $navy
+  font-weight: bold
+  font-size: 1rem
+  padding-bottom: .5em
 
 // autocomplete
 html.js

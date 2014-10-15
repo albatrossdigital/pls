@@ -352,6 +352,7 @@ $animation-rotation-border-width: rem-calc(2)!default
 %header-1
   @extend %header-core
   font-size: $h1-font-size
+  line-height: 1.2em
   font-weight: 700
   color: $navy
 
@@ -365,11 +366,11 @@ $animation-rotation-border-width: rem-calc(2)!default
 %header-3
   @extend %header-core
   font-size: $h3-font-size
-  font-weight: 500
+  font-weight: 700
   color: $navy
 
-  a
-    color: $teal
+  //a
+    //color: $teal
 
 %header-4
   @extend %header-core
@@ -380,8 +381,8 @@ $animation-rotation-border-width: rem-calc(2)!default
   letter-spacing: 0.05em
   text-transform: lowercase
 
-  a
-    color: $success-color
+  //a
+    //color: $success-color
 
 %header-5
   font-family: $ff-normal
@@ -389,14 +390,21 @@ $animation-rotation-border-width: rem-calc(2)!default
   font-size: $h5-font-size
 
 %header-6
-  @extend %header-core
-  font-size: $h6-font-size
-
-
-%sidebar-dash
   @extend %header-2
-  font-size: rem-calc(22)
+  font-size: rem-calc(24)
 
+
+%header-3-dash
+  @extend %header-3
+  font-size: rem-calc(22)
+  @extend %add-dash
+
+%header-6-dash
+  @extend %header-6
+  @extend %add-dash
+
+
+%add-dash
   &:before
     content: "\2014"; //emdash
     font-size: $h2-font-size
@@ -451,6 +459,7 @@ $animation-rotation-border-width: rem-calc(2)!default
       &:hover,
       &.active
         color: $navy
+        font-weight: bold
 
 
 @mixin disable-while-loading($loading: '&', $loaded: '[data-uuid]', $icon: false, $size: rem-calc(50), $color: $gray)
@@ -586,6 +595,7 @@ $animation-rotation-border-width: rem-calc(2)!default
       border: 1px solid $input-border-color
       padding: $form-spacing / 2
       float: left
+      font-size: .9rem
 
     .form-item:first-child label
       border-right: none
@@ -659,4 +669,6 @@ $animation-rotation-border-width: rem-calc(2)!default
       display: block
       right: 0
       left: auto
-      padding: .12em 0 !important
+      padding: 0.15em 0 !important
+      font-size: 1rem
+      width: 2.25rem

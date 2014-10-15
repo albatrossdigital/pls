@@ -108,7 +108,7 @@
 
   <?php if ($title && !$is_front): ?>
     <?php print render($title_prefix); ?>
-    <div class="row"><h1 id="page-title" class="title"><?php print $title; ?></h1></div>
+    <div class="row l-title"><h1 id="page-title" class="title"><?php print $title; ?></h1></div>
     <?php print render($title_suffix); ?>
   <?php endif; ?>
 
@@ -181,7 +181,7 @@
     <div class="l-footer-sections-wrapper">
     <section class="row l-footer-sections">
       <?php if (!empty($page['footer_firstcolumn'])): ?>
-        <div class="footer-first medium-4 columns">
+        <div class="footer-first medium-3 columns">
           <?php print render($page['footer_firstcolumn']); ?>
         </div>
       <?php endif; ?>

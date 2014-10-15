@@ -3,18 +3,32 @@
 // Define new media query
 
 // Modify page layout margins
-#page-title,
-.block-bean-pls-home-slogan h1
-  margin-top: rem-calc(50)
+.l-header,
+.l-title,
+//.l-featured,
+.l-messages,
+.l-main,
+.l-content-bottom-region,
+.l-footer-sections
+  padding-left: $column-gutter/2
+  padding-right: $column-gutter/2
+
+.l-header
   margin-bottom: rem-calc(50)
 
-.sidebar-first
+#page-title,
+.block-bean-pls-home-slogan h1
+  margin-bottom: rem-calc(50)
+
+aside.sidebar-first,
+.footer-first
   padding-left: 0
   padding-right: 2.5rem
 
 .columns.main,
 .l-content-bottom-region section.block .content,
-.l-content-bottom-region #library-catalog-form
+.l-content-bottom-region #library-catalog-form,
+.footer-second
   padding-right: 0
   padding-left: 2.5rem
 
