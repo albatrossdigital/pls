@@ -69,7 +69,6 @@ class PioneerLibraryMigration extends DrupalNode6Migration {
     $row->field_friendsgroup = $this->tobool($row->field_friendsgroup);
     $row->field_has_wireless = $this->tobool($row->field_has_wireless);
 
-
     $row->title = str_replace('Library Information: ', '', $row->field_lib_name);
 
   }
@@ -82,8 +81,8 @@ class PioneerLibraryMigration extends DrupalNode6Migration {
       $data = $row->hours->{$day};
       if (strpos($data, '&') !== FALSE) {
         $data = explode('&', $data);
-        $this->item($hours, day, $data[0]);
-        $this->item($hours, $day, $data[1]);
+        $this->item($hours, $key, $data[0]);
+        $this->item($hours, $key, $data[1]);
       }
       else {
         $this->item($hours, $key, $data);
