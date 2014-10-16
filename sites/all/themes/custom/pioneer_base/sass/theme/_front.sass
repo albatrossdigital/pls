@@ -1,0 +1,30 @@
+.front
+  .view-random-library
+    
+    img
+      margin-bottom: 1rem
+
+    .views-field-title
+      position: absolute
+
+
+  // TEMP
+  &.domain-owwl
+    .l-featured
+      .block-bean
+        +grid-row
+        padding-bottom: +rem-calc(50)
+
+        h2.block-title
+          +grid-column(3)
+          @extend %header-3-dash
+
+        .content
+          +grid-column(9)
+
+          .book-placeholder
+            margin-left: 2.5rem
+            background: url(../images/books.png) 0 0 no-repeat
+            height: 300px
+
+      

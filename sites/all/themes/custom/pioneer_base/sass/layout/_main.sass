@@ -6,14 +6,19 @@
 .l-content-bottom-region
   .block
     +grid-row
+    padding-top: +rem-calc(100)
 
     h2.block-title
       +grid-column(3)
-      @extend %sidebar-dash
+      @extend %header-3-dash
 
     .content,
     form
       +grid-column(9)
+
+    &.block-bean-pls-home-services
+      padding-top: 1em
+      margin-left: 25%
 
   .block-owwl-catalog form
     select
@@ -24,9 +29,3 @@
       +grid-column(6)
 
 
-  .block
-    padding-top: +rem-calc(100)
-
-    &.block-bean-pls-home-services
-      padding-top: 1em
-      margin-left: 25%
