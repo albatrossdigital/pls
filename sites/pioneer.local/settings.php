@@ -215,23 +215,15 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'pioneer',
-      'username' => 'root',
-      'password' => 'maith',
-      'host' => 'localhost',
+      'database' => 'drupal7_test',
+      'username' => 'drupal7_test',
+      'password' => 'tCfd2wfWVbNQ6NWm',
+      'host' => 'database.pls-net.org',
       'port' => '',
       'driver' => 'mysql',
       'prefix' => '',
     ),
   ),
-);
-
-$databases['legacy']['default'] = array(
-  'driver' => "mysql",
-  'database' => "drupal6_live",
-  'username' => "root",
-  'password' => "maith",
-  'host' => "localhost",
 );
 
 
