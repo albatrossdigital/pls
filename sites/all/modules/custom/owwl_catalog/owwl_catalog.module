@@ -140,12 +140,14 @@ function library_catalog_form($form, &$form_state) {
 }
 
 function library_catalog_form_submit($form, &$form_state) {
-  if ($form_state['values']['type'] == 'vufind'){
-    drupal_goto('http://catalog.dclibrary.org/client/en_US/dcpl/search/results?ln=en_US&rt=' . $form_state['values']['category'] . '&qu=' . $form_state['values']['term']);
+  if ($form_state['values']['type'] == 'catalog'){
+    drupal_goto('http://evergreen.owwl.org/eg/opac/results?query=' . $form_state['values']['query'] . '&qtype' . $form_state['values']['qtype'] . '&locg' . $form_state['values']['locg']);
   } else {
-    drupal_goto('search/node/' . $form_state['values']['term']);
+    drupal_goto('http://owwl2go.owwl.org/BANGSearch.dll?Type=FullText&FullTextCriteria=' . $form_state['values']['query'] . '&FullTextField=' . $form_state['values']['FullTextField']);
   }
 }
+
+
 
 
 /**
