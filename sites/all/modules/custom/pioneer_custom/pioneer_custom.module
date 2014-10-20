@@ -82,3 +82,33 @@ function pioneer_custom_library_select_form($form, &$form_state) {
 
   return $form;
 }
+
+
+
+/**
+ * Allow a custom module to alter ldap_authorization mappings
+
+ */
+function pioneer_custom_ldap_authorization_maps_alter($user, $ldap_user, $ldap_server, $consumer_conf, $proposed_ldap_authorizations, $op) {
+  dpm($user);
+  dpm($ldap_user);
+  dpm($ldap_server);
+  dpm($consumer_conf);
+  dpm($proposed_ldap_authorizations);
+  dpm($op);
+
+}
+
+
+/**
+ * Allow a custom module to alter ldap_authorizations after they have been determined by ldap_authorizations,
+ *  but before they are granted/removed from user.
+ */
+
+function pioneer_custom_ldap_authorization_authorizations_alter($authorizations, $params) {
+
+  // alter authorizations
+  dpm($params);
+  dpm($authorizations);
+
+}
