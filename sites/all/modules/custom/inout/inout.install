@@ -1,0 +1,113 @@
+<?php
+
+function inout_install() {
+  db_query("INSERT INTO {inout_user} VALUES (1, 'Bob', 'Wicksall', 1, '', '', '2014-05-28 08:50:28')");
+  db_query("INSERT INTO {inout_user} VALUES (13, 'Cindy', 'Gardner', 1, '', '', '2014-05-28 08:24:41')");
+  db_query("INSERT INTO {inout_user} VALUES (14, 'Jeanne', 'Hayes', 1, '', '', '2014-05-28 08:42:16')");
+  db_query("INSERT INTO {inout_user} VALUES (17, 'Heidi', 'Jensen', 1, '', '', '2014-05-28 08:31:56')");
+  db_query("INSERT INTO {inout_user} VALUES (30, 'Lauren', 'Moore', 0, 'Vacation', '6/2 @ 8:30 AM', '2014-05-23 15:58:27')");
+  db_query("INSERT INTO {inout_user} VALUES (31, 'Adam', 'Keuer', 1, '', '', '2014-05-28 08:59:58')");
+  db_query("INSERT INTO {inout_user} VALUES (32, 'Ron', 'Kirsop', 1, '', '', '2014-05-28 08:32:21')");
+  db_query("INSERT INTO {inout_user} VALUES (23, 'Kathryn', 'Riedener', 1, '', '', '2014-05-28 08:48:52')");
+  db_query("INSERT INTO {inout_user} VALUES (24, 'Lindsay', 'Stratton', 1, '', '', '2014-05-28 08:27:32')");
+  db_query("INSERT INTO {inout_user} VALUES (26, 'Aaron', 'Zsembery', 1, '', '', '2014-05-28 08:27:32')");
+  db_query("INSERT INTO {inout_user} VALUES (29, 'Pat', 'Finnerty', 1, '', '', '2014-05-28 08:27:28')");
+  db_query("INSERT INTO {inout_user} VALUES (27, 'Cassie', 'Guthrie', 1, '', '', '2014-05-28 08:23:11')");
+}
+
+function inout_uninstall() {
+
+}
+
+function inout_schema() {
+$schema['inout_user'] = array(
+  'description' => 'Main inout state table',
+  'fields' => array(
+    'uid' => array(
+      'description' => 'Unique ID',
+      'type' => 'serial',
+      'not null' => TRUE,
+      'disp-width' => '11',
+    ),
+    'fname' => array(
+      'description' => 'First Name',
+      'type' => 'varchar',
+      'length' => '50',
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'lname' => array(
+      'description' => 'Last Name',
+      'type' => 'varchar',
+      'length' => '50',
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'status' => array(
+      'description' => 'Current Status',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'disp-width' => '11',
+    ),
+    'msg' => array(
+      'description' => 'Status Message',
+      'type' => 'varchar',
+      'length' => '75',
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'return' => array(
+      'description' => 'Return time',
+      'type' => 'varchar',
+      'length' => '50',
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'lastseen' => array(
+      'description' => 'Last activity',
+      'mysql_type' => 'datetime',
+      'pgsql_type' => 'timestamp',
+      'not null' => TRUE,
+      'default' => '2014-01-01 00:00:01',
+    ),
+  ),
+  'primary key' => array('uid'),
+);
+$schema['inout_calendar'] = array(
+  'description' => 'Calendar for extended out',
+  'fields' => array(
+    'eid' => array(
+      'description' => 'Event ID',
+      'type' => 'serial',
+      'not null' => TRUE,
+    ),
+    'uid' => array(
+      'description' => 'User ID',
+      'type' => 'int',
+      'not null' => TRUE,
+    ),
+    'startdate' => array(
+      'description' => 'Start Date',
+      'mysql_type' => 'datetime',
+      'pgsql_type' => 'timestamp',
+      'not null' => TRUE,
+    ),
+    'enddate' => array(
+      'description' => 'End Date',
+      'mysql_type' => 'datetime',
+      'pgsql_type' => 'timestamp',
+      'not null' => TRUE,
+    ),
+    'comment' => array(
+      'description' => 'Comment',
+      'type' => 'varchar',
+      'length' => '512',
+      'not null' => TRUE,
+    ),
+  ),
+  'primary key' => array('eid'),
+);
+
+return $schema;
+}

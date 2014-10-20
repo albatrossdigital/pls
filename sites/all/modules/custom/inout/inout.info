@@ -1,0 +1,4 @@
+name = In Out
+description = In / Out board
+package = PLS
+core = 7.x

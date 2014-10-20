@@ -1,0 +1,790 @@
+<?php
+
+function inout_init() {
+  // Disable caching for the inout module
+  if (drupal_match_path($_GET['q'],'inout*')) {
+    $GLOBALS['conf']['cache'] = FALSE;
+  }
+}
+
+function inout_menu() {
+  $items['inout'] = array(
+    'title' => t('In / Out Board'),
+    'page callback' => 'inout_display_page',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['inout/calendar'] = array(
+    'page callback' => 'inout_calendar',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['inout/checkin'] = array(
+    'page callback' => 'inout_checkin',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['inout/checkout'] = array(
+    'page callback' => 'inout_checkout',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['inout/refresh'] = array(
+    'page callback' => 'inout_refresh',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['inout/savetheme'] = array(
+    'page callback' => 'inout_savetheme',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['inout/admin'] = array(
+    'title' => t('In / Out Board Administration'),
+    'page callback' => 'inout_admin_page',
+    'access arguments' => array('administer inout'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['inout/admin/add'] = array(
+    'title' => t('In / Out Board Add User'),
+    'page callback' => 'inout_add_page',
+    'access arguments' => array('administer inout'), 
+    'type' => MENU_CALLBACK,
+  );
+  $items['inout/admin/delete'] = array(
+    'title' => t('In / Out Board Delete User'),
+    'page callback' => 'inout_confirm_delete',
+    'access arguments' => array('administer inout'), 
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function inout_perm() {
+  return array('administer inout');
+}
+
+
+function inout_display_page($name) {
+  drupal_add_library('system', 'ui.dialog');
+  drupal_add_library('system', 'ui.draggable');
+  drupal_add_library('system', 'ui.datepicker');
+  drupal_add_js(drupal_get_path('module','inout') .'/inout.js');
+  
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = t('In / Out Board');
+  drupal_set_breadcrumb($breadcrumb);
+
+  if (!empty($_COOKIE['inoutTheme'])) {
+     $result = drupal_add_css(drupal_get_path('module','inout') .'/'. $_COOKIE['inoutTheme']);
+     $currentTheme = $_COOKIE['inoutTheme'];
+  } else {
+     $result = drupal_add_css(drupal_get_path('module','inout') .'/inout-pinkandgreen.css');
+     $currentTheme = "inout-pinkandgreen.css";
+  }
+  
+  $output = "<a href='/inout/calendar'><img src='/".drupal_get_path('module','inout')."/images/calendar.png' border='0' width='30' alt='Calendar' /></a> \n";
+  
+  if (user_access('administer inout')) {
+    $output .= "<a href='/inout/admin'><img src='/".drupal_get_path('module','inout')."/images/users.png' border='0' width='30' alt='Admin Users' /></a> \n";
+  } else {
+    $output .= "";
+  }
+  
+  $output .= "<div class='inout-container'>".inout_get_table()."</div>\n";
+
+  $output .= '<div id="dialog" title="Check Out" >'
+           . '<div style="float: left;">'  // This is to fix a margin bug in IE7
+           . build_dialog()
+           . '</div>'                      // This is to fix a margin bug in IE7
+           . '</div>';
+
+  $output .= "<form method='post' action='/inout/savetheme'>\n"
+           . "    <input type='hidden' value='save_theme' name='action' />\n"
+           . "    <select name='themeSelect'>\n"
+           . "        <option ".($currentTheme == 'inout-pinkandgreen.css' ? 'selected="selected"' : '')." value='inout-pinkandgreen.css'>Pink and Green</option>\n"
+           . "        <option ".($currentTheme == 'inout-original.css' ? 'selected="selected"' : '')." value='inout-original.css'>Original</option>\n"
+           . "        <option ".($currentTheme == 'inout-originalplus.css' ? 'selected="selected"' : '')." value='inout-originalplus.css'>Original Plus</option>\n"
+           . "        <option ".($currentTheme == 'inout-blackandwhite.css' ? 'selected="selected"' : '')." value='inout-blackandwhite.css'>Black and White</option>\n"
+           . "    </select>\n"
+           . "    <input class='buttoninout' type='submit' value='Save Theme' name='submit' />\n"
+           . "</form>\n";
+
+  return $output;
+}
+
+function inout_checkin($uid) {
+
+  db_query("UPDATE {inout_user} SET status = 1, msg = '', {inout_user}.return = '', lastseen = NOW() WHERE uid = :uid", array(':uid' => urldecode($uid)));
+
+  // Check to see if jQuery made the call.
+  if (!empty($_POST['js'])) {
+    // return the results to jQuery
+    drupal_json_output(array(
+        'uid' => $uid,
+        'link' => "        <a class='checkout-link' href='/inout/checkout/".$uid."'>Check Out</a>\n"
+      )
+    );
+    exit();
+  }
+
+  // non javascript so redisplay the entire page
+  drupal_goto('inout');
+}
+
+function inout_checkout($uid) {
+  $msg = check_plain(trim($_POST["msgSelect"]." ".$_POST["msgText"]));
+
+  $returnon = check_plain(trim($_POST["returnOnSelect"]." ".$_POST["returnOnText"]));
+
+  $returnat = check_plain(trim($_POST["returnAtSelect"]." ".$_POST["returnAtText"]));
+
+  $returnonat = check_plain(trim($returnon." @ ".$returnat));
+
+  db_query("UPDATE {inout_user} SET status = 0, msg = :msg, {inout_user}.return = :returnonat, lastseen = NOW() WHERE uid = :uid", array(':msg' => urldecode($msg), ':returnonat' => urldecode($returnonat), ':uid' => urldecode($uid)));
+
+  // Check to see if jQuery made the call.
+  if (!empty($_POST['js'])) {
+    // return the results to jQuery
+    drupal_json_output(array(
+        'msg' => $msg,
+        'returnonat' => $returnonat,
+        'uid' => $uid,
+        'link' => "        <a class='checkin-link' href='/inout/checkin/".$uid."'>Check In</a>\n"
+      )
+    );
+    exit();
+  }
+
+  // non javascript so redisplay the entire page
+  drupal_goto('inout');
+}
+
+function inout_refresh() {
+
+  // Check to see if jQuery made the call.
+  if (!empty($_POST['js'])) {
+    // return the results to jQuery
+    $output = inout_get_table();
+    drupal_json_output(array(
+        'refresh' => $output
+      )
+    );
+    exit();
+  }
+
+  // non javascript so redisplay the entire page
+  drupal_goto('inout');
+}
+
+function inout_get_table() {
+
+  $output = "<table class='inouttable'>\n"
+          . "<tbody>\n";
+
+  $result = db_query('SELECT * FROM {inout_user} order by lname,fname');
+  foreach ($result as $data) { 
+    if ($data->status != 1)
+    {
+      $mycolor="outrow";
+      $statusbutton="      <div class='inout-status-button".$data->uid."'>\n"
+                   ."        <a class='checkin-link' href='/inout/checkin/".$data->uid."'>Check In</a>\n"
+                   ."      </div>\n";
+    }
+    else
+    {
+      $mycolor="inrow";
+      $statusbutton="      <div class='inout-status-button".$data->uid."'>\n"
+                   ."        <a class='checkout-link' href='/inout/checkout/".$data->uid."'>Check Out</a>\n"
+                   ."      </div>\n";
+    }
+
+    $output .=  "  <tr>";
+    $output .= "    <td id='inout-row".$data->uid."' class='".$mycolor."'>".$data->lname.",".$data->fname."</td>\n";
+    $output .= "    <td class='inout-status-button'><center>\n";
+    $output .= $statusbutton;
+    $output .= "    </center></td>\n";
+    $output .= "    <td class='inout-msg".$data->uid."'>".$data->msg."&nbsp;</td>\n";
+    $output .= "    <td class='inout-return".$data->uid."'>".$data->return."&nbsp;</td>\n";
+    $output .= "  </tr>\n";
+  }
+
+  $output .= "</tbody>\n</table>\n"
+           . "<br />\n";
+
+  return $output;
+}
+
+function build_dialog() {
+  // Calculate the Return on Date
+  switch (date("D")) {
+  case "Fri":
+      $nextworkday = 3;
+      break;
+  case "Sat":
+      $nextworkday = 2;
+      break;
+  default:
+      $nextworkday = 1;
+  }
+  $tomorrow = mktime(0,0,0,date("m"),date("d")+$nextworkday,date("Y"));
+  $returnon = date("D - m/d/Y", $tomorrow);
+
+  $output = "<form style='margin:0px;' >\n"
+         ."<table class='dialog-checkout' style='border-collapse:separate; width:660px; ' >\n"
+         ."<tbody align='left' style='font-family:verdana;'>\n";
+      
+  $output .= "<tr><td>New Status: </td><td><span class='outrow'>&nbsp;Out&nbsp;</span></td><td></td></tr>\n";
+
+  $output .= "<tr><td>Message:</td> \n"
+	  ."<td><select name='msgSelect' id='msgSelect'>\n"
+	  ."        <option value=''></option>\n"
+	  ."        <option value='Break'>Break</option>\n"
+	  ."        <option value='Comp Time'>Comp Time</option>\n"
+	  ."        <option value='Home'>Home</option>\n"
+	  ."        <option value='Lunch'>Lunch</option>\n"
+	  ."        <option value='Meeting'>Meeting</option>\n"
+	  ."        <option value='Sick'>Sick</option>\n"
+	  ."        <option value='Vacation'>Vacation</option>\n"
+	  ."</select></td>\n"
+	  ."<td>or <input type='Text' name='msgText' id='msgText'></td></tr>\n"
+	  ."<tr><td>Return on: </td>\n"
+	  ."<td><select name='returnOnSelect' id='returnOnSelect'>\n"
+	  ."        <option value=''></option>\n"
+	  ."        <option value='".$returnon."'>".$returnon."</option>\n"
+	  ."        <option value='Later Today'>Later Today</option>\n"
+	  ."</select></td>\n"
+	  ."<td>or <input type='Text' name='returnOnText' id='returnOnText'></td>\n"
+          ."</tr>\n"
+	  ."<tr><td>Return At:</td>\n"
+	  ."<td><select name='returnAtSelect' id='returnAtSelect'>\n"
+	  ."        <option value=''></option>\n"
+	  ."        <option value='8:00 AM'>8:00 AM</option>\n"
+	  ."        <option value='8:30 AM'>8:30 AM</option>\n"
+	  ."        <option value='9:00 AM'>9:00 AM</option>\n"
+	  ."        <option value='9:30 AM'>9:30 AM</option>\n"
+	  ."        <option value='1:00 PM'>1:00 PM</option>\n"
+	  ."        <option value='1:30 PM'>1:30 PM</option>\n"
+	  ."        <option value='2:00 PM'>2:00 PM</option>\n"
+	  ."        <option value='2:30 PM'>2:30 PM</option>\n"
+	  ."</select></td>\n"
+	  ."<td>or <input type='Text' name='returnAtText' id='returnAtText' value=''></td></tr>\n"
+	  ."<tr>\n"
+//	  ."<td>Other Contact: </td><td><input type='Text' name='otherContact'></td><td></td>\n"
+	  ."</tr>\n";
+
+  $output .= "</tbody>\n</table>\n";    
+  $output .= "</form>\n";
+
+  return $output;
+}
+
+function inout_savetheme()
+{
+  $myTheme = trim($_POST["themeSelect"]);
+
+  setcookie("inoutTheme", $myTheme, time()+(60*60*24*365), "/");
+
+  drupal_goto('inout');
+}
+
+// ********************************************************************************************
+//  Administration Screens go here
+
+function inout_admin_page() {
+
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = l('In / Out Board', 'inout');
+  $breadcrumb[] = t('Administration');
+  drupal_set_breadcrumb($breadcrumb);
+
+  $output = "<br />\n"
+          . "<form style='margin-bottom:0;' method='post' action='/inout/admin/add'>\n"
+          . "  <input type='hidden' value='add' name='action'>\n"
+          . "  <input type='submit' value='Add New Person to Board' name='submit'>\n"
+          . "</form>\n"
+          . "<br>\n";
+
+  $output .= "<table border='1' cellpadding='1' cellspacing='2'>\n"
+          ."<tbody align='' style='font-family:verdana;'>\n";
+      
+  $result = db_query('SELECT * FROM {inout_user} order by lname,fname');
+  foreach ($result as $data) { 
+    $deletebutton="      <form style='margin-bottom:0;' method='post' action='/inout/admin/delete/".$data->uid."'>\n"
+                 ."        <input type='hidden' value='delete' name='action'>\n"
+                 ."        <input type='hidden' value='".$data->uid."' name='uid'>\n"
+                 ."        <input type='submit' value='Delete' name='submit'>\n"
+                 ."      </form>\n";
+
+    $output .= "  <tr>\n"
+             . "    <td>".$data->lname.",".$data->fname."</td>\n"
+             . "    <td><center>\n"
+             . $deletebutton
+             . "    </center></td>\n"
+             . "  </tr>\n";
+  }
+
+  $output .= "</tbody>\n</table>\n";
+
+  return $output;
+}
+
+function inout_add_page()
+{
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = l('In / Out Board', 'inout');
+  $breadcrumb[] = l('Administration', 'inout/admin');
+  $breadcrumb[] = t('Add User');
+  drupal_set_breadcrumb($breadcrumb);
+
+  $output = drupal_get_form('inout_addform');
+  return $output;
+}
+
+function inout_addform() {
+  $form['fname'] = array(
+    '#title' => t('First Name'),
+    '#type' => 'textfield',
+    '#required' => TRUE,
+  );
+  $form['lname'] = array(
+    '#title' => t('Last Name'),
+    '#type' => 'textfield',
+    '#required' => TRUE,
+  );
+  $form['status'] = array(
+    '#title' => t('Initial Status'),
+    '#type' => 'select',
+    '#options' => array(0 => t('Out'), 1 => t('In'))
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Add User'),
+  );
+  
+  return $form;
+}
+
+function inout_addform_validate($form, &$form_state) {
+
+}
+
+function inout_addform_submit($form, &$form_state) {
+  $lname = check_plain(trim($form_state['values']['lname']));
+  $fname = check_plain(trim($form_state['values']['fname']));
+
+  $result = db_query("INSERT INTO {inout_user} (lname,fname,status) VALUES (:lname, :fname, :form_state)", array(':lname' => $lname, ':fname' => $fname, ':form_state' => $form_state['values']['status']) );
+
+  $form_state['redirect'] = 'inout/admin';
+}
+
+function inout_confirm_delete($uid)
+{
+  if (empty($_POST['delete'])) {
+    $breadcrumb[] = l('Home', '');
+    $breadcrumb[] = l('In / Out Board', 'inout');
+    $breadcrumb[] = l('Administration', 'inout/admin');
+    $breadcrumb[] = t('Delete User');
+    drupal_set_breadcrumb($breadcrumb);
+  
+    $result = db_query("SELECT * FROM {inout_user} WHERE uid = :uid", array(':uid' => $uid) );
+    $data = $result->fetchAssoc();
+
+    $output = "<br /><br />\n";
+
+    $output .= "<p>Are you sure you want to delete ".$data['fname']." ".$data['lname']." ?</p>\n"
+            ."    <table style='border-collapse:separate;'><tr>\n"  
+            ."      <td><form style='margin-bottom:0;' method='post' action='/inout/admin/delete/".$uid."'>\n"
+            ."        <input type='hidden' value='process_delete' name='action'>\n"
+            ."        <input type='hidden' value='yes' name='delete'>\n"
+            ."        <input type='Submit' value='Yes' name='submit'>\n"
+            ."      </form></td>\n"
+            ."      <td><form style='margin-bottom:0;' method='post' action='/inout/admin/delete/".$uid."'>\n"
+            ."        <input type='hidden' value='process_delete' name='action'>\n"
+            ."        <input type='hidden' value='no' name='delete'>\n"
+            ."        <input type='Submit' value='No' name='submit'>\n"
+            ."      </form></td>\n"
+            ."    </tr></table>\n"
+            ."<br /><br />";
+          
+    return $output;
+  } else {
+    if ($_POST['delete'] == "yes") {
+      $result = db_query("DELETE FROM {inout_user} WHERE uid = :uid", array(':uid' => $uid) );
+    }
+    drupal_goto('inout/admin');  
+  }
+}
+
+/****************************************************************************************/
+
+function inout_calendar($year = NULL, $month = NULL, $day = NULL) {
+  if (!empty($_COOKIE['inoutTheme'])) {
+     $result = drupal_add_css(drupal_get_path('module','inout') .'/'. $_COOKIE['inoutTheme']);
+     $currentTheme = $_COOKIE['inoutTheme'];
+  } else {
+     $result = drupal_add_css(drupal_get_path('module','inout') .'/inout-pinkandgreen.css');
+     $currentTheme = "inout-pinkandgreen.css";
+  }
+  
+  if ( valid_year($year) and valid_month($month) and valid_day($day) ) {
+    $output = render_calendar_day($year, $month, $day);
+  }
+  else {
+    if ( valid_year($year) and valid_month($month) ) {
+      $output = render_calendar($year, $month);
+    }
+    else {
+      $currentmonth = ( int ) date( "m" );
+      $currentyear = date( "Y" );
+      drupal_goto('inout/calendar/'.$currentyear.'/'.$currentmonth);  
+    }
+  }
+
+  return $output;
+}
+
+function render_calendar($year, $month) {
+
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = l('In / Out Board', 'inout');
+  $breadcrumb[] = t('Calendar');
+  drupal_set_breadcrumb($breadcrumb);
+  
+  // get this month and this year as an int
+  $currentday = date( "j" );
+  $currentmonth = ( int ) date( "m" );
+  $currentyear = date( "Y" );
+  
+  if (( empty($year) || empty($month) ) || 
+     (($year == $currentyear) && ($month == $currentmonth) )) {
+    $thisday = $currentday;
+    $thismonth = $currentmonth;
+    $thisyear = $currentyear;
+  } 
+  else {
+    $thisday = 0;
+    $thismonth = $month;
+    $thisyear = $year;    
+  }
+  
+  if ($thismonth < 12) {
+    $nextmonth = $thismonth + 1;
+    $nextyear = $thisyear;
+    if ($thismonth == 1) {
+      $prevmonth = 12;
+      $prevyear = $thisyear - 1;
+    } 
+    else {
+      $prevmonth = $thismonth - 1;
+      $prevyear = $thisyear;
+    }
+  } 
+  else {
+    $nextmonth = 1;
+    $nextyear = $thisyear + 1;
+    $prevmonth = $thismonth - 1;
+    $prevyear = $thisyear;
+  }
+
+  // find out the number of days in the month
+  $numdaysinmonth = cal_days_in_month( CAL_GREGORIAN, $thismonth, $thisyear );
+
+  // create a calendar object
+  $jd = cal_to_jd( CAL_GREGORIAN, date( $thismonth ),date( 1 ), date( $thisyear ) );
+
+  // get the start day as an int (0 = Sunday, 1 = Monday, etc)
+  $startday = jddayofweek( $jd , 0 );
+
+  // get the month as a name
+  $monthname = jdmonthname( $jd, 1 );
+  
+  $output = "<table class='calendar-table'>\n"
+          . "  <tr>\n"
+          . "    <td class='calendar-title'><a href='/inout/calendar/".($thisyear-1)."/".$thismonth."'><< Prev Year</a></td>\n"
+          . "    <td class='calendar-title' colspan='5'><div align='center'>\n"
+          . "      <a href='/inout/calendar/".$thisyear."/1'>Jan</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/2'>Feb</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/3'>Mar</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/4'>Apr</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/5'>May</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/6'>Jun</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/7'>Jul</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/8'>Aug</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/9'>Sep</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/10'>Oct</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/11'>Nov</a>"
+          . "      <a href='/inout/calendar/".$thisyear."/12'>Dec</a>"
+          . "      </div></td>\n"
+          . "    <td class='calendar-title'><a href='/inout/calendar/".($thisyear+1)."/".$thismonth."'>Next Year >></a></td>\n"
+          . "  </tr>\n"
+          . "  <tr>\n"
+          . "    <td class='calendar-title'><a href='/inout/calendar/".$prevyear."/".$prevmonth."'>< Prev</a></td>\n"
+          . "    <td class='calendar-title' colspan='5'><div align='center'><strong>".$monthname." ".$thisyear."</strong></div></td>\n"
+          . "    <td class='calendar-title'><a href='/inout/calendar/".$nextyear."/".$nextmonth."'>Next ></a></td>\n"
+          . "  </tr>\n"
+          . "  <tr>\n"
+          . "    <td class='calendar-day-names'><strong>Sunday</strong></td>\n"
+          . "    <td class='calendar-day-names'><strong>Monday</strong></td>\n"
+          . "    <td class='calendar-day-names'><strong>Tuesday</strong></td>\n"
+          . "    <td class='calendar-day-names'><strong>Wednesday</strong></td>\n"
+          . "    <td class='calendar-day-names'><strong>Thursday</strong></td>\n"
+          . "    <td class='calendar-day-names'><strong>Friday</strong></td>\n"
+          . "    <td class='calendar-day-names'><strong>Saturday</strong></td>\n"
+          . "  </tr>\n"
+          . "  <tr>\n";
+          
+  // put render empty cells
+  $emptycells = 0;
+  for( $counter = 0; $counter <  $startday; $counter ++ ) {
+    $output .= "    <td class='calendar-day-empty'></td>\n";
+    $emptycells ++;
+  }
+
+  // renders the days
+  $rowcounter = $emptycells;
+  $numinrow = 7;
+  for( $counter = 1; $counter <= $numdaysinmonth; $counter ++ ) {
+    $rowcounter ++;
+    
+    $result = db_query("SELECT {inout_user}.uid, {inout_user}.fname, {inout_user}.lname, {inout_calendar}.eid,
+                           {inout_calendar}.startdate, {inout_calendar}.enddate, {inout_calendar}.comment
+                    FROM {inout_user}, {inout_calendar} 
+                    WHERE {inout_user}.uid = {inout_calendar}.uid 
+                      AND :startdate >= {inout_calendar}.startdate
+                      AND :enddate <= {inout_calendar}.enddate  
+                    ORDER BY lname,fname", array(':startdate' => $thisyear."-".$thismonth."-".$counter, ':enddate' => $thisyear."-".$thismonth."-".$counter ));
+                   
+    $daydiv = "<div class='day-div'>";               
+    foreach ($result as $data) {
+      $daydiv .= $data->fname."<br />";
+    }
+    $daydiv .= "</div>";
+                      
+    if ( $thisday == $counter ) {
+      $output .= "    <td class='calendar-day-today'><a href='/inout/calendar/".$thisyear."/".$thismonth."/".$counter."'>".$counter.$daydiv."</a></td>\n";
+    }
+    else {
+      $output .= "    <td class='calendar-day'><a href='/inout/calendar/".$thisyear."/".$thismonth."/".$counter."'>".$counter.$daydiv."</a></td>\n";
+    }
+
+    if( $rowcounter % $numinrow == 0 ) {
+      $output .= "  </tr>\n";
+      if( $counter < $numdaysinmonth ) {
+        $output .= "  <tr>\n";
+      }
+      $rowcounter = 0;
+    }
+  }
+
+  // clean up
+  $numcellsleft = $numinrow - $rowcounter;
+
+  if( $numcellsleft != $numinrow ) {
+    for( $counter = 0; $counter < $numcellsleft; $counter ++ ) {
+      $output .= "    <td class='calendar-day-empty'></td>\n";
+      $emptycells ++;
+    }
+  }
+
+  $output .= "  </tr>\n"
+           . "</table>\n";
+
+  return $output;
+}
+
+function render_calendar_day($year, $month, $day) {
+  drupal_add_library('system', 'ui.datepicker');
+  drupal_add_js(drupal_get_path('module','inout') .'/inout-calendar-add.js');
+  
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = l('In / Out Board', 'inout');
+  $breadcrumb[] = l('Calendar', 'inout/calendar/'.$year.'/'.$month);
+  $breadcrumb[] = t($month.'/'.$day.'/'.$year);
+  drupal_set_breadcrumb($breadcrumb);
+  
+  $header = '';
+  $output = '';
+  
+  if (empty($_POST['submit'])) {
+    $output .= render_calendar_day_add_form($year, $month, $day, '', '', '', '', '', '');
+  }
+  else {
+    switch ($_POST["action"]) {
+    case "save":
+      $error = "";
+      if (empty($_POST['nameSelect'])) {
+        $error .= "Error: You must select a name.<br />";
+      }
+      if (strtotime($_POST['endOnText']) < strtotime($_POST['startOnText'])) {
+        $error .= "Error: End date must be greater than or equal to start date.<br />";
+      }
+    
+      if ($error <> "") {
+        $output .= render_calendar_day_add_form($year, $month, $day, $error, $_POST['nameSelect'], $_POST['startOnText'], $_POST['endOnText'], $_POST['comment'], '');
+      } else {
+        $startdate = date("Y-m-d", strtotime($_POST['startOnText']));
+        $enddate = date("Y-m-d", strtotime($_POST['endOnText']));
+        
+        if (empty($_POST['eid'])) {
+          $result = db_query("INSERT INTO {inout_calendar} (uid,startdate,enddate,comment) VALUES (:nameSelect, :startdate, :enddate, :comment)", 
+                              array(':nameSelect' => urldecode($_POST['nameSelect']), ':startdate' => $startdate, ':enddate' => $enddate, ':comment' => urldecode($_POST['comment']) ));
+        }
+        else {
+          $result = db_query("UPDATE {inout_calendar} SET uid = :nameSelect,startdate = :startdate,enddate = :enddate,comment = :comment WHERE eid = :eid ", 
+                             array(':nameSelect' => urldecode($_POST['nameSelect']), ':startdate' => $startdate, ':enddate' => $enddate, ':comment' => urldecode($_POST['comment']), ':eid' => urldecode($_POST['eid']) ));
+                             //$_POST['nameSelect'], $startdate, $enddate, $_POST['comment'], $_POST['eid']);
+        }
+      
+        drupal_goto('inout/calendar/'.$year.'/'.$month.'/'.$day);  
+      }
+      break;
+      
+    case "edit":
+      $result = db_query("SELECT * FROM {inout_calendar} WHERE eid = :eid ", array(':eid' => urldecode($_POST['eid'])));
+      $data = $result->fetchAssoc(); 
+    
+      $output .= render_calendar_day_add_form($year, $month, $day, '', $data['uid'], date('m/d/Y', strtotime($data['startdate'])), date('m/d/Y', strtotime($data['enddate'])), $data['comment'], $data['eid']);
+      break; 
+      
+    case "delete":
+      $result = db_query("DELETE FROM {inout_calendar} WHERE eid = :eid ", array(':eid' => urldecode($_POST['eid'])));
+    
+      $output .= render_calendar_day_add_form($year, $month, $day, '', '', '', '', '', '');
+      break;  
+    }
+  }
+  
+  $todaysdate = date( "F j, Y", strtotime($month."/".$day."/".$year));
+  $header .= "<h1>".$todaysdate."</h1>\n";
+
+  $output .= "<br />";
+  $output .= render_calendar_day_list($year, $month, $day);
+  return $header.$output;
+}
+
+function render_calendar_day_add_form($year, $month, $day, $error, $uid, $startdate, $enddate, $comment, $eid) {
+
+  $output = '';
+
+  if (empty($startdate)) $startdate = $month."/".$day."/".$year;
+    
+  if (empty($enddate)) $enddate = $month."/".$day."/".$year;
+    
+  if (!empty($error)) $output .= "<div class='error'>$error</div>\n";
+  
+  $output .= "<form method='post' style='margin:0px;' >\n"
+          ."<input type='Hidden' value='save' name='action'>\n";
+          
+  if (!empty($eid)) $output .= "<input type='Hidden' value='".$eid."' name='eid'>\n";  
+       
+  $output .= "<table style='border-collapse:separate; width:660px; ' >\n"
+          ."<tbody align='left'>\n";
+      
+  $output .= "<tr><td>Name:</td> \n"
+          ."<td><select name='nameSelect' id='nameSelect'>\n"
+          ."        <option value=''></option>\n";
+	 
+  $result = db_query('SELECT * FROM {inout_user} order by lname,fname');
+  foreach ($result as $data) { 
+    if ($data->uid == $uid) {
+      $output .= "        <option selected='yes' value='".$data->uid."'>".$data->lname.", ".$data->fname."</option>\n";
+    } else {
+      $output .= "        <option value='".$data->uid."'>".$data->lname.", ".$data->fname."</option>\n";
+    }
+  }
+  $output .="</select></td>\n"
+          ."<td></td></tr>\n"
+          ."<tr><td>Range: </td>\n"
+          ."<td><input type='Text' name='startOnText' id='startOnText' value='".$startdate."'></td>\n"
+          ."<td>to <input type='Text' name='endOnText' id='endOnText' value='".$enddate."'></td>\n"
+          ."</tr>\n"
+          ."<tr><td>Comment: </td><td colspan='2'><input type='Text' name='comment' value='".$comment."'></td>\n"
+          ."</tr>\n"
+          ."<tr><td colspan='3'><input type='Submit' value='Save Event' name='submit'></td>\n"
+          ."</tr>\n";
+
+  $output .= "</tbody>\n</table>\n";    
+  $output .= "</form>\n";
+
+  return $output;
+}
+
+function render_calendar_day_list($year, $month, $day) {
+  $result = db_query("SELECT {inout_user}.uid, {inout_user}.fname, {inout_user}.lname, {inout_calendar}.eid,
+                             {inout_calendar}.startdate, {inout_calendar}.enddate, {inout_calendar}.comment
+                      FROM {inout_user}, {inout_calendar} 
+                      WHERE {inout_user}.uid = {inout_calendar}.uid 
+                        AND :startdate >= {inout_calendar}.startdate
+                        AND :enddate <= {inout_calendar}.enddate  
+                      ORDER BY lname,fname", array(':startdate' => $year."-".$month."-".$day, ':enddate' => $year."-".$month."-".$day ));
+                      
+  $output = "<table class='calendar-day-list'>\n"
+          . "<tbody>\n";
+                      
+  $even = TRUE;
+  foreach ($result as $data) {
+    if ($even) {
+      $output .= "<tr class='calendar-day-list-even'>";
+      $even = FALSE;
+    } else {
+      $output .= "<tr class='calendar-day-list-odd'>"; 
+      $even = TRUE;
+    }
+    $output .= "<td width='145px'>".$data->lname.", ".$data->fname."</td>"
+             . "<td width='90px'>".date('m/d/Y', strtotime($data->startdate))."</td>"
+             . "<td width='90px'>".date('m/d/Y', strtotime($data->enddate))."</td>"
+             . "<td>".$data->comment."</td>"
+             . "<td width='45px'>"
+             . "<form method='post'>" 
+             . "<input type='Hidden' name='eid' id='eid' value='".$data->eid."'>"
+             . "<input type='Hidden' value='edit' name='action'>"
+             . "<input type='Submit' value='Edit' name='submit'>"
+             . "</form>\n"
+             . "</td>"
+             . "<td width='63px'>"
+             . "<form method='post'>" 
+             . "<input type='Hidden' name='eid' id='eid' value='".$data->eid."'>"
+             . "<input type='Hidden' value='delete' name='action'>"
+             . "<input type='Submit' value='Delete' name='submit'>"
+             . "</form>\n"
+             . "</td>"
+             . "</tr>\n";
+  }
+  
+  $output .= "</tbody>\n"
+           . "</table>\n";
+  return $output;
+}
+
+function valid_year($year) {
+  if (is_numeric($year) and (($year >= 1900)  or ($year <= 2200))) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+function valid_month($month) {
+  if (is_numeric($month) and (($month >= 1)  or ($month <= 12))) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+function valid_day($day) {
+  if (is_numeric($day) and (($day >= 1)  or ($day <= 31))) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
