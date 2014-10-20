@@ -89,19 +89,17 @@ function pioneer_custom_library_select_form($form, &$form_state) {
  */
 
 function pioneer_custom_ldap_authorization_authorizations_alter($authorizations, $params) {
-  $edit = array();
-  
   // Make administrator
-  $edit['roles'][3] = 'administrator';
+  $params['user']->roles[3] = 'administrator';
 
   // Add to all domains
-  $edit['domain_user'] = array(
+  $params['user']->domain_user = array(
     1 => 1,
     2 => 2,
   );
 
-  // Set the admin_select navbar
-  $edit['data']['admin_select'] = 'navbar';
+  $params['user']->data['admin_select'] = 'navbar';
 
-  user_save($parms['user'], $edit);
+  entity_save('user', $params['user']);
+  dpm($params['user']);
 }
