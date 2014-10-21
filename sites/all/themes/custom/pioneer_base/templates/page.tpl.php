@@ -1,6 +1,5 @@
 <!--.page -->
-<div role="document" class="page">
-
+<div data-offcanvas role="document" class="page off-canvas-wrap"><div class="inner-wrap">
   <!--.l-header region -->
   <header role="banner" class="l-header">
 
@@ -10,10 +9,8 @@
       <div class="<?php print $top_bar_classes; ?>">
       <?php endif; ?>
         <nav class="top-bar"<?php print $top_bar_options; ?>>
-          <ul class="title-area">
-            <li class="name"><h1><?php print $linked_site_name; ?></h1></li>
-            <li class="toggle-topbar menu-icon"><a href="#"><span><?php print $top_bar_menu_text; ?></span></a></li>
-          </ul>
+          <?php print render($page['header_bar']); ?>
+
           <section class="top-bar-section">
             <?php if ($top_bar_main_menu) :?>
               <?php print $top_bar_main_menu; ?>
@@ -22,7 +19,25 @@
               <?php print $top_bar_secondary_menu; ?>
             <?php endif; ?>
           </section>
+
         </nav>
+
+        <div class="row">
+          <div class="columns small-8">
+            <?php if ($linked_logo): print $linked_logo; endif; ?>
+          </div>
+          <div class="columns small-4">
+            <a class="right-off-canvas-toggle right" href="#">Menu</a>
+          </div>
+        </div>
+
+        <!-- Off Canvas Menu -->
+        <aside class="right-off-canvas-menu">
+          <li><label>site name @todo</label></li>
+          <?php print render($page['header']); ?>
+        </aside>
+
+
       <?php if ($top_bar_classes): ?>
       </div>
       <?php endif; ?>
@@ -58,7 +73,8 @@
       <?php if (!empty($page['header'])): ?>
         <!--.l-header-region -->
         <div class="columns medium-8"><div class="l-header-region row right">
-            <?php print render($page['header']); ?>
+          <?php print render($page['header_bar']); ?>
+          <?php print render($page['header']); ?>
         </div></div>
         <!--/.l-header-region -->
       <?php endif; ?>
@@ -211,5 +227,6 @@
   <!--/.footer-->
 
   <?php if ($messages && $zurb_foundation_messages_modal): print $messages; endif; ?>
+  <a class="exit-off-canvas" href="#"></a>
 </div>
 <!--/.page -->

@@ -3,34 +3,42 @@
 // Define new media query
 
 // Modify page layout margins
-.l-header,
-.l-title,
-//.l-featured,
-.l-messages,
-.l-main,
-.l-content-bottom-region,
-.l-footer-sections
-  padding-left: $column-gutter/2
-  padding-right: $column-gutter/2
++respond($small-only)
+  .l-title.row
+    padding-left: $column-gutter
 
-.l-header
-  margin-bottom: rem-calc(50)
+  .l-header,
+  #page-title,
+  .block-bean-pls-home-slogan h1
+    margin-bottom: rem-calc(25)
 
-#page-title,
-.block-bean-pls-home-slogan h1
-  margin-bottom: rem-calc(50)
++respond($medium-up)
+  .l-header,
+  .l-title,
+  //.l-featured,
+  .l-messages,
+  .l-main,
+  .l-content-bottom-region,
+  .l-footer-sections
+    padding-left: $column-gutter/2
+    padding-right: $column-gutter/2
 
-aside.sidebar-first,
-.footer-first
-  padding-left: 0
-  padding-right: 2.5rem
+  aside.sidebar-first,
+  .footer-first
+    padding-left: 0
+    padding-right: 2.5rem
 
-.columns.main,
-.l-content-bottom-region section.block .content,
-.l-content-bottom-region #library-catalog-form,
-.footer-second
-  padding-right: 0
-  padding-left: 2.5rem
+  .columns.main,
+  .l-content-bottom-region section.block .content,
+  .l-content-bottom-region #library-catalog-form,
+  .footer-second
+    padding-right: 0
+    padding-left: 2.5rem
+
+  .l-header,
+  #page-title,
+  .block-bean-pls-home-slogan h1
+    margin-bottom: rem-calc(50)
 
 
 

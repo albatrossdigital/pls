@@ -8,8 +8,6 @@
   // Header links
   // ----------------------------------------------------------------------------
   section.block-bean
-    float: right
-    min-width: rem-calc(350)
 
     .header-links
       background-color: $secondary-color
@@ -29,27 +27,11 @@
         padding: 0
 
 
-  // Main menu
-  // ----------------------------------------------------------------------------
-  section.block-domain-menu-block
-    clear: both
-    padding-top: rem-calc(35)
-
-    ul
-      +list-float()
-
-      li a
-        padding: 0 0 0 1.5rem
-
-        &.active-trail,
-        &.active
-          color: $navy
-
-
 // Search in highlighted, or in content_bottom
 // ----------------------------------------------------------------------------
 .block-owwl-catalog
-  margin: 2rem 0
+  //margin: 2rem 0
+  margin-bottom: 2em
 
   label
     display: none
@@ -65,18 +47,11 @@
       padding: $column-gutter
       +grid-row()
     
-    .form-radios
-      +grid-column(2.5)
-
-    .form-type-select
-      +grid-column(2.5)
-
     .form-item
       margin-top: 0
       margin-bottom: 0
 
     .search-submit
-      +grid-column(4.5)
 
       .search-submit-inner
         position: relative
@@ -84,3 +59,107 @@
 
     // radios as buttons
     +radios-as-buttons()
+
+
+
+// *
+// * Media Queries
+// *
+// ******************************************************
+
++respond($small-only)
+  .l-header
+
+    //  Mobile header
+    // ----------------------------------------------------------------------------
+    .right-off-canvas-toggle
+      +icon-replace(bars, 32px, 32px, 32px, $blue)
+      display: block
+      margin-top: rem-calc(50)
+
+    aside.right-off-canvas-menu
+      li
+        list-style: none
+
+      label
+        background: blue
+
+
+  // Search in highlighted, or in content_bottom
+  // ----------------------------------------------------------------------------
+  .block-owwl-catalog
+    form
+
+      .form-radios
+        +grid-column(12)
+
+      .form-type-select
+        +grid-column(6)
+
+      .search-submit
+        +grid-column(12)
+
+      .form-radios,
+      .search-submit
+        padding-bottom: $column-gutter/2
+
+
+
++respond($medium-up)
+  .l-header
+
+    // Header links
+    // ----------------------------------------------------------------------------
+    section.block-bean
+      float: right
+      min-width: rem-calc(350)
+
+    // Main menu
+    // ----------------------------------------------------------------------------
+    section.block-domain-menu-block
+      clear: both
+      padding-top: rem-calc(35)
+
+      ul
+        +list-float()
+
+        li a
+          padding: 0 0 0 1.5rem
+
+          &.active-trail,
+          &.active
+            color: $navy
+
+
++respond($medium-only)
+  // Search in highlighted, or in content_bottom
+  // ----------------------------------------------------------------------------
+  .block-owwl-catalog
+    form
+
+      .form-radios
+        +grid-column(5)
+
+      .form-type-select
+        +grid-column(3.5)
+
+      .search-submit
+        +grid-column(12)
+        padding-bottom: $column-gutter/2
+
+
+
++respond($large-up)
+  // Search in highlighted, or in content_bottom
+  // ----------------------------------------------------------------------------
+  .block-owwl-catalog
+    form
+
+      .form-radios
+        +grid-column(2.5)
+
+      .form-type-select
+        +grid-column(2.5)
+
+      .search-submit
+        +grid-column(4.5)

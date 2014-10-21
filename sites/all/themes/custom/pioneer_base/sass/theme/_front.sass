@@ -1,11 +1,31 @@
-.front
-  .view-random-library
-    
-    img
-      margin-bottom: 1rem
 
-    .views-field-title
-      position: absolute
+// *
+// * Media Queries
+// *
+// ******************************************************
+
++respond($small-only)
+  .front
+    .view-random-library
+      img
+        margin-bottom: .5rem
+
++respond($medium-up)
+  .front
+    .view-random-library
+
+      img
+        margin-bottom: 1rem
+
+      .views-field-title
+        position: absolute
+
++respond($large-up)
+  .front
+    .view-random-library
+      .view-footer
+        .button
+          float: right
 
 
   // TEMP

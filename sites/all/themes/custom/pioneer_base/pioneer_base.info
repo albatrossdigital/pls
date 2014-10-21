@@ -81,6 +81,7 @@ scripts[] = js/pioneer-base.js
 ; You'll use this variable in page.tpl.php:
 ;   <?php print render($page['header']); ?>
 
+regions[header_bar]          = Header Bar
 regions[header]              = Header
 regions[help]                = Help
 regions[highlighted]         = Highlighted
