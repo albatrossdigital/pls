@@ -35,6 +35,7 @@
         <aside class="right-off-canvas-menu">
           <li><label>site name @todo</label></li>
           <?php print render($page['header']); ?>
+          <?php print render($page['mobile_menu']); ?>
         </aside>
 
 

@@ -82,6 +82,7 @@ scripts[] = js/pioneer-base.js
 ;   <?php print render($page['header']); ?>
 
 regions[header_bar]          = Header Bar
+regions[mobile_menu]         = Mobile Menu
 regions[header]              = Header
 regions[help]                = Help
 regions[highlighted]         = Highlighted
