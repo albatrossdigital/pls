@@ -100,10 +100,21 @@ app.controller('carouselTabs', ['$scope', '$cacheFactory', '$sce', '$q', '$http'
   // changes visible
   $scope.select = function(section) {
     $scope.loading = true;
-    angular.forEach(sections, function(section) {
-      section.selected = false;
+    console.log(typeof section);
+    var id = typeof section !== 'object' ? parseInt(section) : false;
+    angular.forEach(sections, function(item) {
+      if (id && id == item.id) {
+        item.selected = true;
+        section = item;
+      }
+      else {
+        item.selected = false;
+      }
     });
-    section.selected = true;
+    if (!id) {
+      section.selected = true;
+    }
+    console.log(section);
     getContent(section.endpoint);
   };
 
@@ -131,6 +142,8 @@ app.controller('carouselTabs', ['$scope', '$cacheFactory', '$sce', '$q', '$http'
        angular.forEach(result, function (section, key) {
         self.addSection(section);
       });
+           console.log(sections);
+
     });
   }
 }]);

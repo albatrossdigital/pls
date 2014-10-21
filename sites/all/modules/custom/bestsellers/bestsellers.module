@@ -240,12 +240,14 @@ function bestsellers_display_ajax_lists_block() {
 
 function bestsellers_display_lists($format = 'html') {
   dpm($format);
+  $active_list = arg(2);
+  dpm($active_list);
   $result = db_query('SELECT * FROM {bestsellers_list} order by list_name');
   $json = array();
   if ($result->rowCount() > 0) {
     $output = "<ul id='bestsellers_lists'>";
     foreach ($result as $data) {
-      $output .= "<li><a href='/bestsellers/list/".urlencode($data->list_name)."'>";
+      $output .= "<li><a href='/bestsellers/list/".urlencode($data->list_name) ."'". ($active_list == $data->list_name ? "' class='active'" : "") .">";
       $output .= $data->list_name;
       $output .= "</a></li>";
       $json[] = array(
@@ -302,7 +304,7 @@ function bestsellers_render_list($list_name = NULL, $format = 'html') {
       } else {
         $output .= "<h3>#".$data->rank." ".htmlspecialchars($data->title)."</h3>\n";
       }
-      $output .= "<p>".htmlspecialchars($data->author)."</p>\n";
+      $output .= "<h4>".htmlspecialchars($data->author)."</h4>\n";
       $output .= "<p><i>".htmlspecialchars($data->description)."</i></p>\n";
       $output .= "<p>On the bestsellers list for ".$data->weeks_on_list;
       $json_row['tooltip'] .= "<p>On the bestsellers list for ".$data->weeks_on_list;

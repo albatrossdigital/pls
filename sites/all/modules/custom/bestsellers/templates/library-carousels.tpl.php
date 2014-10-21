@@ -7,14 +7,17 @@
 
 <div ng-init="carouselUrl = '<?php print $feed_url; ?>'" ng-app="flightLibraryCarousels">
   <div class="tabbable" ng-controller="carouselTabs">
+
+    <!--
     <ul class="nav nav-tabs">
       <li ng-repeat="section in sections" ng-class="{active:section.selected}">
         <a style="cursor: pointer;" class="tab-title" ng-click="select(section)" ng-bind-html="section.safeTitle"></a>
         <div ng-show="section.selected" class="button-wrap"><a ng-href="{{section.link_url}}" class="button secondary small" ng-show="section.link_url">{{section.link_title}}</a></div>
       </li>
     </ul>
+    -->
 
-    <select ng-model="section.selected" ng-options="id as title for section in sections" />
+    <select ng-model="selected" ng-options="section.id as section.title for section in sections" ng-click="select(selected)" />
 
 
     <div class="nav-content" ng-class="{loaded:!loading}">
