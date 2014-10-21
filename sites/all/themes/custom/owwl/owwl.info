@@ -45,6 +45,7 @@ stylesheets[all][] = css/custom.css
 ; You'll use this variable in page.tpl.php:
 ;   <?php print render($page['header']); ?>
 
+regions[header_bar]          = Header Bar
 regions[header]              = Header
 regions[help]                = Help
 regions[highlighted]         = Highlighted
