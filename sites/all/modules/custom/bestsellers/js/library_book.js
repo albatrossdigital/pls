@@ -22,6 +22,9 @@ app.controller('carouselTabs', ['$scope', '$cacheFactory', '$sce', '$q', '$http'
     bookLimit = 4,
     self = this;
 
+  $scope.activeTitle = '';
+
+
   // setup cache
   var requestCache = $cacheFactory('requestCache', { capacity: 20 });
 
@@ -100,12 +103,12 @@ app.controller('carouselTabs', ['$scope', '$cacheFactory', '$sce', '$q', '$http'
   // changes visible
   $scope.select = function(section) {
     $scope.loading = true;
-    console.log(typeof section);
     var id = typeof section !== 'object' ? parseInt(section) : false;
     angular.forEach(sections, function(item) {
       if (id && id == item.id) {
         item.selected = true;
         section = item;
+        $scope.activeTitle = item.title;
       }
       else {
         item.selected = false;
@@ -113,8 +116,8 @@ app.controller('carouselTabs', ['$scope', '$cacheFactory', '$sce', '$q', '$http'
     });
     if (!id) {
       section.selected = true;
+      $scope.activeTitle = section.title;
     }
-    console.log(section);
     getContent(section.endpoint);
   };
 
@@ -126,8 +129,9 @@ app.controller('carouselTabs', ['$scope', '$cacheFactory', '$sce', '$q', '$http'
   self.addSection = function(section) {
     section.index = sectionCount;
     section.safeTitle = htmlSafe(section.title);
-    if (sections.length == 0) {
+    if (($scope.selected == undefined || !$scope.selected) && section.title == 'Hardcover Fiction') {
       $scope.select(section);
+      $scope.selected = section.id;
     }
     sections.push(section);
     sectionCount++;
@@ -138,12 +142,9 @@ app.controller('carouselTabs', ['$scope', '$cacheFactory', '$sce', '$q', '$http'
     var sectionPromise = getData(carouselUrl);
     // we have our promise
     sectionPromise.then(function(result) {
-       //console.log("data.name"+$scope.data.name);
        angular.forEach(result, function (section, key) {
         self.addSection(section);
       });
-           console.log(sections);
-
     });
   }
 }]);

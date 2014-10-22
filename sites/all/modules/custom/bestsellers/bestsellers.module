@@ -215,7 +215,7 @@ function bestsellers_display_block_2() {
 function bestsellers_display_ajax_lists_block() {
   $block = array();
   $path = drupal_get_path('module', 'bestsellers');
-  $block['subject'] = t('Best Sellers');
+  //$block['subject'] = t('Best Sellers');
   $block['content'] = array(
     '#feed_url' => url('bestsellers/json'),
     '#theme' => 'library_carousels',
@@ -294,6 +294,7 @@ function bestsellers_render_list($list_name = NULL, $format = 'html') {
         'title' => htmlspecialchars($data->title) ,
         'rank' => $data->rank,
         'cover' => "/sites/default/files/covers/medium/".$cover_isbn.".jpg",
+        'link' => $catalog_isbn.$data->isbn13_1,
         'author' => $data->author,
         'tooltip' => "<p><i>".htmlspecialchars($data->description)."</i></p>\n",
       );
