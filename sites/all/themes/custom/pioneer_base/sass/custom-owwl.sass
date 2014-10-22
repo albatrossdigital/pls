@@ -1,0 +1,57 @@
+// The custom-owwl.css file this sass file generates needs to be copied into 
+// the owwl theme's css dir
+
+@import base/init
+
+// Global Zurb Foundation variables.
+@import "vendor/foundation/settings"
+// Comment out this import below if you are customizing you imports below.
+
+// Import our mixins early so they can be used by other partials.
+// Optional.
+@import "base/mixins"
+
+
+// Type
+h1, h2, h3,
+a
+  color: $teal
+
+a
+  color: $teal-dark
+  
+  &:hover
+    color: $teal
+
+// Froms
+button,
+.button
+  background-color: $teal
+  border-color: $teal-dark
+
+  &:hover,
+  &:focus
+    background-color: scale-color($teal, $lightness: $button-function-factor)
+
+
+.l-header section.block-bean .header-links,
+.block-owwl-catalog form .search-submit .search-submit-inner .form-submit:before
+  background-color: $teal-light
+
+
+
+// Mobile
++respond($small-only)
+  .l-header
+    .right-off-canvas-menu
+      background: $teal-dark
+
+      h2
+        background-color: $teal
+
+      li
+        list-style: none
+
+        a
+          color: $teal-light
+

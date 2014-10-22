@@ -28,7 +28,7 @@ base theme = pioneer_base
 ; For CSS users, load the app.css file:
 ; stylesheets[all][] = css/app.css
 ; Comment the app.css file (above) if you're using sass to preprocess css:
-stylesheets[all][] = css/custom.css
+stylesheets[all][] = css/custom-owwl.css
 
 ; Theme scripts.
 ; This file is empty, just uncomment this line and start editing!

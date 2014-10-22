@@ -1,0 +1,208 @@
+
+// Style sheet for the flight library carousel
+// ----------------------------------------------------------------------------
+
+
+// upwards triangle
+@mixin triangle-up($width, $color)
+  height: 0
+  width: 0
+  border-left: $width solid transparent
+  border-right: $width solid transparent
+  border-bottom: $width solid $color
+
+$home-slide-container-height: 230px
+$home-slide-title-height: 90px
+
+// sidebar menu fudging
+$sidebar-menu-height: 140px
+
+// book carousel
+$carousel-count: 4
+$tab-title-height: 48px
+$tab-title-tablet-width: 110px
+$tab-title-width: 126px
+$tab-title-margin: 10px
+
+
+.nav-content
+  position: relative
+  opacity: 0
+  +transition(opacity .5s ease-out)
+
+  &.loaded
+    opacity: 1
+
+  // vertical centering
+  .page, .caption
+    font-size: 0
+
+    &:before
+      content: ''
+      display: inline-block
+      height: 100%
+      vertical-align: middle
+
+  .book, .caption-inner
+    display: inline-block
+    vertical-align: middle
+
+  .book
+    text-align: center
+    width: #{(100/$carousel-count)}#{"%"}
+    
+  div.image
+    position: relative
+    display: inline-block
+    //overflow: hidden
+    margin-bottom: 0
+
+    span
+      display: block
+      overflow: hidden
+      opacity: 0
+      +transition(opacity .5s ease-out)
+
+      &.loaded
+        opacity: 1
+
+    // failsafe for load error
+    img ~ img 
+      display: none!important
+
+  div.image, 
+  .caption,
+  div.image span
+    max-height: 260px
+    max-width: 170px
+
+  .caption
+    display: none
+    background: rgba($teal, 0.85)
+    left: 0
+    position: absolute
+    right: 0
+    bottom: 0
+    top: 0
+    min-height: 100%
+    opacity: 0
+    +transition(opacity 0.5s ease)
+
+    &:hover, &:focus
+      opacity: 1
+
+    &, *
+      color: $white
+      line-height: 1.1em
+
+  span.loaded ~ .caption
+    display: inline-block
+
+
+  .caption-inner
+    background: $teal
+    padding: $column-gutter/2
+    font-size: .8rem
+    width: 100%
+
+  button
+    &.prev,
+    &.next
+      position: absolute
+      top: 50%
+      margin-top: -10px
+      overflow: hidden
+      padding: 0
+      box-shadow: none
+      z-index: 10
+
+      &:active,
+      &:hover
+        outline: 0
+        box-shadow: none
+
+
+  button.prev
+    left: rem-calc(-9)
+    //+s-image-hover(arrow-left)
+
+  button.next
+    right: rem-calc(-9)
+    //+s-image-hover(arrow-right)
+  
+
+
+
+// *
+// * Media Queries
+// *
+// ******************************************************
+
+// tablet and up
++respond($medium)
+
+  .nav-tabs
+    //bottom: -(( $home-slide-title-height - $tab-title-height ) / 2 + $tab-title-height)
+    //position: absolute
+
+    li
+
+      &.active
+        //position: relative
+
+    .tab-title
+      text-align: center
+      margin-right: $tab-title-margin
+      min-width: $tab-title-tablet-width
+
+    .button-wrap a
+      right: 0
+      left: auto
+      margin-bottom: 0
+      bottom: 0
+
+  .nav-content
+    margin: 0 -10px
+    padding: 0 25px
+
+  .tabbable
+    .nav-content,
+    .page-container,
+    .page
+      height: $home-slide-container-height
+
+// medium and up
++respond($past-menu)
+  .nav-tabs
+
+    .tab-title
+      min-width: $tab-title-width
+  
+  .nav-content
+    button,
+    button:before
+      background: transparent !important
+      border: none !important
+      color: $gray-dark
+
+      &:hover
+        color: $teal !important
+        
+      &[disabled]
+        color: $gray-light !important
+
+    button.prev
+      left: 0
+      +icon-replace(chevron-left, 32px, 32px, 32px)
+
+    button.next
+      right: 0
+      +icon-replace(chevron-right, 32px, 32px, 32px)
+
++respond($large)
+
+  // home page slideshows
+  .block-flight-library-carousels
+
+    .button-wrap a
+      right: 0

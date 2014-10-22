@@ -23,6 +23,9 @@
         &.secondary
           color: $blue
 
+      h6
+        margin-bottom: 0
+
       .columns.small-4
         padding: 0
 
@@ -70,6 +73,12 @@
 +respond($small-only)
   .l-header
 
+    section.block-bean
+      .header-links
+        h6
+          display: none
+
+
     //  Mobile header
     // ----------------------------------------------------------------------------
     .right-off-canvas-toggle
@@ -78,11 +87,24 @@
       margin-top: rem-calc(50)
 
     aside.right-off-canvas-menu
+      h2
+        @extend %header-4
+        color: $white
+        background-color: $blue
+        padding-left: $column-gutter/2
+        margin-top: 0
+
       li
         list-style: none
 
-      label
-        background: blue
+        a
+          color: $blue-light
+
+          &:hover,
+          &:active,
+          &.active,
+          &.active-trail
+            color: $white
 
 
   // Search in highlighted, or in content_bottom

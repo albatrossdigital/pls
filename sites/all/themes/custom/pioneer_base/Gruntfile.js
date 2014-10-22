@@ -15,6 +15,7 @@ module.exports = function(grunt) {
     '<%= globalConfig.theme_css %>/ckeditor.css': '<%= globalConfig.theme_scss %>/ckeditor.<%= globalConfig.theme_scss %>',
     '<%= globalConfig.theme_css %>/pioneer-base.css': '<%= globalConfig.theme_scss %>/custom.<%= globalConfig.theme_scss %>',
     '<%= globalConfig.theme_css %>/custom-foundation.css': '<%= globalConfig.theme_scss %>/custom-foundation.<%= globalConfig.theme_scss %>',
+    '<%= globalConfig.theme_css %>/custom-owwl.css': '<%= globalConfig.theme_scss %>/custom-owwl.<%= globalConfig.theme_scss %>',
     '<%= globalConfig.theme_css %>/ie.css': '<%= globalConfig.theme_scss %>/ie.<%= globalConfig.theme_scss %>'
   };
 
