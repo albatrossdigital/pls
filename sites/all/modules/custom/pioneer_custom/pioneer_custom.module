@@ -87,7 +87,6 @@ function pioneer_custom_library_select_form($form, &$form_state) {
  * Allow a custom module to alter ldap_authorizations after they have been determined by ldap_authorizations,
  *  but before they are granted/removed from user.
  */
-
 function pioneer_custom_ldap_authorization_authorizations_alter($authorizations, $params) {
   // Make administrator
   $params['user']->roles[3] = 'administrator';
@@ -98,8 +97,8 @@ function pioneer_custom_ldap_authorization_authorizations_alter($authorizations,
     2 => 2,
   );
 
-  $params['user']->data['admin_select'] = 'navbar';
+  // Set admin_select default
+  $params['user']->data['admin_select'] = 'toolbar';
 
   entity_save('user', $params['user']);
-  dpm($params['user']);
 }
