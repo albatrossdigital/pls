@@ -111,7 +111,7 @@ function inout_display_page($name) {
            . "        <option ".($currentTheme == 'inout-originalplus.css' ? 'selected="selected"' : '')." value='inout-originalplus.css'>Original Plus</option>\n"
            . "        <option ".($currentTheme == 'inout-blackandwhite.css' ? 'selected="selected"' : '')." value='inout-blackandwhite.css'>Black and White</option>\n"
            . "    </select>\n"
-           . "    <input class='buttoninout' type='submit' value='Save Theme' name='submit' />\n"
+           . "    <input class='buttoninout button' type='submit' value='Save Theme' name='submit' />\n"
            . "</form>\n";
 
   return $output;
