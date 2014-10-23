@@ -1,11 +1,16 @@
 // The custom-owwl.css file this sass file generates needs to be copied into 
 // the owwl theme's css dir
-
 @import base/init
 
 // Global Zurb Foundation variables.
 @import "vendor/foundation/settings"
 // Comment out this import below if you are customizing you imports below.
+
+// We use this to control whether or not CSS classes come through in the gem files.
+$include-html-classes: false
+$include-print-styles: false
+$include-html-global-classes: false
+
 
 // Import our mixins early so they can be used by other partials.
 // Optional.
