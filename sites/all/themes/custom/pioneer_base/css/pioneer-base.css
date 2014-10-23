@@ -1340,11 +1340,11 @@ aside.sidebar-first ul, .l-footer-sections-wrapper .menu {
   .node-type-webform .columns.main form {
     background: #EBEFF2;
     padding: 3.3333333333rem; }
-    .node-type-webform .columns.main form .form-item:not(.form-type-checkbox, .webform-component-checkboxes) {
+    .node-type-webform .columns.main form .form-item.webform-component-textfield, .node-type-webform .columns.main form .form-item.webform-component-select {
       max-width: 17.2222222222rem;
       margin-bottom: 1rem; }
-      .node-type-webform .columns.main form .form-item:not(.form-type-checkbox, .webform-component-checkboxes) input, .node-type-webform .columns.main form .form-item:not(.form-type-checkbox, .webform-component-checkboxes) select {
-        margin-bottom: 0; }
+    .node-type-webform .columns.main form .form-item input, .node-type-webform .columns.main form .form-item select {
+      margin-bottom: 0; }
     .node-type-webform .columns.main form .form-submit {
       margin-top: 1rem;
       border: 1px solid #0772e4;

@@ -10,9 +10,11 @@
       background: $gray-light
       padding: $column-gutter*2
 
-      .form-item:not(.form-type-checkbox,.webform-component-checkboxes)
-        max-width: rem-calc(310)
-        margin-bottom: 1rem
+      .form-item
+        &.webform-component-textfield,
+        &.webform-component-select
+          max-width: rem-calc(310)
+          margin-bottom: 1rem
 
         input,
         select
