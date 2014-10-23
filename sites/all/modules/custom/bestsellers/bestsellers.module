@@ -233,15 +233,12 @@ function bestsellers_display_ajax_lists_block() {
       ),
     ),
   );
-  dpm($block);
   return $block;
 }
 
 
 function bestsellers_display_lists($format = 'html') {
-  dpm($format);
   $active_list = arg(2);
-  dpm($active_list);
   $result = db_query('SELECT * FROM {bestsellers_list} order by list_name');
   $json = array();
   if ($result->rowCount() > 0) {

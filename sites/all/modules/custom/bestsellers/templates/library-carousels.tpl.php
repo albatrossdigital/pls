@@ -24,7 +24,7 @@
                     <span class="loading" lazy-page="page.index" lazy-current="currentBookPage" lazy-background="book.cover" lazy-loading-class="loading" lazy-loaded-class="loaded"></span>
                     <div class="caption">
                       <div class="caption-inner">
-                        <h5>{{book.safeTitle}}</h5>
+                        <h4>{{book.safeTitle}}</h4>
                         {{book.safeAuthor}}
                       </div>
                     </div>
