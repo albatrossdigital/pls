@@ -36,7 +36,6 @@
           <?php print render($page['mobile_menu']); ?>
         </aside>
 
-
       <?php if ($top_bar_classes): ?>
       </div>
       <?php endif; ?>

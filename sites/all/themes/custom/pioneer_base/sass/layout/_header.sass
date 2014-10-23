@@ -78,6 +78,12 @@
         h6
           display: none
 
+      .button
+        line-height: $topbar-height
+        display: block
+        top: 0
+        padding: 0
+
 
     //  Mobile header
     // ----------------------------------------------------------------------------
@@ -93,12 +99,15 @@
         background-color: $blue
         padding-left: $column-gutter/2
         margin-top: 0
+        line-height: rem-calc(45)
 
       li
         list-style: none
 
         a
           color: $blue-light
+          padding: .2rem 0
+          display: block
 
           &:hover,
           &:active,

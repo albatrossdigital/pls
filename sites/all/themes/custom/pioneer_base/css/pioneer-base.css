@@ -1613,6 +1613,11 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
 @media only screen and (max-width: 35.55556em) {
   .l-header section.block-bean .header-links h6 {
     display: none; }
+  .l-header section.block-bean .button {
+    line-height: 45px;
+    display: block;
+    top: 0;
+    padding: 0; }
   .l-header .right-off-canvas-toggle {
     display: inline-block;
     text-align: center;
@@ -1630,11 +1635,14 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
     color: #fff;
     background-color: #1976D3;
     padding-left: 0.8333333333rem;
-    margin-top: 0; }
+    margin-top: 0;
+    line-height: 2.5rem; }
   .l-header aside.right-off-canvas-menu li {
     list-style: none; }
     .l-header aside.right-off-canvas-menu li a {
-      color: #E4F2FD; }
+      color: #E4F2FD;
+      padding: 0.2rem 0;
+      display: block; }
       .l-header aside.right-off-canvas-menu li a:hover, .l-header aside.right-off-canvas-menu li a:active, .l-header aside.right-off-canvas-menu li a.active, .l-header aside.right-off-canvas-menu li a.active-trail {
         color: #fff; }
   .block-owwl-catalog form .form-radios {
@@ -1751,6 +1759,10 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
 
 aside.sidebar-first label {
   display: none; }
+
+@media only screen and (min-width:35.61111em) {
+  aside.sidebar-first h2 {
+    display: none; } }
 
 .l-footer-sections-wrapper {
   margin-top: 5.5555555556rem;
@@ -1906,7 +1918,9 @@ aside.sidebar-first label {
 
 @media only screen and (max-width: 35.55556em) {
   .front .view-random-library img {
-    margin-bottom: 0.5rem; } }
+    margin-bottom: 0.5rem; }
+  .front .block-bestsellers-bestsellers-ajax-lists {
+    display: none; } }
 
 @media only screen and (min-width:35.61111em) {
   .front .view-random-library img {

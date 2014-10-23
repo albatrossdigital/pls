@@ -11,4 +11,10 @@ aside.sidebar-first
     @extend %menu
 
   .node-overview p
-  	@extend %header-3-dash
+    @extend %header-3-dash
+
+
++respond($medium-up)
+  aside.sidebar-first
+    h2
+      display: none
