@@ -149,7 +149,7 @@ module.exports = function(grunt) {
   grunt.registerTask('compile-sass', ['sass:dist','stripmq', 'imagemin']);
 
   // Run watch at default settings
-  grunt.registerTask('default', ['sass:dev','stripmq','jshint','watch']);
+  grunt.registerTask('default', ['sass:dev','stripmq','watch']);
 
   // Run watch with options
   grunt.registerTask('build', ['compile-sass', 'uglify']);

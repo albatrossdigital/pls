@@ -1,3 +1,6 @@
+// Do we include any css?
+$fa-include-css: true!default
+
 $fa-font-path: "../fonts/fontawesome"
 $fontName: "FontAwesome"
 
@@ -100,22 +103,6 @@ $fa-li-width: (30em / 14)
     @if $color != false
       color: $color
     @extend %icons-core
-
-@font-face
-  font-family: 'FontAwesome'
-  src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=#{$fa-version}')
-  src: url('#{$fa-font-path}/fontawesome-webfont.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'), url('#{$fa-font-path}/fontawesome-webfont.woff?v=#{$fa-version}') format('woff'), url('#{$fa-font-path}/fontawesome-webfont.ttf?v=#{$fa-version}') format('truetype'), url('#{$fa-font-path}/fontawesome-webfont.svg?v=#{$fa-version}#fontawesomeregular') format('svg')
-  //src: url('#{$fa-font-path/FontAwesome.otf') format('opentype') // used when developing fonts
-  font-weight: normal
-  font-style: normal
-
-/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
-   readers do not read off random characters that represent icons */
-
-i[class^="#{$fa-css-prefix}"]
-  @extend %icons-core
-  
-  margin-right: 0.75em
 
 // fudge the icon styling on a button with appropriate paddding
 @mixin icon-button-replace($icon: $fa-var-chevron-right, $size: 'medium')
@@ -514,7 +501,23 @@ $fa-var-try: "\f195"
 $fa-var-plus-square-o: "\f196"
 
 
-$fa-include-css: true!default
+// Do we print fontawesome styles?
+@if $fa-include-css
+  @font-face
+    font-family: 'FontAwesome'
+    src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=#{$fa-version}')
+    src: url('#{$fa-font-path}/fontawesome-webfont.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'), url('#{$fa-font-path}/fontawesome-webfont.woff?v=#{$fa-version}') format('woff'), url('#{$fa-font-path}/fontawesome-webfont.ttf?v=#{$fa-version}') format('truetype'), url('#{$fa-font-path}/fontawesome-webfont.svg?v=#{$fa-version}#fontawesomeregular') format('svg')
+    //src: url('#{$fa-font-path/FontAwesome.otf') format('opentype') // used when developing fonts
+    font-weight: normal
+    font-style: normal
+
+  /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
+   readers do not read off random characters that represent icons */
+
+  i[class^="#{$fa-css-prefix}"]
+    @extend %icons-core
+    
+    margin-right: 0.75em
 
 
 // standard teaser list styling
