@@ -76,12 +76,17 @@ button, .button {
 .l-header section.block-bean .header-links, .block-owwl-catalog form .search-submit .search-submit-inner .form-submit:before {
   background-color: #DDF1E8; }
 
+ul.pagination li .current a, ul.pagination li a:hover {
+  background-color: #009381; }
+
 @media only screen and (max-width: 35.55556em) {
-  .l-header .right-off-canvas-menu {
+  .l-header .right-off-canvas-toggle:before {
+    color: #009381; }
+  .l-header aside.right-off-canvas-menu {
     background: #006E61; }
-    .l-header .right-off-canvas-menu h2 {
+    .l-header aside.right-off-canvas-menu h2 {
       background-color: #009381; }
-    .l-header .right-off-canvas-menu li {
+    .l-header aside.right-off-canvas-menu li {
       list-style: none; }
-      .l-header .right-off-canvas-menu li a {
+      .l-header aside.right-off-canvas-menu li a {
         color: #DDF1E8; } }
