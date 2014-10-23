@@ -1551,8 +1551,8 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
         .block-owwl-catalog form .search-submit .search-submit-inner .form-type-textfield input.form-text {
           padding-right: 0.5555555556rem; }
       .block-owwl-catalog form .search-submit .search-submit-inner .form-submit {
-        height: 2.3888888889rem;
-        line-height: 2.3888888889rem;
+        height: 2.5rem;
+        line-height: 2.5rem;
         position: absolute;
         right: 1px;
         top: 1px;
