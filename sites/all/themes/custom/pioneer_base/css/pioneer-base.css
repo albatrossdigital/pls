@@ -1340,10 +1340,10 @@ aside.sidebar-first ul, .l-footer-sections-wrapper .menu {
   .node-type-webform .columns.main form {
     background: #EBEFF2;
     padding: 3.3333333333rem; }
-    .node-type-webform .columns.main form .form-item {
+    .node-type-webform .columns.main form .form-item:not(.form-type-checkbox) {
       max-width: 17.2222222222rem;
       margin-bottom: 1rem; }
-      .node-type-webform .columns.main form .form-item input, .node-type-webform .columns.main form .form-item select {
+      .node-type-webform .columns.main form .form-item:not(.form-type-checkbox) input, .node-type-webform .columns.main form .form-item:not(.form-type-checkbox) select {
         margin-bottom: 0; }
     .node-type-webform .columns.main form .form-submit {
       margin-top: 1rem;
