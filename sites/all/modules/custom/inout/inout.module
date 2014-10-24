@@ -7,6 +7,16 @@ function inout_init() {
   }
 }
 
+function inout_permission() {
+  return array(
+    'administer inout' => array(
+      'title' => t('Administer In/Out Module'),
+      'description' => t('Perform administration tasks for the In/Out module.'),
+    ),
+  );
+}
+
+
 function inout_menu() {
   $items['inout'] = array(
     'title' => t('In / Out Board'),
@@ -59,13 +69,6 @@ function inout_menu() {
     'type' => MENU_CALLBACK,
   );
   return $items;
-}
-
-/**
- * Implementation of hook_perm().
- */
-function inout_perm() {
-  return array('administer inout');
 }
 
 
