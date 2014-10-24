@@ -329,8 +329,8 @@ meta.foundation-mq-small {
   width: 0em; }
 
 meta.foundation-mq-medium {
-  font-family: "/only screen and (min-width:35.61111em)/";
-  width: 35.6111111111em; }
+  font-family: "/only screen and (min-width:45.83333em)/";
+  width: 45.8333333333em; }
 
 meta.foundation-mq-large {
   font-family: "/only screen and (min-width:53.38889em)/";
@@ -636,7 +636,7 @@ select {
   .column.small-uncentered.opposite, .columns.small-uncentered.opposite {
     float: right; } }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .medium-push-0 {
     position: relative;
     left: 0%;
@@ -1351,7 +1351,7 @@ select {
     .small-block-grid-12 > li:nth-of-type(12n+1) {
       clear: both; } }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .medium-block-grid-1 > li {
     width: 100%;
     list-style: none; }
@@ -1715,7 +1715,7 @@ button::-moz-focus-inner {
   border: 0;
   padding: 0; }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   button, .button {
     display: inline-block; } }
 
@@ -1765,7 +1765,7 @@ button::-moz-focus-inner {
       border-color: rgba(255, 255, 255, 0.5); }
     .button-group.stack-for-small > li:first-child button, .button-group.stack-for-small > li:first-child .button {
       border-left: 0; }
-    @media only screen and (max-width: 35.55556em) {
+    @media only screen and (max-width: 45.83333em) {
       .button-group.stack-for-small > li {
         margin: 0 -2px;
         float: none;
@@ -1837,7 +1837,7 @@ button::-moz-focus-inner {
       -webkit-bottom-right-radius: 3px;
       border-bottom-left-radius: 3px;
       border-bottom-right-radius: 3px; }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .button-group.radius.stack-for-small > * {
       margin: 0 -2px;
       float: none;
@@ -1859,7 +1859,7 @@ button::-moz-focus-inner {
         -webkit-border-top-right-radius: 3px;
         border-bottom-right-radius: 3px;
         border-top-right-radius: 3px; } }
-  @media only screen and (max-width: 35.55556em) {
+  @media only screen and (max-width: 45.83333em) {
     .button-group.radius.stack-for-small > * {
       margin: 0 -2px;
       float: none;
@@ -1943,7 +1943,7 @@ button::-moz-focus-inner {
       -webkit-bottom-right-radius: 0.8888888889rem;
       border-bottom-left-radius: 0.8888888889rem;
       border-bottom-right-radius: 0.8888888889rem; }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .button-group.round.stack-for-small > * {
       margin: 0 -2px;
       float: none;
@@ -1965,7 +1965,7 @@ button::-moz-focus-inner {
         -webkit-border-top-right-radius: 1000px;
         border-bottom-right-radius: 1000px;
         border-top-right-radius: 1000px; } }
-  @media only screen and (max-width: 35.55556em) {
+  @media only screen and (max-width: 45.83333em) {
     .button-group.round.stack-for-small > * {
       margin: 0 -2px;
       float: none;
@@ -2179,7 +2179,7 @@ button::-moz-focus-inner {
   .clearing-feature li.clearing-featured-img {
     display: block; }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .clearing-main-prev, .clearing-main-next {
     position: absolute;
     height: 100%;
@@ -3001,7 +3001,7 @@ label.error {
   left: 0; }
 
 /* Styles for screens that are at least 768px; */
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .joyride-tip-guide {
     width: 300px;
     left: inherit; }
@@ -3294,13 +3294,13 @@ label.error {
 .touch .orbit-bullets {
   display: none; }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .touch .orbit-container .orbit-prev, .touch .orbit-container .orbit-next {
     display: inherit; }
   .touch .orbit-bullets {
     display: block; } }
 
-@media only screen and (max-width: 35.55556em) {
+@media only screen and (max-width: 45.83333em) {
   .orbit-stack-on-small .orbit-slides-container {
     height: auto !important; }
   .orbit-stack-on-small .orbit-slides-container > * {
@@ -3585,7 +3585,7 @@ ul.pagination {
   border: solid 1px #666666;
   box-shadow: 0 0 10px rgba(51, 51, 51, 0.4);
   padding: 1.6666666667rem; }
-  @media only screen and (max-width: 35.55556em) {
+  @media only screen and (max-width: 45.83333em) {
     .reveal-modal {
       min-height: 100vh; } }
   .reveal-modal .column, .reveal-modal dialog, .reveal-modal .columns, .reveal-modal dialog {
@@ -3594,14 +3594,14 @@ ul.pagination {
     margin-top: 0; }
   .reveal-modal > :last-child, .reveal-modal > dialog {
     margin-bottom: 0; }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .reveal-modal {
       width: 80%;
       max-width: 66.6666666667rem;
       left: 0;
       right: 0;
       margin: 0 auto; } }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .reveal-modal {
       top: 5.5555555556rem; } }
   .reveal-modal.radius, dialog.radius {
@@ -3610,35 +3610,35 @@ ul.pagination {
     border-radius: 1000px; }
   .reveal-modal.collapse, dialog.collapse {
     padding: 0; }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .reveal-modal.tiny {
       width: 30%;
       max-width: 66.6666666667rem;
       left: 0;
       right: 0;
       margin: 0 auto; } }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .reveal-modal.small {
       width: 40%;
       max-width: 66.6666666667rem;
       left: 0;
       right: 0;
       margin: 0 auto; } }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .reveal-modal.medium {
       width: 60%;
       max-width: 66.6666666667rem;
       left: 0;
       right: 0;
       margin: 0 auto; } }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .reveal-modal.large {
       width: 70%;
       max-width: 66.6666666667rem;
       left: 0;
       right: 0;
       margin: 0 auto; } }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .reveal-modal.xlarge {
       width: 95%;
       max-width: 66.6666666667rem;
@@ -3652,7 +3652,7 @@ ul.pagination {
     height: 100vh;
     min-height: 100vh;
     margin-left: 0 !important; }
-    @media only screen and (min-width:35.61111em) {
+    @media only screen and (min-width:45.83333em) {
       .reveal-modal.full {
         width: 100vw;
         max-width: 66.6666666667rem;
@@ -3889,7 +3889,7 @@ table {
 .text-justify {
   text-align: justify !important; }
 
-@media only screen and (max-width: 35.55556em) {
+@media only screen and (max-width: 45.83333em) {
   .small-only-text-left {
     text-align: left !important; }
   .small-only-text-right {
@@ -3909,7 +3909,7 @@ table {
   .small-text-justify {
     text-align: justify !important; } }
 
-@media only screen and (min-width:35.61111em) and (max-width:53.33333em) {
+@media only screen and (min-width:45.83333em) and (max-width:53.33333em) {
   .medium-only-text-left {
     text-align: left !important; }
   .medium-only-text-right {
@@ -3919,7 +3919,7 @@ table {
   .medium-only-text-justify {
     text-align: justify !important; } }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .medium-text-left {
     text-align: left !important; }
   .medium-text-right {
@@ -4190,7 +4190,7 @@ blockquote, blockquote p {
   border: none;
   padding: 0 0.0555555556rem; }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   h1, h2, h3, h4, h5, h6 {
     line-height: 1.4; }
   h1 {
@@ -4270,7 +4270,7 @@ blockquote, blockquote p {
     .tabs-content.vertical > .content {
       padding: 0 0.8333333333rem; }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .tabs.vertical {
     width: 20%;
     max-width: 20%;
@@ -4354,7 +4354,7 @@ blockquote, blockquote p {
   color: #777777;
   font-weight: 400; }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .tooltip > .nub {
     border-color: transparent transparent #333333 transparent;
     top: -10px; }
@@ -4378,8 +4378,8 @@ blockquote, blockquote p {
     margin-top: -5px; } }
 
 meta.foundation-mq-topbar {
-  font-family: "/only screen and (min-width:35.61111em)/";
-  width: 35.61111em; }
+  font-family: "/only screen and (min-width:45.83333em)/";
+  width: 45.83333em; }
 
 /* Wrapped around .top-bar to contain to grid width */
 .contain-to-grid {
@@ -4431,7 +4431,7 @@ meta.foundation-mq-topbar {
     padding-bottom: 0.4055555556rem;
     margin-bottom: 0;
     font-size: 0.75rem; }
-    @media only screen and (max-width: 35.55556em) {
+    @media only screen and (max-width: 45.83333em) {
       .top-bar .button, .top-bar button {
         position: relative;
         top: -1px; } }
@@ -4679,7 +4679,7 @@ meta.foundation-mq-topbar {
 .js-generated {
   display: block; }
 
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .top-bar {
     background: #333333;
     overflow: visible; }
@@ -4908,7 +4908,7 @@ meta.foundation-mq-topbar {
   text-align: center;
   height: 2.5rem;
   top: 0; }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .tab-bar-section.left, .tab-bar-section.right {
       text-align: left; } }
   .tab-bar-section.left {
@@ -5036,7 +5036,7 @@ ul.off-canvas-list {
   right: 0;
   z-index: 1002;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .move-right .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
 
@@ -5061,7 +5061,7 @@ ul.off-canvas-list {
   right: 0;
   z-index: 1002;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .move-left .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
 
@@ -5086,7 +5086,7 @@ ul.off-canvas-list {
   right: 0;
   z-index: 1002;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .offcanvas-overlap .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
 
@@ -5111,7 +5111,7 @@ ul.off-canvas-list {
   right: 0;
   z-index: 1002;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .offcanvas-overlap-left .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
 
@@ -5136,7 +5136,7 @@ ul.off-canvas-list {
   right: 0;
   z-index: 1002;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
-  @media only screen and (min-width:35.61111em) {
+  @media only screen and (min-width:45.83333em) {
     .offcanvas-overlap-right .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
 
@@ -5293,7 +5293,7 @@ ul.off-canvas-list {
     display: table-cell !important; } }
 
 /* medium displays */
-@media only screen and (min-width:35.61111em) {
+@media only screen and (min-width:45.83333em) {
   .hide-for-small-only, .show-for-small-up, .hide-for-small, .hide-for-small-down, .show-for-medium-only, .show-for-medium-up, .show-for-medium, .show-for-medium-down, .hide-for-large-only, .hide-for-large-up, .hide-for-large, .show-for-large-down, .hide-for-xlarge-only, .hide-for-xlarge-up, .hide-for-xxlarge-only, .hide-for-xxlarge-up {
     display: inherit !important; }
   .show-for-small-only, .hide-for-small-up, .show-for-small, .show-for-small-down, .hide-for-medium-only, .hide-for-medium-up, .hide-for-medium, .hide-for-medium-down, .show-for-large-only, .show-for-large-up, .show-for-large, .hide-for-large-down, .show-for-xlarge-only, .show-for-xlarge-up, .show-for-xxlarge-only, .show-for-xxlarge-up {

@@ -8,8 +8,8 @@ meta.foundation-mq-small {
   width: 0em; }
 
 meta.foundation-mq-medium {
-  font-family: "/only screen and (min-width:35.61111em)/";
-  width: 35.6111111111em; }
+  font-family: "/only screen and (min-width:45.83333em)/";
+  width: 45.8333333333em; }
 
 meta.foundation-mq-large {
   font-family: "/only screen and (min-width:53.38889em)/";
@@ -79,7 +79,7 @@ button, .button {
 ul.pagination li .current a, ul.pagination li a:hover {
   background-color: #009381; }
 
-@media only screen and (max-width: 35.55556em) {
+@media only screen and (max-width: 45.83333em) {
   .l-header .right-off-canvas-toggle:before {
     color: #009381; }
   .l-header aside.right-off-canvas-menu {
