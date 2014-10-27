@@ -32,6 +32,9 @@ base theme = flight_base
 stylesheets[all][] = css/custom-foundation.css
 stylesheets[all][] = css/pioneer-base.css
 
+stylesheets-conditional[lte IE 11][all][] = css/ie.css
+
+
 ; Block loading of foundation.min.css from the base theme. This file should either
 ; not exist or be blank in your subtheme. See https://drupal.org/node/263967
 ;stylesheets[all][] = css/foundation.min.css
