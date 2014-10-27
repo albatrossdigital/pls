@@ -664,11 +664,12 @@ $animation-rotation-border-width: rem-calc(2)!default
     
     &:before
       background-color: $secondary-color
-      line-height: $form-spacing*2
+      line-height: ($input-font-size + $form-spacing * 1.35)
+      height: ($input-font-size + $form-spacing * 1.35)
       border-left: 1px solid $input-border-color
       display: block
       right: 0
       left: auto
-      padding: 0.15em 0 !important
+      padding: 0
       font-size: 1rem
       width: 2.25rem

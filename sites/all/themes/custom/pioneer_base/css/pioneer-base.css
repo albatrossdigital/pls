@@ -1585,12 +1585,13 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
           text-indent: 0; }
         .block-owwl-catalog form .search-submit .search-submit-inner .form-submit:before {
           background-color: #E4F2FD;
-          line-height: 2rem;
+          line-height: 2.35rem;
+          height: 2.35rem;
           border-left: 1px solid #cccccc;
           display: block;
           right: 0;
           left: auto;
-          padding: 0.15em 0 !important;
+          padding: 0;
           font-size: 1rem;
           width: 2.25rem; }
     .block-owwl-catalog form .form-type-radio input {
