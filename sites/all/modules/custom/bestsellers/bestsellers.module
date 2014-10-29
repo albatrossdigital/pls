@@ -50,6 +50,19 @@ function bestsellers_menu() {
 }
 
 /**
+ * Implements hook_cron().
+ * Fetch data from NYT api weekly on midnight Sundays.
+ */
+function bestsellers_cron(){
+  $cron_last = variable_get('bestsellers_cron_last', 0);
+  $time = time();
+  if( date('ymd', $cron_last) != date('ymd', $time ) && $time - $cron_last > 518400){ // Once daily, at least 6 days
+    bestsellers_fetch();
+    variable_set('bestsellers_cron_last', $time);
+  }
+}
+
+/**
  * Settings form as implemented by hook_menu
  */
 function bestsellers_admin_settings() {
@@ -445,6 +458,7 @@ function bestsellers_fetch() {
     $output .= "Unable to fetch Bestsellers List from NYT.  Try again later. <br />";
   }
 
+  watchdog('bestsellers', 'NYT Bestsellers data refreshed %data', array('%data' => $output));
   return $output;
 }
 
