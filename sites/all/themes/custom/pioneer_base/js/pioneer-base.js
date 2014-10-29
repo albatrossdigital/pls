@@ -3,15 +3,13 @@
     Drupal.behaviors.pioneer_base = {
       attach: function(context, settings) {
         
+        // IE 10 suppor
+        document.documentElement.setAttribute('data-useragent', navigator.userAgent);
+
         // Select a Library dropdowns
         $('#edit-select-library').bind('change', function() {
           window.location = $(this).val();
         });
-
-
-
-
-
 
         var reg, triggerImageSize;
         triggerImageSize = function($image, callback) {
