@@ -31,6 +31,7 @@ base theme = flight_base
 ; Comment the app.css file (above) if you're using sass to preprocess css:
 stylesheets[all][] = css/custom-foundation.css
 stylesheets[all][] = css/pioneer-base.css
+stylesheets[all][] = css/ie10.css
 
 stylesheets-conditional[lte IE 11][all][] = css/ie.css
 

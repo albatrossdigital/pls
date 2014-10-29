@@ -1,0 +1,3 @@
+/* Welcome to Compass. Use this file to write IE specific override styles. */
+html[data-useragent*='MSIE 10.0'] .block-owwl-catalog form .search-submit .search-submit-inner .form-submit:before {
+  padding-top: 20px !important; }
