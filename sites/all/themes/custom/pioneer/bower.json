@@ -1,7 +1,0 @@
-{
-  "name": "Flight Subtheme",
-  "dependencies": {
-    "foundation": "~5.4.1",
-    "bourbon": "3.2.2"
-  }
-}
