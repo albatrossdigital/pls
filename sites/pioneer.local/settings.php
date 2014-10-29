@@ -571,3 +571,6 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
  * Add the domain module setup routine.
  */
 include DRUPAL_ROOT . '/sites/all/modules/contrib/domain/settings.inc';
+
+
+$conf['cache'] = 1;
