@@ -84,21 +84,24 @@ function pioneer_custom_library_select_form($form, &$form_state) {
 }
 
 /**
- * Allow a custom module to alter ldap_authorizations after they have been determined by ldap_authorizations,
- *  but before they are granted/removed from user.
+ * Check to see if the user is a member of the zimbraDistributionList hqastaff.
+ * If they are, make them an administrator (set role, add domains, set admin_select default).
  */
 function pioneer_custom_ldap_authorization_authorizations_alter($authorizations, $params) {
   // Make administrator
-  $params['user']->roles[3] = 'administrator';
+  $results = $params['ldap_server']-> search(NULL, '(&(objectClass=zimbraDistributionList)(uid:dn:=hqastaff)(zimbraMailForwardingAddress='. $params['user']->mail .'))');
+  if ($results['count'] > 0) {
+    $params['user']->roles[3] = 'administrator';
 
-  // Add to all domains
-  $params['user']->domain_user = array(
-    1 => 1,
-    2 => 2,
-  );
+    // Add to all domains
+    $params['user']->domain_user = array(
+      1 => 1,
+      2 => 2,
+    );
 
-  // Set admin_select default
-  $params['user']->data['admin_select'] = 'toolbar';
+    // Set admin_select default
+    $params['user']->data['admin_select'] = 'toolbar';
 
-  entity_save('user', $params['user']);
+    entity_save('user', $params['user']);
+  }
 }
