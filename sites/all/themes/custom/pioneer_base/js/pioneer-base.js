@@ -3,7 +3,7 @@
     Drupal.behaviors.pioneer_base = {
       attach: function(context, settings) {
         
-        // IE 10 suppor
+        // Newer IE support (10+)
         document.documentElement.setAttribute('data-useragent', navigator.userAgent);
 
         // Select a Library dropdowns
