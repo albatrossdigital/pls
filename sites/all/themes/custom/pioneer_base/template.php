@@ -64,6 +64,27 @@ function pioneer_base_preprocess_page(&$vars) {
     $vars['sidebar_first_grid'] = '';
     $vars['sidebar_sec_grid'] = '';
   }
+
+  // Add IE 8 warning bar
+  $embed = '<script type="text/javascript"> 
+    var $buoop = {
+      vs: {i:8,f:15,o:15,s:5.1,n:9},
+      reminder: 1
+    }; 
+    $buoop.ol = window.onload; 
+    window.onload=function(){ 
+      try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+      var e = document.createElement("script"); 
+      e.setAttribute("type", "text/javascript"); 
+      e.setAttribute("src", "//browser-update.org/update.js"); 
+      document.body.appendChild(e); 
+    } 
+    </script> ';
+  $vars['page']['footer']['browser_update'] = array(
+    '#type' => 'markup',
+    '#markup' => $embed,
+    '#weight' => 101,
+  );
 }
 
 

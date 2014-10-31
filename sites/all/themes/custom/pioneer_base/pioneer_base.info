@@ -32,8 +32,7 @@ base theme = flight_base
 stylesheets[all][] = css/custom-foundation.css
 stylesheets[all][] = css/pioneer-base.css
 stylesheets[all][] = css/ie10.css
-
-stylesheets-conditional[lte IE 11][all][] = css/ie.css
+stylesheets-conditional[lte IE 8][all][] = css/ie-mq.css
 
 
 ; Block loading of foundation.min.css from the base theme. This file should either
