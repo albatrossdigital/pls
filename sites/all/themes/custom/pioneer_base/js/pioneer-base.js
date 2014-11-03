@@ -11,6 +11,26 @@
           window.location = $(this).val();
         });
 
+        if ($('#edit-county').length && !$('#edit-county.processed').length) {
+          var $ul = $('<ul></ul>').prependTo('.form-item-county');
+          $('#edit-county option').each(function(index) {
+            var $this = $(this);
+            var $link = $('<a></a>');
+            $('<li></li>').append($link).appendTo($ul);
+            $link.text($this.text()).attr('href', '#');
+            if ($this.val() == $('#edit-county').val()) {
+              $link.addClass('active');
+            }
+            $link.bind('click', function() {
+              $('#edit-county').val($this.val()).trigger('change');
+              $('.form-item-county li a').removeClass('active');
+              $(this).addClass('active');
+              return false;
+            });
+          });
+          $('#edit-county').hide().addClass('processed');
+        }
+
         var reg, triggerImageSize;
         triggerImageSize = function($image, callback) {
           if (!$image.hasClass("size-processing")) {

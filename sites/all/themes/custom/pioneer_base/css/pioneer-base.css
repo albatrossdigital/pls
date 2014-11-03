@@ -1273,8 +1273,9 @@ aside.sidebar-first ul, .l-footer-sections-wrapper .menu {
     aside.sidebar-first ul li a.active, .l-footer-sections-wrapper .menu li a.active {
       border-color: #15426c; }
     aside.sidebar-first ul li a:hover, .l-footer-sections-wrapper .menu li a:hover, aside.sidebar-first ul li a.active, .l-footer-sections-wrapper .menu li a.active {
-      color: #15426c;
-      font-weight: bold; }
+      color: #15426c; }
+      aside.sidebar-first ul li a:hover.active, .l-footer-sections-wrapper .menu li a:hover.active, aside.sidebar-first ul li a.active.active, .l-footer-sections-wrapper .menu li a.active.active {
+        font-weight: bold; }
 
 .admin-menu .fixed {
   top: 1.6111111111rem; }
@@ -1788,6 +1789,9 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
 
 aside.sidebar-first label {
   display: none; }
+aside.sidebar-first .views-widget-filter-county {
+  width: 100%;
+  margin-bottom: 1rem; }
 
 @media only screen and (min-width:45.83333em) {
   aside.sidebar-first h2 {
@@ -2000,7 +2004,8 @@ aside.sidebar-first label {
   border-bottom: 1px solid #EBEFF2;
   margin-bottom: 1rem; }
 .node-library.view-mode-library_sidebar .field-boolean {
-  display: block; }
+  display: block;
+  padding: 0.15em 0; }
   .node-library.view-mode-library_sidebar .field-boolean.active:before {
     font-size: inherit;
     color: #1976D3; }

@@ -459,7 +459,9 @@ $animation-rotation-border-width: rem-calc(2)!default
       &:hover,
       &.active
         color: $navy
-        font-weight: bold
+
+        &.active
+          font-weight: bold
 
 
 @mixin disable-while-loading($loading: '&', $loaded: '[data-uuid]', $icon: false, $size: rem-calc(50), $color: $gray)
