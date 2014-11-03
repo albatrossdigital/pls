@@ -1181,16 +1181,16 @@ select {
     display: block;
     margin-bottom: 0 !important; }
     .accordion .accordion-navigation.active > a, .accordion dd.active > a {
-      background: #e8e8e8; }
+      background: #d3ede1; }
     .accordion .accordion-navigation > a, .accordion dd > a {
-      background: #EFEFEF;
+      background: #DDF1E8;
       color: #222222;
       padding: 0.8888888889rem;
       display: block;
       font-family: "ff-meta-web-pro", Helvetica, Arial, sans-serif;
       font-size: 0.8888888889rem; }
       .accordion .accordion-navigation > a:hover, .accordion dd > a:hover {
-        background: #e3e3e3; }
+        background: #cdeadc; }
     .accordion .accordion-navigation > .content, .accordion dd > .content {
       display: none;
       padding: 0.8333333333rem; }

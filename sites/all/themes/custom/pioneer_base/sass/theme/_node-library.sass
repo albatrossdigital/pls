@@ -20,21 +20,31 @@
       border-bottom: 1px solid $gray-light
       padding: .5rem 0 .3rem
 
-      .label-above
-        @extend %header-4
+    .label-above
+      @extend %header-4
 
 
   &.view-mode-library_sidebar
     @extend %add-dash
     
-
     .field-type-addressfield
       @extend %header-6
 
-    .field-name-field-library-website
+    .border-bottom
       padding-bottom: 1rem
       border-bottom: 1px solid $gray-light
       margin-bottom: 1rem
+
+    .field-boolean
+      display: block
+
+      &.active
+        +nice-icon('check-circle', inherit, $blue)
+
+      &.inactive
+        color: $gray-dark
+        +nice-icon('times-circle')
+
 
 
 

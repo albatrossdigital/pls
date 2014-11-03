@@ -1,0 +1,66 @@
+.ui-dialog
+  .ui-dialog-content
+    padding: 0
+
+    table
+      border: none
+      margin-top: 1rem
+
+    td
+
+      select,
+      input
+        margin-bottom: 0
+        width: inherit
+
+      select
+        width: +rem-calc(150)
+
+      button
+        padding: 1.3em .5em
+        font-size: .8em
+        margin-bottom: 0
+        margin-left: .2em
+
+      &.td-label
+        width: 20%
+
+      &.inout-select
+        width: 10%
+
+      &.inout-custom
+        width: 58%
+        span,
+        input,
+        button
+          float: left
+        
+        span
+          padding-right: .4em
+
+.ui-dialog,
+.ui-corner-all,
+.ui-dialog .ui-dialog-buttonpane button,
+.ui-dialog .ui-dialog-titlebar
+  border-radius: 0 !important
+
+  &.ui-dialog-titlebar
+    background: $gray-light
+    border: none
+
+  &button
+    background: $gray !important
+
+
+.inout-container
+  table td
+    padding: .5em
+
+select.theme-select
+  width: inherit
+
+button.buttoninout
+  width: +rem-calc(120)
+
+#ui-datepicker-div
+  margin-top: -1.5em
