@@ -309,7 +309,7 @@ function foundation_formatters_field_formatter_settings_form($field, $instance, 
         '#type' => 'textfield',
         '#required' => TRUE,
         '#default_value' => $settings['text'],
-        '#description' => t('Enter the text will be wrapped in a class.'),
+        '#description' => t('Enter the text will be wrapped in a class. Tokens [node:field-example-field] may be used.'),
       );
       break;
      
@@ -554,9 +554,10 @@ function foundation_formatters_field_formatter_view($entity_type, $entity, $fiel
 
       case 'text_with_class':
         $class = $item['value'] ? 'active' : 'inactive';
+        $text = token_replace($settings['text'], array($entity_type => $entity));
         $element[$delta] = array(
           '#type' => 'markup',
-          '#markup' => '<span class="field-boolean '. $class . '">' . $settings['text'] . '</span>',
+          '#markup' => '<span class="field-boolean '. $class . '">' . $text . '</span>',
         );
         break;    
 
