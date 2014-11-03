@@ -50,7 +50,7 @@ function setupCheckOutFunction ()
     var dialog = jQuery("#dialog").dialog({
       bgiframe: true,
       autoOpen: false,
-      height: 320,
+      height: 450,
       width: 700,
       modal: true,
       overlay: { backgroundColor: "#000", opacity: 0.5 },

@@ -108,13 +108,13 @@ function inout_display_page($name) {
 
   $output .= "<form method='post' action='/inout/savetheme'>\n"
            . "    <input type='hidden' value='save_theme' name='action' />\n"
-           . "    <select name='themeSelect'>\n"
+           . "    <select class='theme-select' name='themeSelect'>\n"
            . "        <option ".($currentTheme == 'inout-pinkandgreen.css' ? 'selected="selected"' : '')." value='inout-pinkandgreen.css'>Pink and Green</option>\n"
            . "        <option ".($currentTheme == 'inout-original.css' ? 'selected="selected"' : '')." value='inout-original.css'>Original</option>\n"
            . "        <option ".($currentTheme == 'inout-originalplus.css' ? 'selected="selected"' : '')." value='inout-originalplus.css'>Original Plus</option>\n"
            . "        <option ".($currentTheme == 'inout-blackandwhite.css' ? 'selected="selected"' : '')." value='inout-blackandwhite.css'>Black and White</option>\n"
            . "    </select>\n"
-           . "    <input class='buttoninout button' type='submit' value='Save Theme' name='submit' />\n"
+           . "    <input class='buttoninout button small' type='submit' value='Save Theme' name='submit' />\n"
            . "</form>\n";
 
   return $output;
@@ -241,10 +241,10 @@ function build_dialog() {
          ."<table class='dialog-checkout' style='border-collapse:separate; width:660px; ' >\n"
          ."<tbody align='left' style='font-family:verdana;'>\n";
       
-  $output .= "<tr><td>New Status: </td><td><span class='outrow'>&nbsp;Out&nbsp;</span></td><td></td></tr>\n";
+  $output .= "<tr><td class='td-label'>New Status: </td><td colspan='2'><span class='outrow'>&nbsp;Out&nbsp;</span></td></tr>\n";
 
-  $output .= "<tr><td>Message:</td> \n"
-	  ."<td><select name='msgSelect' id='msgSelect'>\n"
+  $output .= "<tr><td class='td-label'>Message:</td> \n"
+	  ."<td class='inout-select'><select name='msgSelect' id='msgSelect'>\n"
 	  ."        <option value=''></option>\n"
 	  ."        <option value='Break'>Break</option>\n"
 	  ."        <option value='Comp Time'>Comp Time</option>\n"
@@ -254,17 +254,17 @@ function build_dialog() {
 	  ."        <option value='Sick'>Sick</option>\n"
 	  ."        <option value='Vacation'>Vacation</option>\n"
 	  ."</select></td>\n"
-	  ."<td>or <input type='Text' name='msgText' id='msgText'></td></tr>\n"
-	  ."<tr><td>Return on: </td>\n"
-	  ."<td><select name='returnOnSelect' id='returnOnSelect'>\n"
+	  ."<td class='inout-custom'><span>or</span> <input type='Text' name='msgText' id='msgText'></td></tr>\n"
+	  ."<tr><td class='td-label'>Return on: </td>\n"
+	  ."<td class='inout-select'><select name='returnOnSelect' id='returnOnSelect'>\n"
 	  ."        <option value=''></option>\n"
 	  ."        <option value='".$returnon."'>".$returnon."</option>\n"
 	  ."        <option value='Later Today'>Later Today</option>\n"
 	  ."</select></td>\n"
-	  ."<td>or <input type='Text' name='returnOnText' id='returnOnText'></td>\n"
+	  ."<td class='inout-custom'><span>or</span> <input type='Text' name='returnOnText' id='returnOnText'></td>\n"
           ."</tr>\n"
 	  ."<tr><td>Return At:</td>\n"
-	  ."<td><select name='returnAtSelect' id='returnAtSelect'>\n"
+	  ."<td class='inout-select'><select name='returnAtSelect' id='returnAtSelect'>\n"
 	  ."        <option value=''></option>\n"
 	  ."        <option value='8:00 AM'>8:00 AM</option>\n"
 	  ."        <option value='8:30 AM'>8:30 AM</option>\n"
@@ -275,7 +275,7 @@ function build_dialog() {
 	  ."        <option value='2:00 PM'>2:00 PM</option>\n"
 	  ."        <option value='2:30 PM'>2:30 PM</option>\n"
 	  ."</select></td>\n"
-	  ."<td>or <input type='Text' name='returnAtText' id='returnAtText' value=''></td></tr>\n"
+	  ."<td class='inout-custom'><span>or</span> <input type='Text' name='returnAtText' id='returnAtText' value=''></td></tr>\n"
 	  ."<tr>\n"
 //	  ."<td>Other Contact: </td><td><input type='Text' name='otherContact'></td><td></td>\n"
 	  ."</tr>\n";
@@ -689,7 +689,7 @@ function render_calendar_day_add_form($year, $month, $day, $error, $uid, $startd
           ."<tbody align='left'>\n";
       
   $output .= "<tr><td>Name:</td> \n"
-          ."<td><select name='nameSelect' id='nameSelect'>\n"
+          ."<td colspan='2'><select name='nameSelect' id='nameSelect'>\n"
           ."        <option value=''></option>\n";
 	 
   $result = db_query('SELECT * FROM {inout_user} order by lname,fname');
@@ -701,7 +701,7 @@ function render_calendar_day_add_form($year, $month, $day, $error, $uid, $startd
     }
   }
   $output .="</select></td>\n"
-          ."<td></td></tr>\n"
+          ."</tr>\n"
           ."<tr><td>Range: </td>\n"
           ."<td><input type='Text' name='startOnText' id='startOnText' value='".$startdate."'></td>\n"
           ."<td>to <input type='Text' name='endOnText' id='endOnText' value='".$enddate."'></td>\n"
