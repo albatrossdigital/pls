@@ -47,6 +47,8 @@ function foundation_formatters_field_formatter_info() {
         'image_style' => '',
         'autoplay' => TRUE,
         'class' => '',
+        'widescreen' => 1,
+        'vimeo' => 'vimeo',
         'play_class' => 'button icon-play',
       ),
     ),
@@ -78,6 +80,20 @@ function foundation_formatters_field_formatter_info() {
       'settings'  => array(
         'path' => '',
         'query' => '',
+      ),
+    ),
+    'addressfield_link' => array(
+      'label' => t('Google Maps Driections Link'),
+      'field types' => array('addressfield'),
+      'settings'  => array(
+        'label' => t('Get Directions'),
+      ),
+    ),
+    'text_with_class' => array(
+      'label' => t('Text with active/inactive class'),
+      'field types' => array('list_boolean'),
+      'settings'  => array(
+        'text' => '',
       ),
     ),
   );
@@ -138,6 +154,28 @@ function foundation_formatters_field_formatter_settings_form($field, $instance, 
         '#type' => 'checkbox',
         '#default_value' => $settings['autoplay'],
         '#description' => t('Attempt to autoplay the video when clicked. Currently only works with Youtube.'),
+      );
+      $element['widescreen'] = array(
+        '#title' => t('Add widescreen class to wrapper'),
+        '#type' => 'radios',
+        '#default_value' => $settings['widescreen'],
+        '#options' => array(
+          0 => t('Never'),
+          1 => t('Always'),
+          'vimeo' => t('When vimeo video')
+        ),
+        '#description' => t('Add ".widescreen" to flex wrapper, changing dimensions.'),
+      );
+      $element['vimeo'] = array(
+        '#title' => t('Add vimeo class to wrapper'),
+        '#type' => 'radios',
+        '#default_value' => $settings['vimeo'],
+        '#options' => array(
+          0 => t('Never'),
+          1 => t('Always'),
+          'vimeo' => t('When vimeo video')
+        ),
+        '#description' => t('Add ".vimeo" class to flex wrapper changing display slightly.'),
       );
       $element['class'] = array(
         '#title' => t('Class'),
@@ -254,6 +292,27 @@ function foundation_formatters_field_formatter_settings_form($field, $instance, 
         '#description' => t('Enter the querystring parameters to use. Use [tid] for the taxonomy term tid. For example, category=[tid].'),
       );
       break;
+
+    case 'addressfield_link':
+      $element['label'] = array(
+        '#title' => t('Label text'),
+        '#type' => 'textfield',
+        '#required' => TRUE,
+        '#default_value' => $settings['label'],
+        '#description' => t('Enter the text that should be turned into a link.'),
+      );
+      break;
+
+    case 'text_with_class':
+      $element['text'] = array(
+        '#title' => t('Text'),
+        '#type' => 'textfield',
+        '#required' => TRUE,
+        '#default_value' => $settings['text'],
+        '#description' => t('Enter the text will be wrapped in a class.'),
+      );
+      break;
+     
   }
 
   // Add the image style select to those fields that need it
@@ -288,7 +347,9 @@ function foundation_formatters_field_formatter_settings_summary($field, $instanc
   $summary = array();
 
   foreach ($settings as $key => $value) {
-    $summary[] = $key . ': ' . $value;
+    if (!is_array($value)) {
+      $summary[] = $key . ': ' . $value;
+    }
   }
   /*$image_styles = image_style_options(FALSE, PASS_THROUGH);
   // Unset possible 'No defined styles' option.
@@ -395,15 +456,37 @@ function foundation_formatters_field_formatter_view($entity_type, $entity, $fiel
           }
           // Now build out the tags
           if (!empty($markup)) {
+
+            // Do we need to check uri?
+            $vimeo = $settings['widescreen'] == 'vimeo' || $settings['vimeo'] == 'vimeo';
+            $vimeo = ($vimeo && strpos($item['uri'], 'vimeo.com') !== FALSE) ? TRUE : FALSE;
+            $classes = '';
+            // Add widescreen class?
+            $classes .= $settings['widescreen'] ?
+              (($settings['widescreen'] == 'vimeo') ? (($vimeo) ? ' widescreen' : '') : ' widescreen')
+              : '';
+            // Add vimeo class? 
+            $classes .= $settings['vimeo'] ?
+              (($settings['vimeo'] == 'vimeo') ? (($vimeo) ? ' vimeo' : '') : ' vimeo')
+              : '';
+
             $content = $item['metadata']['oembed']['html'];
             $content = $settings['autoplay'] ? str_replace('oembed"', 'oembed&autoplay=1"', $content) : $content;
+            $content = $settings['autoplay'] ? str_replace('oembed"', 'oembed&autoplay=1"', $content) : $content;
+            if ($settings['format'] === 'modal') {
+              //$content = '<div style="min-height:270px>' . $content . '</div>';
+            }
+            else {
+              $content = htmlentities($content);
+            }
             $element[$delta] = array(
               '#theme' => 'foundation_formatters_clicktoplay_' . $settings['format'],
               '#placeholder' => $markup,
               '#play_class' => $settings['play_class'],
-              '#content' => htmlentities($content),
+              '#content' => $content,
               '#class' => $settings['class'],
               '#id' => 'file-' . $item['fid'],
+              '#additional_classes' => $classes
               //@todo: render this field (in the future--give them the option?)
               //$item['attributes']['data-clicktoplay-content'] = drupal_render(field_view_value($entity_type, $entity, $field['field_name'], $item, array(
               //  'type' => 'file_rendered',
@@ -461,7 +544,22 @@ function foundation_formatters_field_formatter_view($entity_type, $entity, $fiel
           '#markup' => l($label, str_replace('[tid]', $tid, $settings['path']), $options),
         );
         break;
-      
+
+      case 'addressfield_link':
+        $element[$delta] = array(
+          '#type' => 'markup',
+          '#markup' => _foundation_formatters_addressfield_link_render($item, $settings['label']),
+        );
+        break;
+
+      case 'text_with_class':
+        $class = $item['value'] ? 'active' : 'inactive';
+        $element[$delta] = array(
+          '#type' => 'markup',
+          '#markup' => '<span class="field-boolean '. $class . '">' . $settings['text'] . '</span>',
+        );
+        break;    
+
     }
 
   } // foreach
@@ -534,7 +632,6 @@ function foundation_formatters_ds_fields_info($entity_type) {
       ),
     ),
 
-    // An additonal date display field (useful for event displays that separate the date and time)
     'foundation_formatters_datetime_field' => array(
       'title' => t('Additional date display'),
       'field_type' => DS_FIELD_TYPE_FUNCTION,
@@ -543,10 +640,14 @@ function foundation_formatters_ds_fields_info($entity_type) {
         'settings' => array(
           'date_field' => array('type' => 'select'),
           'format_type' => array('type' => 'select'),
+          'fromto' => array('type' => 'select'),
+          'show_repeat_rule' => array('type' => 'select'),
         ),
         'default' => array(
           'date_field' => 'field_date',
           'format_type' => 'medium',
+          'fromto' => 'both',
+          'show_repeat_rule' => 'show',
         ),
       ),
     ),
@@ -566,6 +667,23 @@ function foundation_formatters_ds_fields_info($entity_type) {
           'views_display' => '',
           'use_entity' => 1,
           'views_argument' => '',
+        ),
+      ),
+    ),
+
+    // Addressfield as a link
+    'foundation_formatters_addressfield_link' => array(
+      'title' => t('Google Maps link from an Address Field'),
+      'field_type' => DS_FIELD_TYPE_FUNCTION,
+      'function' => '_foundation_formatters_addressfield_link',
+      'properties' => array(
+        'settings' => array(
+          'addressfield' => array('type' => 'select'),
+          'label' => array('type' => 'textfield'),
+        ),
+        'default' => array(
+          'addressfield' => '',
+          'label' => t('Get Directions'),
         ),
       ),
     ),
@@ -603,7 +721,9 @@ function foundation_formatters_ds_field_format_summary($field) {
     default:
       $summary = array();
       foreach ($settings as $key => $value) {
-        $summary[] = $key . ': ' . $value;
+        if (!is_array($value)) {
+          $summary[] = $key . ': ' . $value;
+        }
       }
       $summary = implode('<br />', $summary) . '<br/>';
   }
@@ -670,14 +790,43 @@ function foundation_formatters_ds_field_settings_form($field) {
         '#default_value' => $settings['date_field'],
         '#description' => t('Select the date field to use.')
       );
+
+      // Build dates options
+      $date_formats = system_get_date_types();
+      $date_options = array();
+      foreach ($date_formats as $key => $value) {
+        $date_options[$key] = $value['title'];
+      }
       // Date format
       $form['format_type'] = array(
         '#type' => 'select',
-        '#title' => t('Date format'),
-        '#options' => system_get_date_types(),
+        '#title' => t('Choose how users view dates and times'),
+        '#options' => $date_options,
         '#default_value' => $settings['format_type'],
-        '#description' => t('Select the date format to use.')
+        '#description' => t('To add or edit options, visit <a href="@date-settings">Date and time settings</a>.', array('@date-settings' => '/admin/config/regional/date-time'))
       );
+      $form['fromto'] = array(
+        '#type' => 'select',
+        '#title' => t('Display'),
+        '#options' => array(
+          'both' => t('Both Start and End dates'),
+          'value' => t('Start date only'),
+          'value2' => t('End date only')
+        ),
+        '#default_value' => $settings['fromto'],
+        '#description' => t('How to display.')
+      );
+      if(module_exists('date_repeat_field')) {
+        $form['show_repeat_rule'] = array(
+          '#type' => 'select',
+          '#title' => t('Repeat rule'),
+          '#options' => array(
+            'show' => t('Show repeat rule'),
+            'hide' => t('Hide repeat rule')
+          ),
+          '#default_value' => $settings['show_repeat_rule'],
+        );
+      }
       break;
 
     case 'foundation_formatters_views_field':
@@ -712,6 +861,26 @@ function foundation_formatters_ds_field_settings_form($field) {
         'visible' => array(
           "#edit-fields-flight-config-views-field-settings-edit-form-settings-use-entity" => array('checked' => FALSE),
         ),
+      );
+      break;
+
+    case 'foundation_formatters_addressfield_link':
+      // Addressfield
+      $form['addressfield'] = array(
+        '#type' => 'select',
+        '#title' => t('Address field'),
+        '#options' => _foundation_formatters_fields(array('addressfield')),
+        '#description' => t('Select the address field to use.'),
+        '#default_value' => $settings['addressfield'],
+        '#required' => TRUE,
+      );
+      // Custom argument(s)
+      $form['label'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Label text'),
+        '#default_value' => $settings['label'],
+        '#description' => t('Enter the text that should be turned into a link.'),
+        '#required' => TRUE,
       );
       break;
   }
@@ -766,18 +935,37 @@ function _foundation_formatters_text_linebreaks(array $field) {
  */
 function _foundation_formatters_ds_datetime_field(array $field) {
   $settings = isset($field['formatter_settings']) ? $field['formatter_settings'] : $field['properties']['default'];
-  //dpm($field);
-  // @todo: implement
   $entity = $field['entity'];
-  $date = field_get_items('node', $entity, 'field_date');
-  $output = field_view_value('node', $entity, 'field_date', $date[0], array(
+  $date = field_get_items('node', $entity, $settings['date_field']);
+  // Get delta if provided
+  $delta = !empty($entity->ds_delta) && isset($entity->ds_delta[$settings['date_field']]) 
+    ? $entity->ds_delta[$settings['date_field']]
+    : 0;
+  $date_settings = array(
+    'format_type' => $settings['format_type'],
+    'fromto' => $settings['fromto']
+  );
+  if(module_exists('date_repeat_field')) {
+    $date_settings['show_repeat_rule'] = $settings['show_repeat_rule'];
+  }
+  // Build output
+  $output = field_view_value('node', $entity, $settings['date_field'], $date[$delta], array(
     'type' => 'date_default',
-    'settings' => array(
-      // @todo: this isn't working correctly
-      'format_type' => $settings['format_type'],
-    ),
+    'settings' => $date_settings,
   ));
   return drupal_render($output);
+}
+
+
+/**
+ * Field returns date in "custom time" format.
+ */
+function _foundation_formatters_addressfield_link(array $field) {
+  $settings = isset($field['formatter_settings']) ? $field['formatter_settings'] : $field['properties']['default'];
+  $entity = $field['entity'];
+  if (!empty($entity->{$settings['addressfield']}) && !empty($entity->{$settings['addressfield']}[LANGUAGE_NONE][0])) {
+    return _foundation_formatters_addressfield_link_render($entity->{$settings['addressfield']}[LANGUAGE_NONE][0], $settings['label']);
+  }
 }
 
 
@@ -831,7 +1019,16 @@ function _foundation_formatters_fields($types, $unshift = array()) {
     }
   }
   return $fields;
-}    
+}
+
+/**
+ * Helper function.
+ * Returns an addressfield item as a link.
+ */
+function _foundation_formatters_addressfield_link_render($item, $label) {
+  $address = urlencode("{$item['organisation_name']} {$item['thoroughfare']} {$item['premise']} {$item['postal_code']} {$item['locality']} {$item['country']}");
+  return l($label, "http://maps.google.nl/maps?q=$address");
+}
 
 
 /******************************* THEME ***************************** */
@@ -877,6 +1074,7 @@ function foundation_formatters_theme($existing, $type, $theme, $path) {
         'play_class' => 'button-play',
         'content' => '',
         'id' => 'clicktoplay',
+        'additional_classes' => ''
       ),
     ),
     'foundation_formatters_clicktoplay_modal' => array(
@@ -887,6 +1085,7 @@ function foundation_formatters_theme($existing, $type, $theme, $path) {
         'content' => '',
         'class' => '',
         'id' => 'clicktoplay',
+        'additional_classes' => ''
       ),
     ),
   );
