@@ -23,12 +23,12 @@ function inout_menu() {
     'page callback' => 'inout_display_page',
     'page arguments' => array(1),
     'access arguments' => array('access content'), 
-    'type' => MENU_CALLBACK,
+    'type' => MENU_NORMAL_ITEM,
   );
   $items['inout/calendar'] = array(
     'page callback' => 'inout_calendar',
     'access arguments' => array('access content'), 
-    'type' => MENU_CALLBACK,
+    'type' => MENU_NORMAL_ITEM,
   );
   $items['inout/checkin'] = array(
     'page callback' => 'inout_checkin',
@@ -54,7 +54,7 @@ function inout_menu() {
     'title' => t('In / Out Board Administration'),
     'page callback' => 'inout_admin_page',
     'access arguments' => array('administer inout'), 
-    'type' => MENU_CALLBACK,
+    'type' => MENU_NORMAL_ITEM,
   );
   $items['inout/admin/add'] = array(
     'title' => t('In / Out Board Add User'),
