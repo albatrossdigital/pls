@@ -7085,7 +7085,11 @@ html.js input.form-autocomplete.throbbing ~ .field-suffix .spinner {
     padding-right: 0;
     padding-left: 2.5rem; }
   .l-header, #page-title, .block-bean-pls-home-slogan h1, .block-bestsellers-bestsellers-ajax-lists {
-    margin-bottom: 2.7777777778rem; } }
+    margin-bottom: 2.7777777778rem; }
+  .l-featured .medium-12 {
+    padding-right: 0; }
+  .l-main {
+    min-height: 13.8888888889rem; } }
 
 h1.no-margin, h2.no-margin, h3.no-margin, h4.no-margin, h5.no-margin, h6.no-margin, .h1.no-margin, .h2.no-margin, .h3.no-margin, .h4.no-margin, .h5.no-margin, .h6.no-margin {
   margin-bottom: 0;
