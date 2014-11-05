@@ -216,7 +216,7 @@
 
   <!--.l-footer-->
   <?php if (!empty($page['footer'])): ?>
-    <footer class="l-footer panel row" role="contentinfo">
+    <footer class="l-footer row" role="contentinfo">
       <div class="footer medium-12 columns">
         <?php print render($page['footer']); ?>
       </div>
