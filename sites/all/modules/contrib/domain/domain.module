@@ -3202,8 +3202,8 @@ function domain_warning_check($form_id) {
       else {
         $link_text = '';
       }
-      drupal_set_message(t('This form submits changes to your default
-      configuration!message. !link', array('!message' => $message, '!link' => $link_text)), 'warning', FALSE);
+      //drupal_set_message(t('This form submits changes to your default
+      //configuration!message. !link', array('!message' => $message, '!link' => $link_text)), 'warning', FALSE);
     }
     $_warning = TRUE;
   }
