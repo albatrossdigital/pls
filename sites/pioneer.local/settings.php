@@ -215,9 +215,9 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'drupal7_test',
-      'username' => 'drupal7_test',
-      'password' => 'tCfd2wfWVbNQ6NWm',
+      'database' => 'drupal7_live',
+      'username' => 'drupal7_live',
+      'password' => 'bWLxM4tUYetne2Uz',
       'host' => 'database.pls-net.org',
       'port' => '',
       'driver' => 'mysql',
