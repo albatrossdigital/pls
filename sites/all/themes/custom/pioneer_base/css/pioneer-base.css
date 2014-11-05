@@ -1359,6 +1359,9 @@ aside.sidebar-first ul, .l-footer-sections-wrapper .menu {
   .accordion-navigation.active a:after {
     content: "\f107"; }
 
+.l-main .main ol, .l-main .main ul {
+  margin-left: 2.1rem; }
+
 @media only screen and (max-width: 45.83333em) {
   h1, .h1 {
     font-size: 2.3333333333rem; } }
