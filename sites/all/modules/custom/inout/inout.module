@@ -26,6 +26,7 @@ function inout_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
   $items['inout/calendar'] = array(
+    'title' => t('In / Out Calendar'),
     'page callback' => 'inout_calendar',
     'access arguments' => array('access content'), 
     'type' => MENU_NORMAL_ITEM,
