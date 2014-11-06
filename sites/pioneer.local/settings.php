@@ -215,10 +215,10 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'drupal7_test',
-      'username' => 'drupal7_test',
-      'password' => 'tCfd2wfWVbNQ6NWm',
-      'host' => 'database.pls-net.org',
+      'database' => 'pioneer',
+      'username' => 'root',
+      'password' => 'maith',
+      'host' => 'localhost',
       'port' => '',
       'driver' => 'mysql',
       'prefix' => '',
