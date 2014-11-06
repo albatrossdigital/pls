@@ -27,35 +27,6 @@ function pioneer_base_preprocess_html(&$vars) {
   drupal_add_js($typekit, 'inline');
 }
 
-
-  /**
- * Implements hook_html_head_alter().
- */
-function pioneer_base_html_head_alter(&$head_elements) {
-
-  // Optimize mobile viewport.
-  $head_elements['mobile_viewport'] = array(
-    '#type' => 'html_tag',
-    '#tag' => 'meta',
-    '#attributes' => array(
-      'name' => 'viewport',
-      'content' => 'width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1',
-    ),
-  );
-
-  // Force no IE9 compatibility mode
-  $head_elements['compatibility_mode'] = array(
-    '#type' => 'html_tag',
-    '#tag' => 'meta',
-    '#attributes' => array(
-      'http-equiv' => 'X-UA-Copmatible',
-      'content' => 'IE=edge, chrome=1',
-    ),
-  );
-
-}
-
-
 /**
  * Implements template_preprocess_page
  *
@@ -93,8 +64,6 @@ function pioneer_base_preprocess_page(&$vars) {
     $vars['sidebar_first_grid'] = '';
     $vars['sidebar_sec_grid'] = '';
   }
-
-
 
   // Add IE 8 warning bar
   $embed = '<script type="text/javascript"> 
