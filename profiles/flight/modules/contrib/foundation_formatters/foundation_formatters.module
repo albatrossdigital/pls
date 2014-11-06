@@ -1028,7 +1028,7 @@ function _foundation_formatters_fields($types, $unshift = array()) {
  */
 function _foundation_formatters_addressfield_link_render($item, $label) {
   $address = urlencode("{$item['organisation_name']} {$item['thoroughfare']} {$item['premise']} {$item['postal_code']} {$item['locality']} {$item['country']}");
-  return l($label, "http://maps.google.nl/maps?q=$address");
+  return l($label, "http://maps.google.com/maps?q=$address");
 }
 
 
