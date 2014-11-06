@@ -51,6 +51,7 @@ function pioneer_base_html_head_alter(&$head_elements) {
       'http-equiv' => 'X-UA-Copmatible',
       'content' => 'IE=edge, chrome=1',
     ),
+    '#weight' => -10000,
   );
 
 }
