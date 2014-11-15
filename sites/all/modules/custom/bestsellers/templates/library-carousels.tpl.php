@@ -9,7 +9,7 @@
   <div class="tabbable row" ng-controller="carouselTabs">
 
     <div class="columns medium-3">
-      <h3 class="topline">New York Times Lists</h3>
+      <h3 class="topline"><a href="http://owwl.org/bestsellers/list/Hardcover%20Fiction">New York Times Lists</a></h3>
       <select ng-model="selected" ng-options="section.id as section.title for section in sections" ng-click="select(selected)" ></select>
     </div>
 
@@ -37,7 +37,7 @@
         <button class="prev" ng-click="pageCarousel(-1)" ng-disabled="currentBookPage == 0" href="#">Prev</button>
         <button class="next" ng-click="pageCarousel(1)" ng-disabled="currentBookPage == pages.length - 1" href="#">Next</button>
       </div>
-      <h4>{{activeTitle}}</h4>
+      <h4><a href="http://owwl.org/bestsellers/list/{{activeTitle}}">{{activeTitle}}</a></h4>
     </div>
 
   </div>
