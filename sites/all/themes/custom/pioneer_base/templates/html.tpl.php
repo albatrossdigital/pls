@@ -42,6 +42,7 @@
  */
 ?>
 <!DOCTYPE html>
+<html class="no-js" lang="en">
 <head>
   <?php print $head; ?>
   <title><?php print $head_title; ?></title>
