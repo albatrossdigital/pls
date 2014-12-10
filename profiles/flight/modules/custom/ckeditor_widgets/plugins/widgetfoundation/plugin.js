@@ -14,12 +14,13 @@ CKEDITOR.plugins.add( 'widgetfoundation', {
     init: function( editor ) {
         
         // Configurable settings
-        //var allowedFull = editor.config.widgetFoundation_allowedFull != undefined ? editor.config.widgetFoundation_allowedFull :
-        //    'div(!row,two-col-left,two-col-right,accordion,two-col,three-col){width};' +
-        //    'div(!columns,small-12,medium-3,medium-9,col-sidebar,col-main,col-1,col-2,col-3)';
-        var allowedWidget = editor.config.widgetFoundation_allowedWidget != undefined ? editor.config.widgetFoundation_allowedFull :
-            'p br ul ol li strong em img[!src,alt,width,height]';
-        var allowedText = editor.config.widgetFoundation_allowedText != undefined ? editor.config.widgetFoundation_allowedFull :
+        var allowedFull = editor.config.widgetFoundation_allowedFull != undefined ? editor.config.widgetFoundation_allowedFull :
+            'p br ul ol li strong em; a[!href]; img[!src,alt,width,height]; figcaption;' +
+            'div(!row,two-col-left,two-col-right,accordion,two-col,three-col){width};' +
+            'div(!columns,small-12,medium-3,medium-9,col-sidebar,col-main,col-1,col-2,col-3);';
+        var allowedWidget = editor.config.widgetFoundation_allowedWidget != undefined ? editor.config.widgetFoundation_allowedWidget :
+            'p br ul ol li strong em; a[!href]; img[!src,alt,width,height]; figcaption;';
+        var allowedText = editor.config.widgetFoundation_allowedText != undefined ? editor.config.widgetFoundation_allowedText :
             'p br ul ol li strong em';
 
 
@@ -50,7 +51,7 @@ CKEDITOR.plugins.add( 'widgetfoundation', {
                 }
             },
 
-            //allowedContent: allowedFull,
+            allowedContent: allowedFull,
 
             upcast: function( element ) {
                 return element.name == 'div' && element.hasClass( 'two-col-right-left' );
@@ -79,7 +80,7 @@ CKEDITOR.plugins.add( 'widgetfoundation', {
                 }
             },
 
-            //allowedContent: allowedFull,
+            allowedContent: allowedFull,
 
             upcast: function( element ) {
                 return element.name == 'div' && element.hasClass( 'two-col-right' );
@@ -108,7 +109,7 @@ CKEDITOR.plugins.add( 'widgetfoundation', {
                 }
             },
 
-            //allowedContent: allowedFull,
+            allowedContent: allowedFull,
 
             upcast: function( element ) {
                 return element.name == 'div' && element.hasClass( 'two-col' );
@@ -142,7 +143,7 @@ CKEDITOR.plugins.add( 'widgetfoundation', {
                 }
             },
 
-            //allowedContent: allowedFull,
+            allowedContent: allowedFull,
 
             upcast: function( element ) {
                 return element.name == 'div' && element.hasClass( 'three-col' );
@@ -159,7 +160,7 @@ CKEDITOR.plugins.add( 'widgetfoundation', {
                 '<dl class="accordion" data-accordion><div class="col-1"></div></dl>',
      
 
-            //allowedContent: allowedFull,
+            allowedContent: allowedFull,
 
             dialog: 'widgetfoundationAccordion',
 
