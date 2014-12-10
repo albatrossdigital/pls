@@ -28,4 +28,18 @@
     .form-radios
       +grid-column(6)
 
+// *
+// * Media Queries
+// *
+// ******************************************************
 
++respond($small-only)
+  .l-content-bottom-region
+    .block
+      h2.block-title,
+      .content,
+      form
+        +grid-column(12)
+
+      &.block-bean-pls-home-services
+        margin-left: 0

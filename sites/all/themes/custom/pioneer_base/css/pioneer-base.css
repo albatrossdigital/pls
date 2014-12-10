@@ -1682,22 +1682,22 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
       display: block; }
       .l-header aside.right-off-canvas-menu li a:hover, .l-header aside.right-off-canvas-menu li a:active, .l-header aside.right-off-canvas-menu li a.active, .l-header aside.right-off-canvas-menu li a.active-trail {
         color: #fff; }
-  .block-owwl-catalog form .form-radios {
+  .block-owwl-catalog form .form-radios, section.l-content-bottom-region .block-owwl-catalog form .form-radios {
     padding-left: 0.8333333333rem;
     padding-right: 0.8333333333rem;
     width: 100%;
     float: left; }
-  .block-owwl-catalog form .form-type-select {
+  .block-owwl-catalog form .form-type-select, section.l-content-bottom-region .block-owwl-catalog form .form-type-select {
     padding-left: 0.8333333333rem;
     padding-right: 0.8333333333rem;
     width: 50%;
     float: left; }
-  .block-owwl-catalog form .search-submit {
+  .block-owwl-catalog form .search-submit, section.l-content-bottom-region .block-owwl-catalog form .search-submit {
     padding-left: 0.8333333333rem;
     padding-right: 0.8333333333rem;
     width: 100%;
     float: left; }
-  .block-owwl-catalog form .form-radios, .block-owwl-catalog form .search-submit {
+  .block-owwl-catalog form .form-radios, .block-owwl-catalog form .search-submit, section.l-content-bottom-region .block-owwl-catalog form .form-radios, section.l-content-bottom-region .block-owwl-catalog form .search-submit {
     padding-bottom: 0.8333333333rem; } }
 
 @media only screen and (min-width:45.83333em) {
@@ -1793,6 +1793,15 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
   padding-right: 0.8333333333rem;
   width: 50%;
   float: left; }
+
+@media only screen and (max-width: 45.83333em) {
+  .l-content-bottom-region .block h2.block-title, .l-content-bottom-region .block .content, .l-content-bottom-region .block form {
+    padding-left: 0.8333333333rem;
+    padding-right: 0.8333333333rem;
+    width: 100%;
+    float: left; }
+  .l-content-bottom-region .block.block-bean-pls-home-services {
+    margin-left: 0; } }
 
 aside.sidebar-first label {
   display: none; }
