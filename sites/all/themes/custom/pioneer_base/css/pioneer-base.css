@@ -1529,7 +1529,7 @@ h1.larger-margin-bottom, h2.larger-margin-bottom, h3.larger-margin-bottom, h4.la
     transform: translate3d(0, 0, 0); } }
 
 .l-header .logo {
-  margin-top: 1.5rem; }
+  margin-top: 0.8333333333rem; }
 .l-header section.block-bean .header-links {
   background-color: #E4F2FD;
   padding: 0;
